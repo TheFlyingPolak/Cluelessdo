@@ -1,5 +1,5 @@
 public class Tile {
-    //the coordinates of each tile
+    //the centre coordinates of each tile
     private int xCoordinate;
     private int yCoordinate;
 
