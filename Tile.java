@@ -2,15 +2,26 @@ public class Tile {
     //the centre coordinates of each tile
     private int xCoordinate;
     private int yCoordinate;
+    private RoomType roomType;
 
     //boolean variable that shows whether or not a tile
     private boolean occupied;
 
     //Tile constructor
-    public Tile(int xCoordinate, int yCoordinate, boolean occupied){
+    public Tile(int xCoordinate, int yCoordinate){
         this.xCoordinate=xCoordinate;
         this.yCoordinate=yCoordinate;
-        this.occupied=occupied;
+        this.occupied= false;
+    }
+
+    //set roomType
+    public void setRoomType(RoomType room) {
+        this.roomType = room;
+    }
+
+    //get roomType
+    public RoomType getRoomType() {
+        return roomType;
     }
 
     //Accessor methods
