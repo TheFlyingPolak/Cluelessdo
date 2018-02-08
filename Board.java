@@ -121,10 +121,10 @@ public class Board extends JComponent {
         }
 
         // assigning the Ball room tiles with their type
-        for (int i = 10; i < 13; i++) {
+        for (int i = 10; i < 14; i++) {
             tile[1][i].setRoomType(RoomType.BALLROOM);
         }
-        for (int i = 8; i < 15; i++) {
+        for (int i = 8; i < 16; i++) {
             for (int j = 2; j < 8; j++) {
                 tile[j][i].setRoomType(RoomType.BALLROOM);
             }
@@ -192,11 +192,12 @@ public class Board extends JComponent {
 
         // assigning the null tiles as
         for (int i = 0; i < 24; i++) {
-            if (i != 9 && i != 13) {
+            if (i != 9 && i != 14) {
                 tile[0][i].setRoomType(null);
             }
         }
         tile[1][6].setRoomType(null);
+        tile[1][17].setRoomType(null);
         tile[0][17].setRoomType(null);
         tile[6][0].setRoomType(null);
         tile[8][0].setRoomType(null);
