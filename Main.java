@@ -3,5 +3,6 @@ public class Main {
         Frame frame = new Frame();
 
         frame.setVisible(true);
+        frame.test();
     }
 }
