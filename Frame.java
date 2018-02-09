@@ -46,27 +46,32 @@ public class Frame extends JFrame {
      * Method to test the game screen by placing tokens on the board and moving them.
      */
     public void test(){
-        Weapon token1 = new Weapon(30 ,30, WeaponTypes.PISTOL);
-        Weapon token2 = new Weapon(60 ,40, WeaponTypes.ROPE);
-        Weapon token3 = new Weapon(90 ,50, WeaponTypes.CANDLESTICK);
-        Weapon token4 = new Weapon(120 ,10, WeaponTypes.PIPE);
-        Weapon token5 = new Weapon(110 ,20, WeaponTypes.WRENCH);
-        Weapon token6 = new Weapon(150 ,150, WeaponTypes.DAGGER);
+        Weapon[] weaponTokens = new Weapon[6];
 
-        Character token7 = new Character(30, 60, CharacterNames.GREEN);
-        Character token8 = new Character(30, 90, CharacterNames.PEACOCK);
+        weaponTokens[0] = new Weapon(30, 30, WeaponTypes.PISTOL);
+        weaponTokens[1] = new Weapon(60 ,40, WeaponTypes.ROPE);
+        weaponTokens[2] = new Weapon(90 ,50, WeaponTypes.CANDLESTICK);
+        weaponTokens[3] = new Weapon(120 ,10, WeaponTypes.PIPE);
+        weaponTokens[4] = new Weapon(110 ,20, WeaponTypes.WRENCH);
+        weaponTokens[5] = new Weapon(150 ,150, WeaponTypes.DAGGER);
 
-        tokenPanel.addWeaponToken(token1);
-        tokenPanel.addWeaponToken(token2);
-        tokenPanel.addWeaponToken(token3);
-        tokenPanel.addWeaponToken(token4);
-        tokenPanel.addWeaponToken(token5);
-        tokenPanel.addWeaponToken(token6);
+        Character[] characterTokens = new Character[2];
 
-        tokenPanel.addPlayerToken(token7);
-        tokenPanel.addPlayerToken(token8);
+        characterTokens[0] = new Character(board.getTile(9,0).getxCoordinate(), board.getTile(9,0).getyCoordinate(), CharacterNames.GREEN);
+        characterTokens[1] = new Character(board.getTile(23,6).getxCoordinate(), board.getTile(23,6).getyCoordinate(), CharacterNames.PEACOCK);
 
-        while (true){
+
+        tokenPanel.addWeaponToken(weaponTokens[0]);
+        tokenPanel.addWeaponToken(weaponTokens[1]);
+        tokenPanel.addWeaponToken(weaponTokens[2]);
+        tokenPanel.addWeaponToken(weaponTokens[3]);
+        tokenPanel.addWeaponToken(weaponTokens[4]);
+        tokenPanel.addWeaponToken(weaponTokens[5]);
+
+        tokenPanel.addPlayerToken(characterTokens[0]);
+        tokenPanel.addPlayerToken(characterTokens[1]);
+
+        /*while (true){
             try{
                 Thread.sleep(500);
             }
@@ -85,6 +90,6 @@ public class Frame extends JFrame {
             //tokenPanel.getPlayerToken(1).moveToken(3, 14);
 
             tokenPanel.repaint();
-        }
+        }*/
     }
 }

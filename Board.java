@@ -5,6 +5,10 @@ public class Board extends JComponent {
     //declare array of Tile objects
     private Tile[][] tile = new Tile[25][24];
 
+    public Tile getTile(int i, int j) {
+        return tile[i][j];
+    }
+
     //sideLength = length of tile side
     int xSideLength = 23;
     int ySideLength = 23;

@@ -28,6 +28,25 @@ public class Token{
     }
 
     /**
+     * Uses the moveToken to move the tokens in a specific direction
+     */
+    public void moveUp(){
+        moveToken(0,-23);
+    }
+
+    public void moveDown(){
+        moveToken(0,23);
+    }
+
+    public void moveLeft(){
+        moveToken(-23,0);
+    }
+
+    public void moveRight(){
+        moveToken(23,0);
+    }
+
+    /**
      * Returns the position of the token.
      * @return a Dimension object containing the x and y coordinates of the token.
      */
