@@ -81,8 +81,8 @@ public class Frame extends JFrame {
             tokenPanel.getWeaponToken(4).moveToken(13, 14);
             tokenPanel.getWeaponToken(5).moveToken(13, 14);
 
-            tokenPanel.getPlayerToken(0).moveToken(3, 14);
-            tokenPanel.getPlayerToken(1).moveToken(3, 14);
+            //tokenPanel.getPlayerToken(0).moveToken(3, 14);
+            //tokenPanel.getPlayerToken(1).moveToken(3, 14);
 
             tokenPanel.repaint();
         }

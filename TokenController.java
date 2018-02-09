@@ -1,5 +1,3 @@
-package com.cluelessdo;
-
 import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -31,14 +29,23 @@ public class TokenController extends JPanel {
     private BufferedImage dagger;
     private BufferedImage candlestick;
 
+    private BufferedImage face;
+
     /**
-     * Constructor of the class TokenController. Initialises the token ArrayLists and attemps to load images.
+     * Constructor of the class TokenController. Initialises the token ArrayLists and attempts to load images.
      * If image is not found, an error message is printed to the console.
      */
     public TokenController(){
         super(null);
         playerTokens = new ArrayList<>();
         weaponTokens = new ArrayList<>();
+
+        try{
+            face = ImageIO.read(new File("images/face.png"));
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
 
         try{
             pistol = ImageIO.read(new File("images/pistol.png"));
@@ -115,23 +122,30 @@ public class TokenController extends JPanel {
 
         /** Set drawing colour according to character name */
         for (Character tmp: playerTokens){
+            Dimension dimension = tmp.getPosition();
             switch (tmp.getName()){
                 case SCARLET:
-                    g2.setColor(Color.RED); break;
+                    //g2.setColor(Color.RED); break;
+                    g2.drawImage(face, dimension.height, dimension.width, this);
                 case MUSTARD:
-                    g2.setColor(Color.ORANGE); break;
+                    //g2.setColor(Color.ORANGE); break;
+                    g2.drawImage(face, dimension.height, dimension.width, this);
                 case PEACOCK:
-                    g2.setColor(Color.BLUE); break;
+                    //g2.setColor(Color.BLUE); break;
+                    g2.drawImage(face, dimension.height, dimension.width, this);
                 case WHITE:
-                    g2.setColor(Color.WHITE); break;
+                    //g2.setColor(Color.WHITE); break;
+                    g2.drawImage(face, dimension.height, dimension.width, this);
                 case GREEN:
-                    g2.setColor(Color.GREEN); break;
+                    //g2.setColor(Color.GREEN); break;
+                    g2.drawImage(face, dimension.height, dimension.width, this);
                 case PLUM:
-                    g2.setColor(Color.MAGENTA); break;
+                    //g2.setColor(Color.MAGENTA); break;
+                    g2.drawImage(face, dimension.height, dimension.width, this);
             }
             /** Get position of the token on the game board and draw */
-            Dimension dimension = tmp.getPosition();
-            g2.fillOval(dimension.height, dimension.width, 30, 30);
+            //Dimension dimension = tmp.getPosition();
+            //g2.fillOval(dimension.height, dimension.width, 21, 21);
         }
 
         /** Draw specified image on the game board according to weapon type */

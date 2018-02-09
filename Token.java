@@ -1,5 +1,3 @@
-package com.cluelessdo;
-
 import java.awt.Dimension;
 
 /*

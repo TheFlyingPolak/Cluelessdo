@@ -1,5 +1,3 @@
-package com.cluelessdo;
-
 /*
  * The Character class is a subclass of Token and specifies the name of the character token.
  *

@@ -1,5 +1,3 @@
-package com.cluelessdo;
-
 /*
  * The Weapon class is a subclass of Token and specifies the type of weapon this token should represent.
  *

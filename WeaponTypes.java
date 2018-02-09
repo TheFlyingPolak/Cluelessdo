@@ -1,5 +1,3 @@
-package com.cluelessdo;
-
 /*
  * Enum used to specify the type of each weapon token in the game.
  *

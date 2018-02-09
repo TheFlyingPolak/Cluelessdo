@@ -1,5 +1,3 @@
-package com.cluelessdo;
-
 /*
  * Enum used to specify the name of each playable character.
  *
