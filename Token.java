@@ -1,49 +1,29 @@
 import java.awt.Dimension;
 
 /*
- * The Token class is a superclass of Character and Weapon. It stores the coordinates of the movable token
- * and provides method to change and return its coordinates.
+ * The Token class is a superclass of Character and Weapon. It stores the Tile that the movable token
+ * is located on and provides method to move tile and return its coordinates.
  *
  * @author Jakub Gajewski
  */
 
 public class Token{
-    /** Used to store the x and y coordinates of the token */
-    private int xPosition;
-    private int yPosition;
+    //The Tile at which the token is on
+    Tile currentTile;
 
-    public Token(int x, int y){
-        xPosition = x;
-        yPosition = y;
+    //constructor
+    public Token(Tile currentTile){
+        this.currentTile = currentTile;
+        currentTile.setOccupied(true);
     }
 
     /**
-     * Changes the x and y coordinates of the token by the specified x and y difference
-     * @param dx the value by which the x coordinate should be changed
-     * @param dy the value by which the y coordinate should be changed
+     * @param newTile the Tile which the Token should move to
      */
-    public void moveToken(int dx, int dy){
-        xPosition += dx;
-        yPosition += dy;
-    }
-
-    /**
-     * Uses the moveToken to move the tokens in a specific direction
-     */
-    public void moveUp(){
-        moveToken(0,-23);
-    }
-
-    public void moveDown(){
-        moveToken(0,23);
-    }
-
-    public void moveLeft(){
-        moveToken(-23,0);
-    }
-
-    public void moveRight(){
-        moveToken(23,0);
+    public void moveToken(Tile newTile){
+        currentTile.setOccupied(false);
+        currentTile = newTile;
+        currentTile.setOccupied(true);
     }
 
     /**
@@ -51,7 +31,7 @@ public class Token{
      * @return a Dimension object containing the x and y coordinates of the token.
      */
     public Dimension getPosition(){
-        return new Dimension(xPosition, yPosition);
+        return new Dimension(currentTile.getxCoordinate(), currentTile.getyCoordinate());
     }
 }
 

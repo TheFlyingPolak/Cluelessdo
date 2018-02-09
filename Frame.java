@@ -46,50 +46,39 @@ public class Frame extends JFrame {
      * Method to test the game screen by placing tokens on the board and moving them.
      */
     public void test(){
-        Weapon[] weaponTokens = new Weapon[6];
+        tokenPanel.addWeaponToken(new Weapon(board.getTile(1,1), WeaponTypes.PISTOL));
+        tokenPanel.addWeaponToken(new Weapon(board.getTile(5,5), WeaponTypes.ROPE));
+        tokenPanel.addWeaponToken(new Weapon(board.getTile(8,8), WeaponTypes.CANDLESTICK));
+        tokenPanel.addWeaponToken(new Weapon(board.getTile(15,15), WeaponTypes.PIPE));
+        tokenPanel.addWeaponToken(new Weapon(board.getTile(10,15), WeaponTypes.WRENCH));
+        tokenPanel.addWeaponToken(new Weapon(board.getTile(20,20), WeaponTypes.DAGGER));
 
-        weaponTokens[0] = new Weapon(30, 30, WeaponTypes.PISTOL);
-        weaponTokens[1] = new Weapon(60 ,40, WeaponTypes.ROPE);
-        weaponTokens[2] = new Weapon(90 ,50, WeaponTypes.CANDLESTICK);
-        weaponTokens[3] = new Weapon(120 ,10, WeaponTypes.PIPE);
-        weaponTokens[4] = new Weapon(110 ,20, WeaponTypes.WRENCH);
-        weaponTokens[5] = new Weapon(150 ,150, WeaponTypes.DAGGER);
+        tokenPanel.addPlayerToken(new Character(board.getTile(14,0), CharacterNames.GREEN));
+        tokenPanel.addPlayerToken(new Character(board.getTile(23,6), CharacterNames.PEACOCK));
+        tokenPanel.addPlayerToken(new Character(board.getTile(9,0), CharacterNames.WHITE));
+        tokenPanel.addPlayerToken(new Character(board.getTile(0,17), CharacterNames.MUSTARD));
+        tokenPanel.addPlayerToken(new Character(board.getTile(23,19), CharacterNames.PLUM));
+        tokenPanel.addPlayerToken(new Character(board.getTile(7,21), CharacterNames.SCARLET));
 
-        Character[] characterTokens = new Character[2];
-
-        characterTokens[0] = new Character(board.getTile(9,0).getxCoordinate(), board.getTile(9,0).getyCoordinate(), CharacterNames.GREEN);
-        characterTokens[1] = new Character(board.getTile(23,6).getxCoordinate(), board.getTile(23,6).getyCoordinate(), CharacterNames.PEACOCK);
-
-
-        tokenPanel.addWeaponToken(weaponTokens[0]);
-        tokenPanel.addWeaponToken(weaponTokens[1]);
-        tokenPanel.addWeaponToken(weaponTokens[2]);
-        tokenPanel.addWeaponToken(weaponTokens[3]);
-        tokenPanel.addWeaponToken(weaponTokens[4]);
-        tokenPanel.addWeaponToken(weaponTokens[5]);
-
-        tokenPanel.addPlayerToken(characterTokens[0]);
-        tokenPanel.addPlayerToken(characterTokens[1]);
-
-        /*while (true){
+        while (true){
             try{
-                Thread.sleep(500);
+                Thread.sleep(2000);
             }
             catch (InterruptedException e){
                 e.printStackTrace();
             }
 
-            tokenPanel.getWeaponToken(0).moveToken(3, 14);
-            tokenPanel.getWeaponToken(1).moveToken(3, 14);
-            tokenPanel.getWeaponToken(2).moveToken(3, 14);
-            tokenPanel.getWeaponToken(3).moveToken(3, 14);
-            tokenPanel.getWeaponToken(4).moveToken(13, 14);
-            tokenPanel.getWeaponToken(5).moveToken(13, 14);
+            tokenPanel.getWeaponToken(0).moveToken(board.getTile(10,10));
+            tokenPanel.getWeaponToken(1).moveToken(board.getTile(10,10));
+            tokenPanel.getWeaponToken(2).moveToken(board.getTile(10,10));
+            tokenPanel.getWeaponToken(3).moveToken(board.getTile(10,10));
+            tokenPanel.getWeaponToken(4).moveToken(board.getTile(10,10));
+            tokenPanel.getWeaponToken(5).moveToken(board.getTile(10,10));
 
             //tokenPanel.getPlayerToken(0).moveToken(3, 14);
             //tokenPanel.getPlayerToken(1).moveToken(3, 14);
 
             tokenPanel.repaint();
-        }*/
+        }
     }
 }
