@@ -172,24 +172,24 @@ public class TokenController extends JPanel {
         for (Character tmp: playerTokens){
             Dimension dimension = tmp.getPosition();
             switch (tmp.getName()){
-                case SCARLETT:
+                case SCARLET:
                     //g2.setColor(Color.RED); break;
-                    g2.drawImage(scarlett, dimension.height, dimension.width, this); break;
+                    g2.drawImage(scarlett, dimension.width - (scarlett.getWidth() / 2), dimension.height - (scarlett.getHeight() / 2), this); break;
                 case MUSTARD:
                     //g2.setColor(Color.ORANGE); break;
-                    g2.drawImage(mustard, dimension.height, dimension.width, this); break;
+                    g2.drawImage(mustard, dimension.width - (mustard.getWidth() / 2), dimension.height - (mustard.getHeight() / 2), this); break;
                 case PEACOCK:
                     //g2.setColor(Color.BLUE); break;
-                    g2.drawImage(peacock, dimension.height, dimension.width, this); break;
+                    g2.drawImage(peacock, dimension.width - (peacock.getWidth() / 2), dimension.height - (peacock.getHeight() / 2), this); break;
                 case WHITE:
                     //g2.setColor(Color.WHITE); break;
-                    g2.drawImage(white, dimension.height, dimension.width, this); break;
+                    g2.drawImage(white, dimension.width - (white.getWidth() / 2), dimension.height - (white.getHeight() / 2), this); break;
                 case GREEN:
                     //g2.setColor(Color.GREEN); break;
-                    g2.drawImage(green, dimension.height, dimension.width, this); break;
+                    g2.drawImage(green, dimension.width - (green.getWidth() / 2), dimension.height - (green.getHeight() / 2), this); break;
                 case PLUM:
                     //g2.setColor(Color.MAGENTA); break;
-                    g2.drawImage(plum, dimension.height, dimension.width, this); break;
+                    g2.drawImage(plum, dimension.width - (plum.getWidth() / 2), dimension.height - (green.getHeight() / 2), this); break;
             }
             /** Get position of the token on the game board and draw */
             //Dimension dimension = tmp.getPosition();
@@ -201,17 +201,17 @@ public class TokenController extends JPanel {
             Dimension dimension = tmp.getPosition();
             switch (tmp.getType()){
                 case PISTOL:
-                    g2.drawImage(pistol, dimension.height, dimension.width, this); break;
+                    g2.drawImage(pistol, dimension.width - (pistol.getWidth() / 2), dimension.height - (pistol.getHeight() / 2), this); break;
                 case WRENCH:
-                    g2.drawImage(wrench, dimension.height, dimension.width, this); break;
+                    g2.drawImage(wrench, dimension.width - (wrench.getWidth() / 2), dimension.height - (wrench.getHeight() / 2), this); break;
                 case PIPE:
-                    g2.drawImage(pipe, dimension.height, dimension.width, this); break;
+                    g2.drawImage(pipe, dimension.width - (pipe.getWidth() / 2), dimension.height - (pipe.getHeight() / 2), this); break;
                 case DAGGER:
-                    g2.drawImage(dagger, dimension.height, dimension.width, this); break;
+                    g2.drawImage(dagger, dimension.width - (dagger.getWidth() / 2), dimension.height - (dagger.getHeight() / 2), this); break;
                 case CANDLESTICK:
-                    g2.drawImage(candlestick, dimension.height, dimension.width, this); break;
+                    g2.drawImage(candlestick, dimension.width - (candlestick.getWidth() / 2), dimension.height - (candlestick.getHeight() / 2), this); break;
                 case ROPE:
-                    g2.drawImage(rope, dimension.height, dimension.width, this); break;
+                    g2.drawImage(rope, dimension.width - (rope.getWidth() / 2), dimension.height - (rope.getHeight() / 2), this); break;
             }
         }
     }

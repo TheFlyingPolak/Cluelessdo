@@ -35,7 +35,7 @@ public class Frame extends JFrame {
 
         setResizable(false); // make frame non resizeable
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // set the close operation to exit
-        setLayout(new BorderLayout()); // set the layout to border layer
+        setLayout(new BorderLayout()); // set the layout to border layout
 
         add(boardPanel, BorderLayout.CENTER); // add the board to the center of the frame
         add(info, BorderLayout.EAST); // add the info panel to the east of the screen
@@ -45,104 +45,113 @@ public class Frame extends JFrame {
     /**
      * Method to test the game screen by placing tokens on the board and moving them.
      */
-    public void test(){
-<<<<<<< HEAD
-        tokenPanel.addWeaponToken(new Weapon(30 ,30, WeaponTypes.PISTOL));
-        tokenPanel.addWeaponToken(new Weapon(60 ,40, WeaponTypes.ROPE));
-        tokenPanel.addWeaponToken(new Weapon(90 ,50, WeaponTypes.CANDLESTICK));
-        tokenPanel.addWeaponToken(new Weapon(120 ,10, WeaponTypes.PIPE));
-        tokenPanel.addWeaponToken(new Weapon(110 ,20, WeaponTypes.WRENCH));
-        tokenPanel.addWeaponToken(new Weapon(150 ,150, WeaponTypes.DAGGER));
+    public void test() {
+        initialiseTokens();
 
-        tokenPanel.addPlayerToken(new Character(30, 60, CharacterNames.GREEN));
-        tokenPanel.addPlayerToken(new Character(30, 90, CharacterNames.PLUM));
-        tokenPanel.addPlayerToken(new Character(30, 120, CharacterNames.MUSTARD));
-        tokenPanel.addPlayerToken(new Character(30, 150, CharacterNames.WHITE));
-        tokenPanel.addPlayerToken(new Character(30, 180, CharacterNames.SCARLETT));
-        tokenPanel.addPlayerToken(new Character(30, 210, CharacterNames.PEACOCK));
-
-        while (true){
-=======
-        tokenPanel.addWeaponToken(new Weapon(board.getTile(1,1), WeaponTypes.PISTOL));
-        tokenPanel.addWeaponToken(new Weapon(board.getTile(5,5), WeaponTypes.ROPE));
-        tokenPanel.addWeaponToken(new Weapon(board.getTile(8,8), WeaponTypes.CANDLESTICK));
-        tokenPanel.addWeaponToken(new Weapon(board.getTile(15,15), WeaponTypes.PIPE));
-        tokenPanel.addWeaponToken(new Weapon(board.getTile(10,15), WeaponTypes.WRENCH));
-        tokenPanel.addWeaponToken(new Weapon(board.getTile(20,20), WeaponTypes.DAGGER));
-
-        tokenPanel.addPlayerToken(new Character(board.getTile(14,0), CharacterNames.GREEN));
-        tokenPanel.addPlayerToken(new Character(board.getTile(23,6), CharacterNames.PEACOCK));
-        tokenPanel.addPlayerToken(new Character(board.getTile(9,0), CharacterNames.WHITE));
-        tokenPanel.addPlayerToken(new Character(board.getTile(0,17), CharacterNames.MUSTARD));
-        tokenPanel.addPlayerToken(new Character(board.getTile(23,19), CharacterNames.PLUM));
-        tokenPanel.addPlayerToken(new Character(board.getTile(7,21), CharacterNames.SCARLET));
-
->>>>>>> origin/master
-            try{
-                Thread.sleep(1000);
-            }
-            catch (InterruptedException e){
+        while (true) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            tokenPanel.getWeaponToken(0).moveToken(board.getTile(1,2));
-            tokenPanel.getWeaponToken(1).moveToken(board.getTile(5,6));
-            tokenPanel.getWeaponToken(2).moveToken(board.getTile(8,9));
-            tokenPanel.getWeaponToken(3).moveToken(board.getTile(16,16));
-            tokenPanel.getWeaponToken(4).moveToken(board.getTile(10,16));
-            tokenPanel.getWeaponToken(5).moveToken(board.getTile(20,21));
+            tokenPanel.getWeaponToken(0).moveToken(board.getTile(1, 2));
+            tokenPanel.getWeaponToken(1).moveToken(board.getTile(5, 6));
+            tokenPanel.getWeaponToken(2).moveToken(board.getTile(8, 9));
+            tokenPanel.getWeaponToken(3).moveToken(board.getTile(16, 15));
+            tokenPanel.getWeaponToken(4).moveToken(board.getTile(11, 15));
+            tokenPanel.getWeaponToken(5).moveToken(board.getTile(20, 21));
 
-            //tokenPanel.getPlayerToken(0).moveToken(3, 14);
-            //tokenPanel.getPlayerToken(1).moveToken(3, 14);
+            tokenPanel.getPlayerToken(0).moveToken(board.getTile(14, 1));
+            tokenPanel.getPlayerToken(1).moveToken(board.getTile(22, 6));
+            tokenPanel.getPlayerToken(2).moveToken(board.getTile(9, 1));
+            tokenPanel.getPlayerToken(3).moveToken(board.getTile(1, 17));
+            tokenPanel.getPlayerToken(4).moveToken(board.getTile(22, 19));
+            tokenPanel.getPlayerToken(5).moveToken(board.getTile(7, 23));
 
             tokenPanel.repaint();
 
-        try{
-            Thread.sleep(1000);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            tokenPanel.getWeaponToken(0).moveToken(board.getTile(2, 2));
+            tokenPanel.getWeaponToken(1).moveToken(board.getTile(6, 6));
+            tokenPanel.getWeaponToken(2).moveToken(board.getTile(9, 9));
+            tokenPanel.getWeaponToken(3).moveToken(board.getTile(16, 16));
+            tokenPanel.getWeaponToken(4).moveToken(board.getTile(11, 16));
+            tokenPanel.getWeaponToken(5).moveToken(board.getTile(20, 20));
+
+            tokenPanel.getPlayerToken(0).moveToken(board.getTile(15, 1));
+            tokenPanel.getPlayerToken(1).moveToken(board.getTile(21, 6));
+            tokenPanel.getPlayerToken(2).moveToken(board.getTile(8, 1));
+            tokenPanel.getPlayerToken(3).moveToken(board.getTile(2, 17));
+            tokenPanel.getPlayerToken(4).moveToken(board.getTile(21, 19));
+            tokenPanel.getPlayerToken(5).moveToken(board.getTile(7, 22));
+
+            tokenPanel.repaint();
+
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            tokenPanel.getWeaponToken(0).moveToken(board.getTile(2, 1));
+            tokenPanel.getWeaponToken(1).moveToken(board.getTile(6, 5));
+            tokenPanel.getWeaponToken(2).moveToken(board.getTile(9, 8));
+            tokenPanel.getWeaponToken(3).moveToken(board.getTile(15, 16));
+            tokenPanel.getWeaponToken(4).moveToken(board.getTile(10, 16));
+            tokenPanel.getWeaponToken(5).moveToken(board.getTile(20, 21));
+
+            tokenPanel.getPlayerToken(0).moveToken(board.getTile(14, 1));
+            tokenPanel.getPlayerToken(1).moveToken(board.getTile(22, 6));
+            tokenPanel.getPlayerToken(2).moveToken(board.getTile(9, 1));
+            tokenPanel.getPlayerToken(3).moveToken(board.getTile(1, 17));
+            tokenPanel.getPlayerToken(4).moveToken(board.getTile(22, 19));
+            tokenPanel.getPlayerToken(5).moveToken(board.getTile(7, 23));
+
+            tokenPanel.repaint();
+
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            tokenPanel.getWeaponToken(0).moveToken(board.getTile(1, 1));
+            tokenPanel.getWeaponToken(1).moveToken(board.getTile(5, 5));
+            tokenPanel.getWeaponToken(2).moveToken(board.getTile(8, 8));
+            tokenPanel.getWeaponToken(3).moveToken(board.getTile(15, 15));
+            tokenPanel.getWeaponToken(4).moveToken(board.getTile(10, 15));
+            tokenPanel.getWeaponToken(5).moveToken(board.getTile(20, 20));
+
+            tokenPanel.getPlayerToken(0).moveToken(board.getTile(14, 0));
+            tokenPanel.getPlayerToken(1).moveToken(board.getTile(23, 6));
+            tokenPanel.getPlayerToken(2).moveToken(board.getTile(9, 0));
+            tokenPanel.getPlayerToken(3).moveToken(board.getTile(0, 17));
+            tokenPanel.getPlayerToken(4).moveToken(board.getTile(23, 19));
+            tokenPanel.getPlayerToken(5).moveToken(board.getTile(7, 24));
+
+            tokenPanel.repaint();
         }
-        catch (InterruptedException e){
-            e.printStackTrace();
-        }
+    }
+    private void initialiseTokens(){
+        tokenPanel.addWeaponToken(new Weapon(board.getTile(1, 1), WeaponTypes.PISTOL));
+        tokenPanel.addWeaponToken(new Weapon(board.getTile(5, 5), WeaponTypes.ROPE));
+        tokenPanel.addWeaponToken(new Weapon(board.getTile(8, 8), WeaponTypes.CANDLESTICK));
+        tokenPanel.addWeaponToken(new Weapon(board.getTile(15, 15), WeaponTypes.PIPE));
+        tokenPanel.addWeaponToken(new Weapon(board.getTile(10, 15), WeaponTypes.WRENCH));
+        tokenPanel.addWeaponToken(new Weapon(board.getTile(20, 20), WeaponTypes.DAGGER));
 
-        tokenPanel.getWeaponToken(0).moveToken(board.getTile(1,3));
-        tokenPanel.getWeaponToken(1).moveToken(board.getTile(5,7));
-        tokenPanel.getWeaponToken(2).moveToken(board.getTile(8,10));
-        tokenPanel.getWeaponToken(3).moveToken(board.getTile(16,17));
-        tokenPanel.getWeaponToken(4).moveToken(board.getTile(10,17));
-        tokenPanel.getWeaponToken(5).moveToken(board.getTile(20,22));
+        tokenPanel.addPlayerToken(new Character(board.getTile(14, 0), CharacterNames.GREEN));
+        tokenPanel.addPlayerToken(new Character(board.getTile(23, 6), CharacterNames.PEACOCK));
+        tokenPanel.addPlayerToken(new Character(board.getTile(9, 0), CharacterNames.WHITE));
+        tokenPanel.addPlayerToken(new Character(board.getTile(0, 17), CharacterNames.MUSTARD));
+        tokenPanel.addPlayerToken(new Character(board.getTile(23, 19), CharacterNames.PLUM));
+        tokenPanel.addPlayerToken(new Character(board.getTile(7, 24), CharacterNames.SCARLET));
 
-        tokenPanel.repaint();
-
-        try{
-            Thread.sleep(1000);
-        }
-        catch (InterruptedException e){
-            e.printStackTrace();
-        }
-
-        tokenPanel.getWeaponToken(0).moveToken(board.getTile(1,4));
-        tokenPanel.getWeaponToken(1).moveToken(board.getTile(5,8));
-        tokenPanel.getWeaponToken(2).moveToken(board.getTile(8,11));
-        tokenPanel.getWeaponToken(3).moveToken(board.getTile(16,18));
-        tokenPanel.getWeaponToken(4).moveToken(board.getTile(10,18));
-        tokenPanel.getWeaponToken(5).moveToken(board.getTile(20,23));
-
-        tokenPanel.repaint();
-
-        try{
-            Thread.sleep(1000);
-        }
-        catch (InterruptedException e){
-            e.printStackTrace();
-        }
-
-        tokenPanel.getWeaponToken(0).moveToken(board.getTile(2,4));
-        tokenPanel.getWeaponToken(1).moveToken(board.getTile(6,8));
-        tokenPanel.getWeaponToken(2).moveToken(board.getTile(9,11));
-        tokenPanel.getWeaponToken(3).moveToken(board.getTile(17,18));
-        tokenPanel.getWeaponToken(4).moveToken(board.getTile(11,18));
-        tokenPanel.getWeaponToken(5).moveToken(board.getTile(19,23));
-
-        tokenPanel.repaint();
     }
 }
