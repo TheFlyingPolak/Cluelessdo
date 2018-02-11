@@ -7,8 +7,8 @@
 public class Weapon extends Token{
     private WeaponTypes type;
 
-    public Weapon(int x, int y, WeaponTypes type){
-        super(x, y);
+    public Weapon(Tile currentTile, WeaponTypes type){
+        super(currentTile);
         this.type = type;
     }
 

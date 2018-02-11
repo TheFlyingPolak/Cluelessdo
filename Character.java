@@ -7,8 +7,8 @@
 public class Character extends Token{
     private CharacterNames name;
 
-    public Character(int x, int y, CharacterNames name){
-        super(x, y);
+    public Character(Tile currentTile, CharacterNames name){
+        super(currentTile);
         this.name = name;
     }
 
