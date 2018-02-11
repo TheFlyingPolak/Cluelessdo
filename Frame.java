@@ -46,25 +46,19 @@ public class Frame extends JFrame {
      * Method to test the game screen by placing tokens on the board and moving them.
      */
     public void test(){
-        Weapon token1 = new Weapon(30 ,30, WeaponTypes.PISTOL);
-        Weapon token2 = new Weapon(60 ,40, WeaponTypes.ROPE);
-        Weapon token3 = new Weapon(90 ,50, WeaponTypes.CANDLESTICK);
-        Weapon token4 = new Weapon(120 ,10, WeaponTypes.PIPE);
-        Weapon token5 = new Weapon(110 ,20, WeaponTypes.WRENCH);
-        Weapon token6 = new Weapon(150 ,150, WeaponTypes.DAGGER);
+        tokenPanel.addWeaponToken(new Weapon(30 ,30, WeaponTypes.PISTOL));
+        tokenPanel.addWeaponToken(new Weapon(60 ,40, WeaponTypes.ROPE));
+        tokenPanel.addWeaponToken(new Weapon(90 ,50, WeaponTypes.CANDLESTICK));
+        tokenPanel.addWeaponToken(new Weapon(120 ,10, WeaponTypes.PIPE));
+        tokenPanel.addWeaponToken(new Weapon(110 ,20, WeaponTypes.WRENCH));
+        tokenPanel.addWeaponToken(new Weapon(150 ,150, WeaponTypes.DAGGER));
 
-        Character token7 = new Character(30, 60, CharacterNames.GREEN);
-        Character token8 = new Character(30, 90, CharacterNames.PEACOCK);
-
-        tokenPanel.addWeaponToken(token1);
-        tokenPanel.addWeaponToken(token2);
-        tokenPanel.addWeaponToken(token3);
-        tokenPanel.addWeaponToken(token4);
-        tokenPanel.addWeaponToken(token5);
-        tokenPanel.addWeaponToken(token6);
-
-        tokenPanel.addPlayerToken(token7);
-        tokenPanel.addPlayerToken(token8);
+        tokenPanel.addPlayerToken(new Character(30, 60, CharacterNames.GREEN));
+        tokenPanel.addPlayerToken(new Character(30, 90, CharacterNames.PLUM));
+        tokenPanel.addPlayerToken(new Character(30, 120, CharacterNames.MUSTARD));
+        tokenPanel.addPlayerToken(new Character(30, 150, CharacterNames.WHITE));
+        tokenPanel.addPlayerToken(new Character(30, 180, CharacterNames.SCARLETT));
+        tokenPanel.addPlayerToken(new Character(30, 210, CharacterNames.PEACOCK));
 
         while (true){
             try{

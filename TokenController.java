@@ -29,7 +29,13 @@ public class TokenController extends JPanel {
     private BufferedImage dagger;
     private BufferedImage candlestick;
 
-    private BufferedImage face;
+    private BufferedImage green;
+    private BufferedImage plum;
+    private BufferedImage mustard;
+    private BufferedImage white;
+    private BufferedImage scarlett;
+    private BufferedImage peacock;
+
 
     /**
      * Constructor of the class TokenController. Initialises the token ArrayLists and attempts to load images.
@@ -40,54 +46,7 @@ public class TokenController extends JPanel {
         playerTokens = new ArrayList<>();
         weaponTokens = new ArrayList<>();
 
-        try{
-            face = ImageIO.read(new File("images/face.png"));
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
-
-        try{
-            pistol = ImageIO.read(new File("images/pistol.png"));
-        }
-        catch (IOException e){
-            System.out.println("Could not find image for pistol!");
-        }
-
-        try{
-            wrench = ImageIO.read(new File("images/wrench.png"));
-        }
-        catch (IOException e){
-            System.out.println("Could not find image for wrench!");
-        }
-
-        try{
-            pipe = ImageIO.read(new File("images/pipe.png"));
-        }
-        catch (IOException e){
-            System.out.println("Could not find image for pistol!");
-        }
-
-        try{
-            rope = ImageIO.read(new File("images/rope.png"));
-        }
-        catch (IOException e){
-            System.out.println("Could not find image for pistol!");
-        }
-
-        try{
-            candlestick = ImageIO.read(new File("images/candlestick.png"));
-        }
-        catch (IOException e){
-            System.out.println("Could not find image for pistol!");
-        }
-
-        try{
-            dagger = ImageIO.read(new File("images/dagger.png"));
-        }
-        catch (IOException e){
-            System.out.println("Could not find image for pistol!");
-        }
+        readImages();
     }
 
     /**
@@ -113,6 +72,95 @@ public class TokenController extends JPanel {
     }
 
     /**
+     * Attempts to read images to be used to represent tokens.
+     */
+    private void readImages(){
+        try{
+            green = ImageIO.read(new File("images/green.png"));
+        }
+        catch (IOException e){
+            System.out.println("Could not find image for Green!");
+        }
+
+        try{
+            plum = ImageIO.read(new File("images/plum.png"));
+        }
+        catch (IOException e){
+            System.out.println("Could not find image for Plum!");
+        }
+
+        try{
+            mustard = ImageIO.read(new File("images/mustard.png"));
+        }
+        catch (IOException e){
+            System.out.println("Could not find image for Mustard!");
+        }
+
+        try{
+            white = ImageIO.read(new File("images/white.png"));
+        }
+        catch (IOException e){
+            System.out.println("Could not find image for White!");
+        }
+
+        try{
+            scarlett = ImageIO.read(new File("images/scarlett.png"));
+        }
+        catch (IOException e){
+            System.out.println("Could not find image for Scarlett!");
+        }
+
+        try{
+            peacock = ImageIO.read(new File("images/peacock.png"));
+        }
+        catch (IOException e){
+            System.out.println("Could not find image for Peacock!");
+        }
+
+        try{
+            pistol = ImageIO.read(new File("images/pistol.png"));
+        }
+        catch (IOException e){
+            System.out.println("Could not find image for pistol!");
+        }
+
+        try{
+            wrench = ImageIO.read(new File("images/wrench.png"));
+        }
+        catch (IOException e){
+            System.out.println("Could not find image for wrench!");
+        }
+
+        try{
+            pipe = ImageIO.read(new File("images/pipe.png"));
+        }
+        catch (IOException e){
+            System.out.println("Could not find image for pipe!");
+        }
+
+        try{
+            rope = ImageIO.read(new File("images/rope.png"));
+        }
+        catch (IOException e){
+            System.out.println("Could not find image for rope!");
+        }
+
+        try{
+            candlestick = ImageIO.read(new File("images/candlestick.png"));
+        }
+        catch (IOException e){
+            System.out.println("Could not find image for candlestick!");
+        }
+
+        try{
+            dagger = ImageIO.read(new File("images/dagger.png"));
+        }
+        catch (IOException e){
+            System.out.println("Could not find image for dagger!");
+        }
+    }
+
+    /**
      * Draws all character and weapon tokens using loaded images or predetermined shapes.
      */
     @Override
@@ -124,24 +172,24 @@ public class TokenController extends JPanel {
         for (Character tmp: playerTokens){
             Dimension dimension = tmp.getPosition();
             switch (tmp.getName()){
-                case SCARLET:
+                case SCARLETT:
                     //g2.setColor(Color.RED); break;
-                    g2.drawImage(face, dimension.height, dimension.width, this);
+                    g2.drawImage(scarlett, dimension.height, dimension.width, this); break;
                 case MUSTARD:
                     //g2.setColor(Color.ORANGE); break;
-                    g2.drawImage(face, dimension.height, dimension.width, this);
+                    g2.drawImage(mustard, dimension.height, dimension.width, this); break;
                 case PEACOCK:
                     //g2.setColor(Color.BLUE); break;
-                    g2.drawImage(face, dimension.height, dimension.width, this);
+                    g2.drawImage(peacock, dimension.height, dimension.width, this); break;
                 case WHITE:
                     //g2.setColor(Color.WHITE); break;
-                    g2.drawImage(face, dimension.height, dimension.width, this);
+                    g2.drawImage(white, dimension.height, dimension.width, this); break;
                 case GREEN:
                     //g2.setColor(Color.GREEN); break;
-                    g2.drawImage(face, dimension.height, dimension.width, this);
+                    g2.drawImage(green, dimension.height, dimension.width, this); break;
                 case PLUM:
                     //g2.setColor(Color.MAGENTA); break;
-                    g2.drawImage(face, dimension.height, dimension.width, this);
+                    g2.drawImage(plum, dimension.height, dimension.width, this); break;
             }
             /** Get position of the token on the game board and draw */
             //Dimension dimension = tmp.getPosition();
