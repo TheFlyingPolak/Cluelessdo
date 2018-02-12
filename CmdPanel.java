@@ -2,6 +2,12 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/*
+16310943 James Byrne
+16314761 Jakub Gajewski
+16305706 Mark Hartnett
+ */
+
 // allows user to input commands to the game
 public class CmdPanel extends JPanel{
     private JTextField inputText; // JTextField for users to type text

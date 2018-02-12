@@ -2,6 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 
 /*
+16310943 James Byrne
+16314761 Jakub Gajewski
+16305706 Mark Hartnett
+ */
+
+/*
  * This class displays information about the game, the current activity of the game
  */
 public class InfoPanel extends JScrollPane {

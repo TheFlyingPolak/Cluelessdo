@@ -1,10 +1,15 @@
 import java.awt.Dimension;
 
+
+/*
+16310943 James Byrne
+16314761 Jakub Gajewski
+16305706 Mark Hartnett
+ */
+
 /*
  * The Token class is a superclass of Character and Weapon. It stores the Tile that the movable token
  * is located on and provides method to move tile and return its coordinates.
- *
- * @author Jakub Gajewski
  */
 
 public class Token{

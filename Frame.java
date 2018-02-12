@@ -1,5 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+
+/*
+16310943 James Byrne
+16314761 Jakub Gajewski
+16305706 Mark Hartnett
+ */
 
 public class Frame extends JFrame {
     JPanel boardPanel;
@@ -10,7 +17,7 @@ public class Frame extends JFrame {
     CmdPanel cmd;
 
     // Frame constructor
-    Frame() {
+    Frame() throws IOException {
         super("Cluelessdo"); // constructor of super class, parameter is the title of the frame
 
         boardPanel = new JPanel(new BorderLayout());  // Panel which contains the JLayeredPane

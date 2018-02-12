@@ -1,10 +1,15 @@
-import javax.swing.JPanel;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.io.File;
 import java.io.IOException;
-import javax.imageio.ImageIO;
+import java.util.ArrayList;
+
+/*
+16310943 James Byrne
+16314761 Jakub Gajewski
+16305706 Mark Hartnett
+ */
 
 /*
  * The TokenController class is an extension of the JPanel class with added functionality to store and
@@ -12,8 +17,6 @@ import javax.imageio.ImageIO;
  *
  * The class contains 2 array lists, playerTokens and weaponTokens, used to store Character and Weapon objects.
  * Images are stored in an instance of the TokenController class, though this may change in the future.
- *
- * @author Jakub Gajewski
  */
 
 public class TokenController extends JPanel {
@@ -22,26 +25,14 @@ public class TokenController extends JPanel {
     public ArrayList<Weapon> weaponTokens;
 
     /** BufferedImage objects used to store images of weapons in the game */
-    private BufferedImage pistol;
-    private BufferedImage wrench;
-    private BufferedImage pipe;
-    private BufferedImage rope;
-    private BufferedImage dagger;
-    private BufferedImage candlestick;
-
-    private BufferedImage green;
-    private BufferedImage plum;
-    private BufferedImage mustard;
-    private BufferedImage white;
-    private BufferedImage scarlett;
-    private BufferedImage peacock;
-
+    private BufferedImage pistol, wrench, pipe, rope, dagger, candlestick,
+            green, plum, mustard, white, scarlett, peacock;
 
     /**
      * Constructor of the class TokenController. Initialises the token ArrayLists and attempts to load images.
      * If image is not found, an error message is printed to the console.
      */
-    public TokenController(){
+    public TokenController() throws IOException {
         super(null);
         playerTokens = new ArrayList<>();
         weaponTokens = new ArrayList<>();
@@ -74,90 +65,20 @@ public class TokenController extends JPanel {
     /**
      * Attempts to read images to be used to represent tokens.
      */
-    private void readImages(){
-        try{
-            green = ImageIO.read(new File("images/green.png"));
-        }
-        catch (IOException e){
-            System.out.println("Could not find image for Green!");
-        }
+    private void readImages() throws IOException {
+        green = ImageIO.read(getClass().getResource(("images/green.png")));
+        plum = ImageIO.read(getClass().getResource(("images/plum.png")));
+        mustard = ImageIO.read(getClass().getResource(("images/mustard.png")));
+        white = ImageIO.read(getClass().getResource(("images/white.png")));
+        scarlett = ImageIO.read(getClass().getResource(("images/scarlett.png")));
+        peacock = ImageIO.read(getClass().getResource(("images/peacock.png")));
 
-        try{
-            plum = ImageIO.read(new File("images/plum.png"));
-        }
-        catch (IOException e){
-            System.out.println("Could not find image for Plum!");
-        }
-
-        try{
-            mustard = ImageIO.read(new File("images/mustard.png"));
-        }
-        catch (IOException e){
-            System.out.println("Could not find image for Mustard!");
-        }
-
-        try{
-            white = ImageIO.read(new File("images/white.png"));
-        }
-        catch (IOException e){
-            System.out.println("Could not find image for White!");
-        }
-
-        try{
-            scarlett = ImageIO.read(new File("images/scarlett.png"));
-        }
-        catch (IOException e){
-            System.out.println("Could not find image for Scarlett!");
-        }
-
-        try{
-            peacock = ImageIO.read(new File("images/peacock.png"));
-        }
-        catch (IOException e){
-            System.out.println("Could not find image for Peacock!");
-        }
-
-        try{
-            pistol = ImageIO.read(new File("images/pistol.png"));
-        }
-        catch (IOException e){
-            System.out.println("Could not find image for pistol!");
-        }
-
-        try{
-            wrench = ImageIO.read(new File("images/wrench.png"));
-        }
-        catch (IOException e){
-            System.out.println("Could not find image for wrench!");
-        }
-
-        try{
-            pipe = ImageIO.read(new File("images/pipe.png"));
-        }
-        catch (IOException e){
-            System.out.println("Could not find image for pipe!");
-        }
-
-        try{
-            rope = ImageIO.read(new File("images/rope.png"));
-        }
-        catch (IOException e){
-            System.out.println("Could not find image for rope!");
-        }
-
-        try{
-            candlestick = ImageIO.read(new File("images/candlestick.png"));
-        }
-        catch (IOException e){
-            System.out.println("Could not find image for candlestick!");
-        }
-
-        try{
-            dagger = ImageIO.read(new File("images/dagger.png"));
-        }
-        catch (IOException e){
-            System.out.println("Could not find image for dagger!");
-        }
+        pistol = ImageIO.read(getClass().getResource(("images/pistol.png")));
+        wrench = ImageIO.read(getClass().getResource(("images/wrench.png")));
+        pipe = ImageIO.read(getClass().getResource(("images/pipe.png")));
+        candlestick = ImageIO.read(getClass().getResource(("images/candlestick.png")));
+        rope = ImageIO.read(getClass().getResource(("images/rope.png")));
+        dagger = ImageIO.read(getClass().getResource(("images/dagger.png")));
     }
 
     /**
@@ -201,17 +122,23 @@ public class TokenController extends JPanel {
             Dimension dimension = tmp.getPosition();
             switch (tmp.getType()){
                 case PISTOL:
-                    g2.drawImage(pistol, dimension.width - (pistol.getWidth() / 2), dimension.height - (pistol.getHeight() / 2), this); break;
+                    g2.drawImage(pistol, dimension.width - (pistol.getWidth() / 2), dimension.height - (pistol.getHeight() / 2), this);
+                    break;
                 case WRENCH:
-                    g2.drawImage(wrench, dimension.width - (wrench.getWidth() / 2), dimension.height - (wrench.getHeight() / 2), this); break;
+                    g2.drawImage(wrench, dimension.width - (wrench.getWidth() / 2), dimension.height - (wrench.getHeight() / 2), this);
+                    break;
                 case PIPE:
-                    g2.drawImage(pipe, dimension.width - (pipe.getWidth() / 2), dimension.height - (pipe.getHeight() / 2), this); break;
+                    g2.drawImage(pipe, dimension.width - (pipe.getWidth() / 2), dimension.height - (pipe.getHeight() / 2), this);
+                    break;
                 case DAGGER:
-                    g2.drawImage(dagger, dimension.width - (dagger.getWidth() / 2), dimension.height - (dagger.getHeight() / 2), this); break;
+                    g2.drawImage(dagger, dimension.width - (dagger.getWidth() / 2), dimension.height - (dagger.getHeight() / 2), this);
+                    break;
                 case CANDLESTICK:
-                    g2.drawImage(candlestick, dimension.width - (candlestick.getWidth() / 2), dimension.height - (candlestick.getHeight() / 2), this); break;
+                    g2.drawImage(candlestick, dimension.width - (candlestick.getWidth() / 2), dimension.height - (candlestick.getHeight() / 2), this);
+                    break;
                 case ROPE:
-                    g2.drawImage(rope, dimension.width - (rope.getWidth() / 2), dimension.height - (rope.getHeight() / 2), this); break;
+                    g2.drawImage(rope, dimension.width - (rope.getWidth() / 2), dimension.height - (rope.getHeight() / 2), this);
+                    break;
             }
         }
     }

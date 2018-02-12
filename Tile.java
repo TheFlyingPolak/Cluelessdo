@@ -1,3 +1,10 @@
+
+/*
+16310943 James Byrne
+16314761 Jakub Gajewski
+16305706 Mark Hartnett
+ */
+
 public class Tile {
     //the centre coordinates of each tile
     private int xCoordinate;

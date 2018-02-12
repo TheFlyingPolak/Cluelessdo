@@ -1,6 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
 
+/*
+16310943 James Byrne
+16314761 Jakub Gajewski
+16305706 Mark Hartnett
+ */
+
 public class BoardPanel extends JPanel {
     private Image image;
 
