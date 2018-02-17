@@ -7,18 +7,28 @@
 
 public class Tile {
     //the centre coordinates of each tile
-    private int xCoordinate;
-    private int yCoordinate;
+    private int tileX;
+    private int tileY;
     private RoomType roomType;
+    private Direction doorDirection;
 
     //boolean variable that shows whether or not a tile
     private boolean occupied;
 
     //Tile constructor
-    public Tile(int xCoordinate, int yCoordinate){
-        this.xCoordinate=xCoordinate;
-        this.yCoordinate=yCoordinate;
+    public Tile(int tileX, int tileY){
+        this.tileX = tileX;
+        this.tileY = tileY;
         this.occupied= false;
+        this.doorDirection = null;
+    }
+
+    public Direction getDoorDirection() {
+        return doorDirection;
+    }
+
+    public void setDoorDirection(Direction doorDirection) {
+        this.doorDirection = doorDirection;
     }
 
     //set roomType
@@ -31,26 +41,46 @@ public class Tile {
         return roomType;
     }
 
-    //Accessor methods
+    // accessor methods to get the location of the tile in the 2-D array
+    public int getTileX() {
+        return tileX;
+    }
+
+    public int getTileY() {
+        return tileY;
+    }
+
+    // get the coordinates of the tile methods
     public int getxCoordinate() {
-        return xCoordinate;
+        return Board.X_BORDER + tileX * Board.X_SIDE_LENGTH + Board.X_SIDE_LENGTH/2;
     }
 
     public int getyCoordinate() {
-        return yCoordinate;
+        return Board.Y_BORDER + tileY * Board.Y_SIDE_LENGTH + Board.Y_SIDE_LENGTH/2;
     }
 
     public boolean isOccupied() {
         return occupied;
     }
 
-    //Mutator methods
-    public void setxCoordinate(int xCoordinate) {
-        this.xCoordinate = xCoordinate;
+    // function to check whether there's a wall below the tile
+    boolean hasWallDown(Tile sideTile) {
+        return ((tileY != 25-1 && !getRoomType().equals(sideTile.getRoomType())) || (tileY == 25-1 && !roomType.equals(RoomType.NO_ROOM))) && doorDirection == null;
     }
 
-    public void setyCoordinate(int yCoordinate) {
-        this.yCoordinate = yCoordinate;
+    // function to check whether there's a wall above the tile
+    boolean hasWallUp(Tile sideTile) {
+        return ((!getRoomType().equals(sideTile.getRoomType())) || (tileY == 0 && (tileX == 9 || tileX == 14))) && doorDirection == null;
+    }
+
+    // function to check whether there's a wall to the left of tile
+    boolean hasWallLeft(Tile sideTile) {
+        return ((tileX != 0 && !getRoomType().equals(sideTile.getRoomType())) || (tileX == 0 && !roomType.equals(RoomType.NO_ROOM))) && doorDirection == null;
+    }
+
+    // function to check whether there's a wall to the right of the tile
+    boolean hasWallRight(Tile sideTile) {
+        return ((tileX != 24-1 && !getRoomType().equals(sideTile.getRoomType())) || (tileX == 24-1 && !roomType.equals(RoomType.NO_ROOM))) && doorDirection == null;
     }
 
     public void setOccupied(boolean occupied) {

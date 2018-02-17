@@ -14,7 +14,7 @@ import java.awt.Dimension;
 
 public class Token{
     //The Tile at which the token is on
-    Tile currentTile;
+    private Tile currentTile;
 
     //constructor
     public Token(Tile currentTile){
@@ -31,12 +31,12 @@ public class Token{
         currentTile.setOccupied(true);
     }
 
-    /**
-     * Returns the position of the token.
-     * @return a Dimension object containing the x and y coordinates of the token.
-     */
-    public Dimension getPosition(){
-        return new Dimension(currentTile.getxCoordinate(), currentTile.getyCoordinate());
+    public void setCurrentTile(Tile currTile) {
+        currentTile = currTile;
+    }
+
+    public Tile getCurrentTile() {
+        return currentTile;
     }
 }
 

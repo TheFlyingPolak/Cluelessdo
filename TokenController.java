@@ -32,10 +32,28 @@ public class TokenController extends JPanel {
      * Constructor of the class TokenController. Initialises the token ArrayLists and attempts to load images.
      * If image is not found, an error message is printed to the console.
      */
-    public TokenController() throws IOException {
+    public TokenController(Board board) throws IOException {
         super(null);
         playerTokens = new ArrayList<>();
         weaponTokens = new ArrayList<>();
+
+        setOpaque(false);
+
+        setBounds(0, 0, board.getXBoard(), board.getYBoard());
+
+        addWeaponToken(new Weapon(board.getTile(1, 1), WeaponTypes.PISTOL));
+        addWeaponToken(new Weapon(board.getTile(5, 5), WeaponTypes.ROPE));
+        addWeaponToken(new Weapon(board.getTile(8, 8), WeaponTypes.CANDLESTICK));
+        addWeaponToken(new Weapon(board.getTile(15, 15), WeaponTypes.PIPE));
+        addWeaponToken(new Weapon(board.getTile(10, 15), WeaponTypes.WRENCH));
+        addWeaponToken(new Weapon(board.getTile(20, 20), WeaponTypes.DAGGER));
+
+        addPlayerToken(new Character(board.getTile(14, 0), CharacterNames.GREEN));
+        addPlayerToken(new Character(board.getTile(23, 6), CharacterNames.PEACOCK));
+        addPlayerToken(new Character(board.getTile(9, 0), CharacterNames.WHITE));
+        addPlayerToken(new Character(board.getTile(0, 17), CharacterNames.MUSTARD));
+        addPlayerToken(new Character(board.getTile(23, 19), CharacterNames.PLUM));
+        addPlayerToken(new Character(board.getTile(7, 24), CharacterNames.SCARLET));
 
         readImages();
     }

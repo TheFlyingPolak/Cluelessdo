@@ -16,13 +16,16 @@ public class Board extends JComponent {
     }
 
     //sideLength = length of tile side
-    int xSideLength = 23;
-    int ySideLength = 23;
+    public static final int X_SIDE_LENGTH = 23;
+    public static final int Y_SIDE_LENGTH = 23;
 
     //xDistance = x axis distance from border to tiles
     //yDistance = y axis distance from border to tiles
-    int xBorder = 20;
-    int yBorder = 20;
+    public static final int X_BORDER = 20;
+    public static final int Y_BORDER = 20;
+
+    // width of walls
+    private int wallWidth = 6;
 
     //jframe for testing will remove when inserting into project frame
     //JFrame frame = new JFrame("Boardgame");
@@ -30,27 +33,58 @@ public class Board extends JComponent {
     public Board() {
         super();
         setSize(getXBoard(), getYBoard());
-        initialiseTiles(tile, xBorder, yBorder, xSideLength, ySideLength); // initialise the 2D array of tiles with their coordinates
+        initialiseTiles(); // initialise the 2D array of tiles with their coordinates
         setRoomTypes(); // set the room types, i.e. what room they're in including corridor and where there is no room.
+        initialiseDoors(); // set the tiles that have doors and the direction that the door is in relation to the corridor tile beside the door
     }
 
     public int getXBoard() {
-        return xBorder*2 + xSideLength*24;
+        return X_BORDER *2 + X_SIDE_LENGTH *24;
     }
 
     public int getYBoard() {
-        return yBorder*2 + ySideLength*25;
+        return Y_BORDER *2 + Y_SIDE_LENGTH *25;
     }
 
     //function to set the coordinates of a grid with border
-    public void initialiseTiles(Tile[][] tile, int xBorder, int yBorder, int xSideLength, int ySideLength){
-        for(int j = 0; j < 25; j++) {
-            for (int i = 0; i < 24; i++) {
-                int x = xBorder + i*xSideLength + xSideLength/2;
-                int y = yBorder + j*ySideLength + ySideLength/2;
-                tile[i][j] = new Tile(x, y);
+    public void initialiseTiles(){
+        for (int x = 0; x < 24; x++) {
+            for(int y = 0; y < 25; y++) {
+                tile[x][y] = new Tile(x, y);
             }
         }
+    }
+
+    public void initialiseDoors() {
+        tile[4][6].setDoorDirection(Direction.UP); // Kitchen door
+
+        tile[7][12].setDoorDirection(Direction.LEFT); // dining room door
+        tile[6][15].setDoorDirection(Direction.UP); // dining room door
+
+        tile[5][19].setDoorDirection(Direction.DOWN); // lounge door
+
+        tile[8][5].setDoorDirection(Direction.RIGHT); // ballroom door
+        tile[9][7].setDoorDirection(Direction.UP); // ballroom door
+        tile[14][7].setDoorDirection(Direction.UP); // ballroom door
+        tile[15][5].setDoorDirection(Direction.LEFT); // ballroom door
+
+
+        tile[11][16].setDoorDirection(Direction.UP); // Cellar Door
+        tile[12][16].setDoorDirection(Direction.UP); // Cellar Door
+        tile[13][16].setDoorDirection(Direction.UP); // Cellar Door
+
+        tile[11][18].setDoorDirection(Direction.DOWN); // Hall Door
+        tile[12][18].setDoorDirection(Direction.DOWN); // Hall Door
+
+        tile[18][4].setDoorDirection(Direction.UP); // Conservatory door
+
+        tile[18][9].setDoorDirection(Direction.RIGHT); // billard room door
+        tile[22][12].setDoorDirection(Direction.UP); // billard room door
+
+        tile[20][14].setDoorDirection(Direction.DOWN); // library door
+        tile[17][16].setDoorDirection(Direction.RIGHT); // library door
+
+        tile[17][21].setDoorDirection(Direction.DOWN); // study door
     }
 
     public void paintComponent(Graphics g) {
@@ -59,183 +93,183 @@ public class Board extends JComponent {
         g2.setStroke(new BasicStroke(0.001f)); // set the stroke for the outline of the tiles of roomType CORRIDOR
 
         // loop through each tile
-        for(int j = 0; j < 25; j++) {
-            for (int i = 0; i < 24; i++) {
-                if (tile[i][j].getRoomType() == null) { // if the tile is not a tile where a player can move
+        for (int x = 0; x < 24; x++) {
+            for(int y = 0; y < 25; y++) {
+                if (tile[x][y].getRoomType().equals(RoomType.NO_ROOM)) { // if the tile is not a tile where a player can move
                     g2.setColor(new Color(71, 124, 94)); // set the color
-                } else if (tile[i][j].getRoomType() == RoomType.CORRIDOR) { // if the room is of roomType corridor
+                } else if (tile[x][y].getRoomType() == RoomType.CORRIDOR) { // if the room is of roomType corridor
                     g2.setColor(new Color(217, 177, 103)); // set the color
                 } else { // if the tile is any other roomType
                     g2.setColor(new Color(146, 131, 105)); // set the color
                 }
-                Rectangle rect = new Rectangle(tile[i][j].getxCoordinate()-(xSideLength/2), tile[i][j].getyCoordinate()-(ySideLength/2), xSideLength, ySideLength); // create a rectangle with the coordinates of the tile
+                Rectangle rect = new Rectangle(tile[x][y].getxCoordinate()-(X_SIDE_LENGTH /2), tile[x][y].getyCoordinate()-(Y_SIDE_LENGTH /2), X_SIDE_LENGTH, Y_SIDE_LENGTH); // create a rectangle with the coordinates of the tile
                 g2.fill(rect); // fill that rectangle on the board with the color specified above
 
-                if (tile[i][j].getRoomType() == RoomType.CORRIDOR) { // if the room is a corridor
+                if (tile[x][y].getRoomType() == RoomType.CORRIDOR) { // if the room is a corridor
                     g2.setColor(new Color(171, 135, 86)); // set the color
                     g2.draw(rect); // draw the outline of the rectangle
                 }
             }
         }
 
+        // draw green border around board
         g2.setColor(new Color(71, 124, 94));
-        g2.fill(new Rectangle(0, 0, getXBoard(), yBorder));
-        g2.fill(new Rectangle(0, 0, xBorder, getYBoard()));
-        g2.fill(new Rectangle(getXBoard()-xBorder, 0, xBorder, getYBoard()));
-        g2.fill(new Rectangle(0, getYBoard()-yBorder, getXBoard(), yBorder));
+        g2.fill(new Rectangle(0, 0, getXBoard(), Y_BORDER));
+        g2.fill(new Rectangle(0, 0, X_BORDER, getYBoard()));
+        g2.fill(new Rectangle(getXBoard()- X_BORDER, 0, X_BORDER, getYBoard()));
+        g2.fill(new Rectangle(0, getYBoard()- Y_BORDER, getXBoard(), Y_BORDER));
 
         g2.setColor(new Color(109, 31, 36));
 
-        int wallWidth = 6;
-
         // filling the walls for the kitchen
-        g2.fill(new Rectangle(xBorder + 6*xSideLength - wallWidth/2, yBorder + ySideLength - wallWidth/2, wallWidth, 6*ySideLength + wallWidth)); //vertical
-        g2.fill(new Rectangle(xBorder - wallWidth/2, yBorder + ySideLength - wallWidth/2, wallWidth, 5*ySideLength + wallWidth)); // vertical
-        g2.fill(new Rectangle(xBorder + xSideLength - wallWidth/2, yBorder + 6*ySideLength - wallWidth/2, wallWidth, ySideLength + wallWidth)); // vertical
-        g2.fill(new Rectangle(xBorder - wallWidth/2, yBorder + ySideLength - wallWidth/2, 6*xSideLength + wallWidth, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder - wallWidth/2, yBorder + 6*ySideLength - wallWidth/2, xSideLength + wallWidth, wallWidth)); // horizontal
-        g2.fill(new Rectangle(xBorder + xSideLength - wallWidth/2, yBorder + 7*ySideLength - wallWidth/2, 3*xSideLength + wallWidth/2,  wallWidth)); // horizontal
-        g2.fill(new Rectangle(xBorder + 5*xSideLength, yBorder + 7*ySideLength - wallWidth/2, xSideLength + wallWidth/2,  wallWidth)); // horizontal
+        g2.fill(new Rectangle(X_BORDER + 6* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + Y_SIDE_LENGTH - wallWidth/2, wallWidth, 6* Y_SIDE_LENGTH + wallWidth)); //vertical
+        g2.fill(new Rectangle(X_BORDER - wallWidth/2, Y_BORDER + Y_SIDE_LENGTH - wallWidth/2, wallWidth, 5* Y_SIDE_LENGTH + wallWidth)); // vertical
+        g2.fill(new Rectangle(X_BORDER + X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 6* Y_SIDE_LENGTH - wallWidth/2, wallWidth, Y_SIDE_LENGTH + wallWidth)); // vertical
+        g2.fill(new Rectangle(X_BORDER - wallWidth/2, Y_BORDER + Y_SIDE_LENGTH - wallWidth/2, 6* X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER - wallWidth/2, Y_BORDER + 6* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth, wallWidth)); // horizontal
+        g2.fill(new Rectangle(X_BORDER + X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 7* Y_SIDE_LENGTH - wallWidth/2, 3* X_SIDE_LENGTH + wallWidth/2,  wallWidth)); // horizontal
+        g2.fill(new Rectangle(X_BORDER + 5* X_SIDE_LENGTH, Y_BORDER + 7* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2,  wallWidth)); // horizontal
 
         // filling the walls for the Dining Room
-        g2.fill(new Rectangle(xBorder - wallWidth/2, yBorder + 9*ySideLength, wallWidth, 7*ySideLength)); // vertical
-        g2.fill(new Rectangle(xBorder + 5*xSideLength - wallWidth/2, yBorder + 9*ySideLength, wallWidth, ySideLength)); // vertical
-        g2.fill(new Rectangle(xBorder + 8*xSideLength - wallWidth/2, yBorder + 10*ySideLength, wallWidth, 2*ySideLength)); // vertical
-        g2.fill(new Rectangle(xBorder + 8*xSideLength - wallWidth/2, yBorder + 13*ySideLength, wallWidth, 3*ySideLength + wallWidth/2)); // vertical
-        g2.fill(new Rectangle(xBorder - wallWidth/2, yBorder + 9*ySideLength - wallWidth/2, 5*xSideLength + wallWidth, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 5*xSideLength - wallWidth/2, yBorder + 10*ySideLength - wallWidth/2, 3*xSideLength + wallWidth, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder - wallWidth/2, yBorder + 16*ySideLength - wallWidth/2, 6*xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 7*xSideLength, yBorder + 16*ySideLength - wallWidth/2, xSideLength + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER - wallWidth/2, Y_BORDER + 9* Y_SIDE_LENGTH, wallWidth, 7* Y_SIDE_LENGTH)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 5* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 9* Y_SIDE_LENGTH, wallWidth, Y_SIDE_LENGTH)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 8* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 10* Y_SIDE_LENGTH, wallWidth, 2* Y_SIDE_LENGTH)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 8* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 13* Y_SIDE_LENGTH, wallWidth, 3* Y_SIDE_LENGTH + wallWidth/2)); // vertical
+        g2.fill(new Rectangle(X_BORDER - wallWidth/2, Y_BORDER + 9* Y_SIDE_LENGTH - wallWidth/2, 5* X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 5* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 10* Y_SIDE_LENGTH - wallWidth/2, 3* X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER - wallWidth/2, Y_BORDER + 16* Y_SIDE_LENGTH - wallWidth/2, 6* X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 7* X_SIDE_LENGTH, Y_BORDER + 16* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
 
         // filling the walls for the lounge
-        g2.fill(new Rectangle(xBorder - wallWidth/2, yBorder + 19*ySideLength, wallWidth, 6*ySideLength)); // vertical
-        g2.fill(new Rectangle(xBorder + 6*xSideLength - wallWidth/2, yBorder + 24*ySideLength - wallWidth/2, wallWidth, ySideLength + wallWidth)); // vertical
-        g2.fill(new Rectangle(xBorder + 7*xSideLength - wallWidth/2, yBorder + 19*ySideLength, wallWidth, 5*ySideLength)); // vertical
-        g2.fill(new Rectangle(xBorder - wallWidth/2, yBorder + 19*ySideLength - wallWidth/2, 5*xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 6*xSideLength, yBorder + 19*ySideLength - wallWidth/2, xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder - wallWidth/2, yBorder + 25*ySideLength - wallWidth/2, 6*xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 6*xSideLength, yBorder + 24*ySideLength - wallWidth/2, xSideLength + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER - wallWidth/2, Y_BORDER + 19* Y_SIDE_LENGTH, wallWidth, 6* Y_SIDE_LENGTH)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 6* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 24* Y_SIDE_LENGTH - wallWidth/2, wallWidth, Y_SIDE_LENGTH + wallWidth)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 7* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 19* Y_SIDE_LENGTH, wallWidth, 5* Y_SIDE_LENGTH)); // vertical
+        g2.fill(new Rectangle(X_BORDER - wallWidth/2, Y_BORDER + 19* Y_SIDE_LENGTH - wallWidth/2, 5* X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 6* X_SIDE_LENGTH, Y_BORDER + 19* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER - wallWidth/2, Y_BORDER + 25* Y_SIDE_LENGTH - wallWidth/2, 6* X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 6* X_SIDE_LENGTH, Y_BORDER + 24* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
 
         // filling the walls for the Ball Room
-        g2.fill(new Rectangle(xBorder + 10*xSideLength - wallWidth/2, yBorder, wallWidth, 2*ySideLength + wallWidth/2)); // vertical
-        g2.fill(new Rectangle(xBorder + 14*xSideLength - wallWidth/2, yBorder, wallWidth, 2*ySideLength + wallWidth/2)); // vertical
-        g2.fill(new Rectangle(xBorder + 8*xSideLength - wallWidth/2, yBorder + 2*ySideLength - wallWidth/2, wallWidth, 3*ySideLength + wallWidth/2)); // vertical
-        g2.fill(new Rectangle(xBorder + 16*xSideLength, yBorder + 2*ySideLength - wallWidth/2, wallWidth, 3*ySideLength + wallWidth/2)); // vertical
-        g2.fill(new Rectangle(xBorder + 8*xSideLength - wallWidth/2, yBorder + 6*ySideLength, wallWidth, 2*ySideLength + wallWidth/2)); // vertical
-        g2.fill(new Rectangle(xBorder + 16*xSideLength - wallWidth/2, yBorder + 6*ySideLength, wallWidth, 2*ySideLength + wallWidth/2)); // vertical
-        g2.fill(new Rectangle(xBorder + 10*xSideLength - wallWidth/2, yBorder + ySideLength - wallWidth/2, 4*xSideLength + wallWidth, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 8*xSideLength - wallWidth/2, yBorder + 2*ySideLength - wallWidth/2, 2*xSideLength + wallWidth, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 14*xSideLength - wallWidth/2, yBorder + 2*ySideLength - wallWidth/2, 2*xSideLength + wallWidth, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 8*xSideLength - wallWidth/2, yBorder + 8*ySideLength - wallWidth/2, xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 15*xSideLength, yBorder + 8*ySideLength - wallWidth/2, xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 10*xSideLength, yBorder + 8*ySideLength - wallWidth/2, 4*xSideLength, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 10* X_SIDE_LENGTH - wallWidth/2, Y_BORDER, wallWidth, 2* Y_SIDE_LENGTH + wallWidth/2)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 14* X_SIDE_LENGTH - wallWidth/2, Y_BORDER, wallWidth, 2* Y_SIDE_LENGTH + wallWidth/2)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 8* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 2* Y_SIDE_LENGTH - wallWidth/2, wallWidth, 3* Y_SIDE_LENGTH + wallWidth/2)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 16* X_SIDE_LENGTH, Y_BORDER + 2* Y_SIDE_LENGTH - wallWidth/2, wallWidth, 3* Y_SIDE_LENGTH + wallWidth/2)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 8* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 6* Y_SIDE_LENGTH, wallWidth, 2* Y_SIDE_LENGTH + wallWidth/2)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 16* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 6* Y_SIDE_LENGTH, wallWidth, 2* Y_SIDE_LENGTH + wallWidth/2)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 10* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + Y_SIDE_LENGTH - wallWidth/2, 4* X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 8* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 2* Y_SIDE_LENGTH - wallWidth/2, 2* X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 14* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 2* Y_SIDE_LENGTH - wallWidth/2, 2* X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 8* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 8* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 15* X_SIDE_LENGTH, Y_BORDER + 8* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 10* X_SIDE_LENGTH, Y_BORDER + 8* Y_SIDE_LENGTH - wallWidth/2, 4* X_SIDE_LENGTH, wallWidth)); //horizontal
 
         // filling the walls for the Cellar
-        g2.fill(new Rectangle(xBorder + 10*xSideLength - wallWidth/2, yBorder + 10*ySideLength, wallWidth, 7*ySideLength + wallWidth/2)); // vertical
-        g2.fill(new Rectangle(xBorder + 15*xSideLength - wallWidth/2, yBorder + 10*ySideLength, wallWidth, 7*ySideLength + wallWidth/2)); // vertical
-        g2.fill(new Rectangle(xBorder + 10*xSideLength - wallWidth/2, yBorder + 10*ySideLength - wallWidth/2, 5*xSideLength + wallWidth, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 10*xSideLength - wallWidth/2, yBorder + 17*ySideLength - wallWidth/2, xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 14*xSideLength, yBorder + 17*ySideLength - wallWidth/2, xSideLength + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 10* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 10* Y_SIDE_LENGTH, wallWidth, 7* Y_SIDE_LENGTH + wallWidth/2)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 15* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 10* Y_SIDE_LENGTH, wallWidth, 7* Y_SIDE_LENGTH + wallWidth/2)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 10* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 10* Y_SIDE_LENGTH - wallWidth/2, 5* X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 10* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 17* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 14* X_SIDE_LENGTH, Y_BORDER + 17* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
 
         // filling the walls for the Hall
-        g2.fill(new Rectangle(xBorder + 9*xSideLength - wallWidth/2, yBorder + 18*ySideLength, wallWidth, 7*ySideLength + wallWidth/2)); // vertical
-        g2.fill(new Rectangle(xBorder + 15*xSideLength - wallWidth/2, yBorder + 18*ySideLength - wallWidth/2, wallWidth, 2*ySideLength + wallWidth/2)); // vertical
-        g2.fill(new Rectangle(xBorder + 15*xSideLength - wallWidth/2, yBorder + 21*ySideLength, wallWidth, 4*ySideLength + wallWidth/2)); // vertical
-        g2.fill(new Rectangle(xBorder + 9*xSideLength - wallWidth/2, yBorder + 18*ySideLength - wallWidth/2, 2*xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 13*xSideLength, yBorder + 18*ySideLength - wallWidth/2, 2*xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 9*xSideLength - wallWidth/2, yBorder + 25*ySideLength - wallWidth/2, 6*xSideLength + wallWidth, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 9* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 18* Y_SIDE_LENGTH, wallWidth, 7* Y_SIDE_LENGTH + wallWidth/2)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 15* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 18* Y_SIDE_LENGTH - wallWidth/2, wallWidth, 2* Y_SIDE_LENGTH + wallWidth/2)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 15* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 21* Y_SIDE_LENGTH, wallWidth, 4* Y_SIDE_LENGTH + wallWidth/2)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 9* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 18* Y_SIDE_LENGTH - wallWidth/2, 2* X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 13* X_SIDE_LENGTH, Y_BORDER + 18* Y_SIDE_LENGTH - wallWidth/2, 2* X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 9* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 25* Y_SIDE_LENGTH - wallWidth/2, 6* X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
 
         // filling the walls for the Conservatory
-        g2.fill(new Rectangle(xBorder + 18*xSideLength - wallWidth/2, yBorder + ySideLength, wallWidth, 4*ySideLength)); // vertical
-        g2.fill(new Rectangle(xBorder + 19*xSideLength - wallWidth/2, yBorder + 5*ySideLength, wallWidth, ySideLength + wallWidth/2)); // vertical
-        g2.fill(new Rectangle(xBorder + 23*xSideLength - wallWidth/2, yBorder + 5*ySideLength, wallWidth, ySideLength + wallWidth/2)); // vertical
-        g2.fill(new Rectangle(xBorder + 24*xSideLength - wallWidth/2, yBorder + ySideLength, wallWidth, 4*ySideLength + wallWidth/2)); // vertical
-        g2.fill(new Rectangle(xBorder + 18*xSideLength - wallWidth/2, yBorder + ySideLength - wallWidth/2, 6*xSideLength + wallWidth, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 23*xSideLength - wallWidth/2, yBorder + 5*ySideLength - wallWidth/2, xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 19*xSideLength, yBorder + 6*ySideLength - wallWidth/2, 4*xSideLength + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 18* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + Y_SIDE_LENGTH, wallWidth, 4* Y_SIDE_LENGTH)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 19* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 5* Y_SIDE_LENGTH, wallWidth, Y_SIDE_LENGTH + wallWidth/2)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 23* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 5* Y_SIDE_LENGTH, wallWidth, Y_SIDE_LENGTH + wallWidth/2)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 24* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + Y_SIDE_LENGTH, wallWidth, 4* Y_SIDE_LENGTH + wallWidth/2)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 18* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + Y_SIDE_LENGTH - wallWidth/2, 6* X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 23* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 5* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 19* X_SIDE_LENGTH, Y_BORDER + 6* Y_SIDE_LENGTH - wallWidth/2, 4* X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
 
         // filling the walls for the Billard Room
-        g2.fill(new Rectangle(xBorder + 18*xSideLength - wallWidth/2, yBorder + 8*ySideLength - wallWidth/2, 6*xSideLength + wallWidth, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 18*xSideLength - wallWidth/2, yBorder + 13*ySideLength - wallWidth/2, 4*xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 23*xSideLength, yBorder + 13*ySideLength - wallWidth/2, xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 18*xSideLength - wallWidth/2, yBorder + 8*ySideLength, wallWidth, ySideLength)); // vertical
-        g2.fill(new Rectangle(xBorder + 18*xSideLength - wallWidth/2, yBorder + 10*ySideLength, wallWidth, 3*ySideLength)); // vertical
-        g2.fill(new Rectangle(xBorder + 24*xSideLength - wallWidth/2, yBorder + 8*ySideLength, wallWidth, 5*ySideLength)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 18* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 8* Y_SIDE_LENGTH - wallWidth/2, 6* X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 18* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 13* Y_SIDE_LENGTH - wallWidth/2, 4* X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 23* X_SIDE_LENGTH, Y_BORDER + 13* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 18* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 8* Y_SIDE_LENGTH, wallWidth, Y_SIDE_LENGTH)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 18* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 10* Y_SIDE_LENGTH, wallWidth, 3* Y_SIDE_LENGTH)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 24* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 8* Y_SIDE_LENGTH, wallWidth, 5* Y_SIDE_LENGTH)); // vertical
 
         // filling the walls for the Library
-        g2.fill(new Rectangle(xBorder + 18*xSideLength - wallWidth/2, yBorder + 14*ySideLength, wallWidth, ySideLength)); // vertical
-        g2.fill(new Rectangle(xBorder + 23*xSideLength - wallWidth/2, yBorder + 14*ySideLength, wallWidth, ySideLength)); // vertical
-        g2.fill(new Rectangle(xBorder + 18*xSideLength - wallWidth/2, yBorder + 18*ySideLength, wallWidth, ySideLength)); // vertical
-        g2.fill(new Rectangle(xBorder + 23*xSideLength - wallWidth/2, yBorder + 18*ySideLength, wallWidth, ySideLength)); // vertical
-        g2.fill(new Rectangle(xBorder + 17*xSideLength - wallWidth/2, yBorder + 15*ySideLength, wallWidth, ySideLength)); // vertical
-        g2.fill(new Rectangle(xBorder + 17*xSideLength - wallWidth/2, yBorder + 17*ySideLength, wallWidth, ySideLength)); // vertical
-        g2.fill(new Rectangle(xBorder + 24*xSideLength - wallWidth/2, yBorder + 15*ySideLength, wallWidth, 3*ySideLength)); // vertical
-        g2.fill(new Rectangle(xBorder + 18*xSideLength - wallWidth/2, yBorder + 14*ySideLength - wallWidth/2, 2*xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 21*xSideLength, yBorder + 14*ySideLength - wallWidth/2, 2*xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 18*xSideLength - wallWidth/2, yBorder + 19*ySideLength - wallWidth/2, 5*xSideLength + wallWidth, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 17*xSideLength - wallWidth/2, yBorder + 15*ySideLength - wallWidth/2, xSideLength + wallWidth, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 23*xSideLength - wallWidth/2, yBorder + 15*ySideLength - wallWidth/2, xSideLength + wallWidth, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 17*xSideLength - wallWidth/2, yBorder + 18*ySideLength - wallWidth/2, xSideLength + wallWidth, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 23*xSideLength - wallWidth/2, yBorder + 18*ySideLength - wallWidth/2, xSideLength + wallWidth, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 18* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 14* Y_SIDE_LENGTH, wallWidth, Y_SIDE_LENGTH)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 23* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 14* Y_SIDE_LENGTH, wallWidth, Y_SIDE_LENGTH)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 18* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 18* Y_SIDE_LENGTH, wallWidth, Y_SIDE_LENGTH)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 23* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 18* Y_SIDE_LENGTH, wallWidth, Y_SIDE_LENGTH)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 17* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 15* Y_SIDE_LENGTH, wallWidth, Y_SIDE_LENGTH)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 17* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 17* Y_SIDE_LENGTH, wallWidth, Y_SIDE_LENGTH)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 24* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 15* Y_SIDE_LENGTH, wallWidth, 3* Y_SIDE_LENGTH)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 18* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 14* Y_SIDE_LENGTH - wallWidth/2, 2* X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 21* X_SIDE_LENGTH, Y_BORDER + 14* Y_SIDE_LENGTH - wallWidth/2, 2* X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 18* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 19* Y_SIDE_LENGTH - wallWidth/2, 5* X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 17* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 15* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 23* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 15* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 17* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 18* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 23* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 18* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
 
         // filling the walls for the Study
-        g2.fill(new Rectangle(xBorder + 17*xSideLength - wallWidth/2, yBorder + 21*ySideLength, wallWidth, 3*ySideLength + wallWidth/2)); //vertical
-        g2.fill(new Rectangle(xBorder + 18*xSideLength - wallWidth/2, yBorder + 24*ySideLength - wallWidth/2, wallWidth, ySideLength + wallWidth)); // vertical
-        g2.fill(new Rectangle(xBorder + 24*xSideLength - wallWidth/2, yBorder + 21*ySideLength - wallWidth/2, wallWidth, 4*ySideLength + wallWidth)); // vertical
-        g2.fill(new Rectangle(xBorder + 18*xSideLength, yBorder + 21*ySideLength - wallWidth/2, 6*xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 17*xSideLength - wallWidth/2, yBorder + 24*ySideLength - wallWidth/2, xSideLength + wallWidth, wallWidth)); // horizontal
-        g2.fill(new Rectangle(xBorder + 18*xSideLength - wallWidth/2, yBorder + 25*ySideLength - wallWidth/2, 6*xSideLength + wallWidth/2,  wallWidth)); // horizontal
+        g2.fill(new Rectangle(X_BORDER + 17* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 21* Y_SIDE_LENGTH, wallWidth, 3* Y_SIDE_LENGTH + wallWidth/2)); //vertical
+        g2.fill(new Rectangle(X_BORDER + 18* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 24* Y_SIDE_LENGTH - wallWidth/2, wallWidth, Y_SIDE_LENGTH + wallWidth)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 24* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 21* Y_SIDE_LENGTH - wallWidth/2, wallWidth, 4* Y_SIDE_LENGTH + wallWidth)); // vertical
+        g2.fill(new Rectangle(X_BORDER + 18* X_SIDE_LENGTH, Y_BORDER + 21* Y_SIDE_LENGTH - wallWidth/2, 6* X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 17* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 24* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth, wallWidth)); // horizontal
+        g2.fill(new Rectangle(X_BORDER + 18* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 25* Y_SIDE_LENGTH - wallWidth/2, 6* X_SIDE_LENGTH + wallWidth/2,  wallWidth)); // horizontal
 
         // Setting the walls for the edges of the corridor
-        g2.fill(new Rectangle(xBorder - wallWidth/2, yBorder + 7*ySideLength - wallWidth/2, wallWidth, ySideLength + wallWidth)); //vertical
-        g2.fill(new Rectangle(xBorder + xSideLength - wallWidth/2, yBorder + 8*ySideLength - wallWidth/2, wallWidth, ySideLength + wallWidth)); //vertical
-        g2.fill(new Rectangle(xBorder, yBorder + 7*ySideLength - wallWidth/2, xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder, yBorder + 8*ySideLength - wallWidth/2, xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + xSideLength - wallWidth/2, yBorder + 16*ySideLength - wallWidth/2, wallWidth, ySideLength + wallWidth)); //vertical
-        g2.fill(new Rectangle(xBorder - wallWidth/2, yBorder + 17*ySideLength - wallWidth/2, wallWidth, ySideLength + wallWidth)); //vertical
-        g2.fill(new Rectangle(xBorder + xSideLength - wallWidth/2, yBorder + 18*ySideLength - wallWidth/2, wallWidth, ySideLength + wallWidth)); //vertical
-        g2.fill(new Rectangle(xBorder, yBorder + 17*ySideLength - wallWidth/2, xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder, yBorder + 18*ySideLength - wallWidth/2, xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 7*xSideLength - wallWidth/2, yBorder + 24*ySideLength - wallWidth/2, wallWidth, ySideLength + wallWidth)); //vertical
-        g2.fill(new Rectangle(xBorder + 8*xSideLength - wallWidth/2, yBorder + 24*ySideLength - wallWidth/2, wallWidth, ySideLength + wallWidth)); //vertical
-        g2.fill(new Rectangle(xBorder + 7*xSideLength, yBorder + 25*ySideLength - wallWidth/2, xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 8*xSideLength, yBorder + 24*ySideLength - wallWidth/2, xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 16*xSideLength - wallWidth/2, yBorder + 24*ySideLength - wallWidth/2, wallWidth, ySideLength + wallWidth)); //vertical
-        g2.fill(new Rectangle(xBorder + 17*xSideLength - wallWidth/2, yBorder + 24*ySideLength - wallWidth/2, wallWidth, ySideLength + wallWidth)); //vertical
-        g2.fill(new Rectangle(xBorder + 16*xSideLength, yBorder + 25*ySideLength - wallWidth/2, xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 15*xSideLength, yBorder + 24*ySideLength - wallWidth/2, xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 24*xSideLength - wallWidth/2, yBorder + 6*ySideLength - wallWidth/2, wallWidth, ySideLength + wallWidth)); //vertical
-        g2.fill(new Rectangle(xBorder + 23*xSideLength - wallWidth/2, yBorder + 7*ySideLength - wallWidth/2, wallWidth, ySideLength + wallWidth)); //vertical
-        g2.fill(new Rectangle(xBorder + 23*xSideLength, yBorder + 6*ySideLength - wallWidth/2, xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 23*xSideLength, yBorder + 7*ySideLength - wallWidth/2, xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 23*xSideLength - wallWidth/2, yBorder + 13*ySideLength - wallWidth/2, wallWidth, ySideLength + wallWidth)); //vertical
-        g2.fill(new Rectangle(xBorder + 24*xSideLength - wallWidth/2, yBorder + 19*ySideLength - wallWidth/2, wallWidth, ySideLength + wallWidth)); //vertical
-        g2.fill(new Rectangle(xBorder + 23*xSideLength - wallWidth/2, yBorder + 20*ySideLength - wallWidth/2, wallWidth, ySideLength + wallWidth)); //vertical
-        g2.fill(new Rectangle(xBorder + 23*xSideLength, yBorder + 19*ySideLength - wallWidth/2, xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 23*xSideLength, yBorder + 20*ySideLength - wallWidth/2, xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 7*xSideLength - wallWidth/2, yBorder + ySideLength - wallWidth/2, wallWidth, ySideLength + wallWidth)); //vertical
-        g2.fill(new Rectangle(xBorder + 9*xSideLength - wallWidth/2, yBorder - wallWidth/2, wallWidth, ySideLength + wallWidth)); //vertical
-        g2.fill(new Rectangle(xBorder + 6*xSideLength, yBorder + 2*ySideLength - wallWidth/2, xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 7*xSideLength, yBorder + ySideLength - wallWidth/2, 2*xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 9*xSideLength, yBorder - wallWidth/2, xSideLength + wallWidth/2, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 17*xSideLength - wallWidth/2, yBorder + ySideLength - wallWidth/2, wallWidth, ySideLength + wallWidth)); //vertical
-        g2.fill(new Rectangle(xBorder + 15*xSideLength - wallWidth/2, yBorder - wallWidth/2, wallWidth, ySideLength + wallWidth)); //vertical
-        g2.fill(new Rectangle(xBorder + 17*xSideLength - wallWidth/2, yBorder + 2*ySideLength - wallWidth/2, xSideLength + wallWidth, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 15*xSideLength - wallWidth/2, yBorder + ySideLength - wallWidth/2, 2*xSideLength + wallWidth, wallWidth)); //horizontal
-        g2.fill(new Rectangle(xBorder + 14*xSideLength - wallWidth/2, yBorder - wallWidth/2, xSideLength + wallWidth, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER - wallWidth/2, Y_BORDER + 7* Y_SIDE_LENGTH - wallWidth/2, wallWidth, Y_SIDE_LENGTH + wallWidth)); //vertical
+        g2.fill(new Rectangle(X_BORDER + X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 8* Y_SIDE_LENGTH - wallWidth/2, wallWidth, Y_SIDE_LENGTH + wallWidth)); //vertical
+        g2.fill(new Rectangle(X_BORDER, Y_BORDER + 7* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER, Y_BORDER + 8* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 16* Y_SIDE_LENGTH - wallWidth/2, wallWidth, Y_SIDE_LENGTH + wallWidth)); //vertical
+        g2.fill(new Rectangle(X_BORDER - wallWidth/2, Y_BORDER + 17* Y_SIDE_LENGTH - wallWidth/2, wallWidth, Y_SIDE_LENGTH + wallWidth)); //vertical
+        g2.fill(new Rectangle(X_BORDER + X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 18* Y_SIDE_LENGTH - wallWidth/2, wallWidth, Y_SIDE_LENGTH + wallWidth)); //vertical
+        g2.fill(new Rectangle(X_BORDER, Y_BORDER + 17* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER, Y_BORDER + 18* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 7* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 24* Y_SIDE_LENGTH - wallWidth/2, wallWidth, Y_SIDE_LENGTH + wallWidth)); //vertical
+        g2.fill(new Rectangle(X_BORDER + 8* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 24* Y_SIDE_LENGTH - wallWidth/2, wallWidth, Y_SIDE_LENGTH + wallWidth)); //vertical
+        g2.fill(new Rectangle(X_BORDER + 7* X_SIDE_LENGTH, Y_BORDER + 25* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 8* X_SIDE_LENGTH, Y_BORDER + 24* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 16* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 24* Y_SIDE_LENGTH - wallWidth/2, wallWidth, Y_SIDE_LENGTH + wallWidth)); //vertical
+        g2.fill(new Rectangle(X_BORDER + 17* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 24* Y_SIDE_LENGTH - wallWidth/2, wallWidth, Y_SIDE_LENGTH + wallWidth)); //vertical
+        g2.fill(new Rectangle(X_BORDER + 16* X_SIDE_LENGTH, Y_BORDER + 25* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 15* X_SIDE_LENGTH, Y_BORDER + 24* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 24* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 6* Y_SIDE_LENGTH - wallWidth/2, wallWidth, Y_SIDE_LENGTH + wallWidth)); //vertical
+        g2.fill(new Rectangle(X_BORDER + 23* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 7* Y_SIDE_LENGTH - wallWidth/2, wallWidth, Y_SIDE_LENGTH + wallWidth)); //vertical
+        g2.fill(new Rectangle(X_BORDER + 23* X_SIDE_LENGTH, Y_BORDER + 6* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 23* X_SIDE_LENGTH, Y_BORDER + 7* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 23* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 13* Y_SIDE_LENGTH - wallWidth/2, wallWidth, Y_SIDE_LENGTH + wallWidth)); //vertical
+        g2.fill(new Rectangle(X_BORDER + 24* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 19* Y_SIDE_LENGTH - wallWidth/2, wallWidth, Y_SIDE_LENGTH + wallWidth)); //vertical
+        g2.fill(new Rectangle(X_BORDER + 23* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 20* Y_SIDE_LENGTH - wallWidth/2, wallWidth, Y_SIDE_LENGTH + wallWidth)); //vertical
+        g2.fill(new Rectangle(X_BORDER + 23* X_SIDE_LENGTH, Y_BORDER + 19* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 23* X_SIDE_LENGTH, Y_BORDER + 20* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 7* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + Y_SIDE_LENGTH - wallWidth/2, wallWidth, Y_SIDE_LENGTH + wallWidth)); //vertical
+        g2.fill(new Rectangle(X_BORDER + 9* X_SIDE_LENGTH - wallWidth/2, Y_BORDER - wallWidth/2, wallWidth, Y_SIDE_LENGTH + wallWidth)); //vertical
+        g2.fill(new Rectangle(X_BORDER + 6* X_SIDE_LENGTH, Y_BORDER + 2* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 7* X_SIDE_LENGTH, Y_BORDER + Y_SIDE_LENGTH - wallWidth/2, 2* X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 9* X_SIDE_LENGTH, Y_BORDER - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 17* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + Y_SIDE_LENGTH - wallWidth/2, wallWidth, Y_SIDE_LENGTH + wallWidth)); //vertical
+        g2.fill(new Rectangle(X_BORDER + 15* X_SIDE_LENGTH - wallWidth/2, Y_BORDER - wallWidth/2, wallWidth, Y_SIDE_LENGTH + wallWidth)); //vertical
+        g2.fill(new Rectangle(X_BORDER + 17* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 2* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 15* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + Y_SIDE_LENGTH - wallWidth/2, 2* X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
+        g2.fill(new Rectangle(X_BORDER + 14* X_SIDE_LENGTH - wallWidth/2, Y_BORDER - wallWidth/2, X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
+
 
         g2.setColor(Color.BLACK); // set the color to black
 
         // display the names of each of the rooms on the JPanel
-        g2.drawString("Kitchen", xBorder + 2*xSideLength, (int) (yBorder + 4.5*ySideLength));
-        g2.drawString("Dining Room", (int) (xBorder + 2.5*xSideLength), (int) (yBorder + 13.5*ySideLength));
-        g2.drawString("Lounge", xBorder + 3*xSideLength, yBorder + 23*ySideLength);
-        g2.drawString("Ball Room", (int) (xBorder + 10.5*xSideLength), yBorder + 6*ySideLength);
-        g2.drawString("Hall", xBorder + 12*xSideLength, yBorder + 22*ySideLength);
-        g2.drawString("Conservatory", (int) (xBorder + 19.5*xSideLength), yBorder + 4*ySideLength);
-        g2.drawString("Billard\nRoom", (int) (xBorder + 19.5*xSideLength), (int) (yBorder + 11.5*ySideLength));
-        g2.drawString("Library", xBorder + 20*xSideLength, (int) (yBorder + 17.2*ySideLength));
-        g2.drawString("Study", xBorder + 20*xSideLength, (int) (yBorder + 23.8*ySideLength));
+        g2.drawString("Kitchen", X_BORDER + 2* X_SIDE_LENGTH, (int) (Y_BORDER + 4.5* Y_SIDE_LENGTH));
+        g2.drawString("Dining Room", (int) (X_BORDER + 2.5* X_SIDE_LENGTH), (int) (Y_BORDER + 13.5* Y_SIDE_LENGTH));
+        g2.drawString("Lounge", X_BORDER + 3* X_SIDE_LENGTH, Y_BORDER + 23* Y_SIDE_LENGTH);
+        g2.drawString("Ball Room", (int) (X_BORDER + 10.5* X_SIDE_LENGTH), Y_BORDER + 6* Y_SIDE_LENGTH);
+        g2.drawString("Hall", X_BORDER + 12* X_SIDE_LENGTH, Y_BORDER + 22* Y_SIDE_LENGTH);
+        g2.drawString("Conservatory", (int) (X_BORDER + 19.5* X_SIDE_LENGTH), Y_BORDER + 4* Y_SIDE_LENGTH);
+        g2.drawString("Billard\nRoom", (int) (X_BORDER + 19.5* X_SIDE_LENGTH), (int) (Y_BORDER + 11.5* Y_SIDE_LENGTH));
+        g2.drawString("Library", X_BORDER + 20* X_SIDE_LENGTH, (int) (Y_BORDER + 17.2* Y_SIDE_LENGTH));
+        g2.drawString("Study", X_BORDER + 20* X_SIDE_LENGTH, (int) (Y_BORDER + 23.8* Y_SIDE_LENGTH));
     }
 
     // assign a roomType for each tile
@@ -331,7 +365,7 @@ public class Board extends JComponent {
             tile[i][24].setRoomType(RoomType.STUDY);
         }
 
-        // assigning the rest of the tiles with roomType Corridor tiles (may not be corridor tiles, the null tiles are set manually)
+        // assigning the rest of the tiles with roomType Corridor tiles (may not be corridor tiles, the green tiles are set manually)
         for (int i = 0; i < 24; i++) {
             for (int j = 0; j < 25; j++) {
                 if (tile[i][j].getRoomType() == null) {
@@ -340,42 +374,28 @@ public class Board extends JComponent {
             }
         }
 
-        // assigning the null tiles as
+        // assigning the tiles that are not part of the board i.e the green as
         for (int i = 0; i < 24; i++) {
             if (i != 9 && i != 14) {
-                tile[i][0].setRoomType(null);
+                tile[i][0].setRoomType(RoomType.NO_ROOM);
             }
         }
-        tile[6][1].setRoomType(null);
-        tile[17][1].setRoomType(null);
-        tile[17][0].setRoomType(null);
-        tile[0][6].setRoomType(null);
-        tile[0][8].setRoomType(null);
-        tile[0][16].setRoomType(null);
-        tile[0][18].setRoomType(null);
-        tile[6][24].setRoomType(null);
-        tile[8][24].setRoomType(null);
-        tile[15][24].setRoomType(null);
-        tile[17][24].setRoomType(null);
-        tile[23][5].setRoomType(null);
-        tile[23][7].setRoomType(null);
-        tile[23][13].setRoomType(null);
-        tile[23][14].setRoomType(null);
-        tile[23][18].setRoomType(null);
-        tile[23][20].setRoomType(null);
-
+        tile[6][1].setRoomType(RoomType.NO_ROOM);
+        tile[17][1].setRoomType(RoomType.NO_ROOM);
+        tile[17][0].setRoomType(RoomType.NO_ROOM);
+        tile[0][6].setRoomType(RoomType.NO_ROOM);
+        tile[0][8].setRoomType(RoomType.NO_ROOM);
+        tile[0][16].setRoomType(RoomType.NO_ROOM);
+        tile[0][18].setRoomType(RoomType.NO_ROOM);
+        tile[6][24].setRoomType(RoomType.NO_ROOM);
+        tile[8][24].setRoomType(RoomType.NO_ROOM);
+        tile[15][24].setRoomType(RoomType.NO_ROOM);
+        tile[17][24].setRoomType(RoomType.NO_ROOM);
+        tile[23][5].setRoomType(RoomType.NO_ROOM);
+        tile[23][7].setRoomType(RoomType.NO_ROOM);
+        tile[23][13].setRoomType(RoomType.NO_ROOM);
+        tile[23][14].setRoomType(RoomType.NO_ROOM);
+        tile[23][18].setRoomType(RoomType.NO_ROOM);
+        tile[23][20].setRoomType(RoomType.NO_ROOM);
     }
-
-    //tester class
-    public static void main(String[] args) {
-        Board board = new Board();
-
-        JFrame frame = new JFrame();
-
-        frame.setSize(board.getXBoard(),board.getYBoard()); // set the size of the JPanel
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(board);
-        frame.setVisible(true);
-    }
-
 }
