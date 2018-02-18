@@ -10,6 +10,8 @@
 16305706 Mark Hartnett
  */
 
+import java.awt.*;
+
 public class Character extends Token{
     private CharacterNames name;
 
@@ -44,6 +46,8 @@ public class Character extends Token{
                     nextTile = board.getTile(x, y+1);
                     if (currTile.hasWallDown(nextTile)) {
                         return false; // player cant move to that tile
+                    } else if (nextTile.getDoorDirection() == Direction.DOWN) {
+
                     }
                 } else {
                     return false; // player cant move to that tile

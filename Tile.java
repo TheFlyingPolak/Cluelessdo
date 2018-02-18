@@ -51,11 +51,11 @@ public class Tile {
     }
 
     // get the coordinates of the tile methods
-    public int getxCoordinate() {
+    public int getXCoordinate() {
         return Board.X_BORDER + tileX * Board.X_SIDE_LENGTH + Board.X_SIDE_LENGTH/2;
     }
 
-    public int getyCoordinate() {
+    public int getYCoordinate() {
         return Board.Y_BORDER + tileY * Board.Y_SIDE_LENGTH + Board.Y_SIDE_LENGTH/2;
     }
 

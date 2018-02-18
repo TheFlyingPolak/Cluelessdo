@@ -102,7 +102,7 @@ public class Board extends JComponent {
                 } else { // if the tile is any other roomType
                     g2.setColor(new Color(146, 131, 105)); // set the color
                 }
-                Rectangle rect = new Rectangle(tile[x][y].getxCoordinate()-(X_SIDE_LENGTH /2), tile[x][y].getyCoordinate()-(Y_SIDE_LENGTH /2), X_SIDE_LENGTH, Y_SIDE_LENGTH); // create a rectangle with the coordinates of the tile
+                Rectangle rect = new Rectangle(tile[x][y].getXCoordinate()-(X_SIDE_LENGTH /2), tile[x][y].getYCoordinate()-(Y_SIDE_LENGTH /2), X_SIDE_LENGTH, Y_SIDE_LENGTH); // create a rectangle with the coordinates of the tile
                 g2.fill(rect); // fill that rectangle on the board with the color specified above
 
                 if (tile[x][y].getRoomType() == RoomType.CORRIDOR) { // if the room is a corridor

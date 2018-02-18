@@ -38,6 +38,10 @@ public class Token{
     public Tile getCurrentTile() {
         return currentTile;
     }
+
+    public Dimension getPosition() {
+        return new Dimension(getCurrentTile().getXCoordinate(), getCurrentTile().getYCoordinate());
+    }
 }
 
 
