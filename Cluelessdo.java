@@ -37,9 +37,18 @@ public class Cluelessdo {
         Cluelessdo game = new Cluelessdo();
 
         // Test code to show how to move a player
-        int playerIndex = 2;
+        int rachel = 1;
+        game.movePlayer(rachel, Direction.LEFT);
+
+        // Test code to show how to move 2 players into a room player
+        int monica = 2;
+        int joey = 3;
         Direction dir = Direction.UP;
-        game.movePlayer(playerIndex, dir);
+        game.movePlayer(monica, dir);
+        game.tokenPanel.playerTokens.get(monica).moveToken(game.ui.getBoard().getTile(4, 7)); // place monica at door
+        game.movePlayer(monica, dir); // move monica into room
+        game.tokenPanel.playerTokens.get(joey).moveToken(game.ui.getBoard().getTile(4, 7)); // place monica at door
+        game.movePlayer(joey, dir); // move joey into room
 
         game.tokenPanel.repaint();
 

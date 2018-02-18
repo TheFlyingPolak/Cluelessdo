@@ -15,6 +15,9 @@ public class Board extends JComponent {
         return tile[i][j];
     }
 
+    //Rooms
+    private Room[] rooms;
+
     //sideLength = length of tile side
     public static final int X_SIDE_LENGTH = 23;
     public static final int Y_SIDE_LENGTH = 23;
@@ -36,6 +39,7 @@ public class Board extends JComponent {
         initialiseTiles(); // initialise the 2D array of tiles with their coordinates
         setRoomTypes(); // set the room types, i.e. what room they're in including corridor and where there is no room.
         initialiseDoors(); // set the tiles that have doors and the direction that the door is in relation to the corridor tile beside the door
+        initialiseRooms(); // initialize the rooms and assign them to the rooms array;
     }
 
     public int getXBoard() {
@@ -44,6 +48,10 @@ public class Board extends JComponent {
 
     public int getYBoard() {
         return Y_BORDER *2 + Y_SIDE_LENGTH *25;
+    }
+
+    public Room getRoom(int roomIndex) {
+        return rooms[roomIndex];
     }
 
     //function to set the coordinates of a grid with border
@@ -55,36 +63,19 @@ public class Board extends JComponent {
         }
     }
 
-    public void initialiseDoors() {
-        tile[4][6].setDoorDirection(Direction.UP); // Kitchen door
-
-        tile[7][12].setDoorDirection(Direction.LEFT); // dining room door
-        tile[6][15].setDoorDirection(Direction.UP); // dining room door
-
-        tile[5][19].setDoorDirection(Direction.DOWN); // lounge door
-
-        tile[8][5].setDoorDirection(Direction.RIGHT); // ballroom door
-        tile[9][7].setDoorDirection(Direction.UP); // ballroom door
-        tile[14][7].setDoorDirection(Direction.UP); // ballroom door
-        tile[15][5].setDoorDirection(Direction.LEFT); // ballroom door
-
-
-        tile[11][16].setDoorDirection(Direction.UP); // Cellar Door
-        tile[12][16].setDoorDirection(Direction.UP); // Cellar Door
-        tile[13][16].setDoorDirection(Direction.UP); // Cellar Door
-
-        tile[11][18].setDoorDirection(Direction.DOWN); // Hall Door
-        tile[12][18].setDoorDirection(Direction.DOWN); // Hall Door
-
-        tile[18][4].setDoorDirection(Direction.UP); // Conservatory door
-
-        tile[18][9].setDoorDirection(Direction.RIGHT); // billard room door
-        tile[22][12].setDoorDirection(Direction.UP); // billard room door
-
-        tile[20][14].setDoorDirection(Direction.DOWN); // library door
-        tile[17][16].setDoorDirection(Direction.RIGHT); // library door
-
-        tile[17][21].setDoorDirection(Direction.DOWN); // study door
+    // initialise the rooms and assign them to the rooms array where their order is the same as the enum. The x and y parameters are the coordinates of the centre tile of the room
+    public void initialiseRooms() {
+        rooms = new Room[10];
+        rooms[0] = new Room(this, 2, 3, RoomType.KITCHEN);
+        rooms[1] = new Room(this, 4, 13, RoomType.DINING);
+        rooms[2] = new Room(this, 3, 22, RoomType.LOUNGE);
+        rooms[3] = new Room(this, 12, 4, RoomType.BALLROOM);
+        rooms[4] = new Room(this, 12, 13, RoomType.CELLAR);
+        rooms[5] = new Room(this, 11, 14, RoomType.HALL);
+        rooms[6] = new Room(this, 20, 3, RoomType.CONSERVATORY);
+        rooms[7] = new Room(this, 21, 10, RoomType.BILLARD);
+        rooms[8] = new Room(this, 21, 16, RoomType.LIBRARY);
+        rooms[9] = new Room(this, 21, 22, RoomType.STUDY);
     }
 
     public void paintComponent(Graphics g) {
@@ -121,6 +112,55 @@ public class Board extends JComponent {
 
         g2.setColor(new Color(109, 31, 36));
 
+        drawWalls(g2);
+
+        g2.setColor(Color.BLACK); // set the color to black
+
+        // display the names of each of the rooms on the JPanel
+        g2.drawString("Kitchen", X_BORDER + 2* X_SIDE_LENGTH, (int) (Y_BORDER + 4.5* Y_SIDE_LENGTH));
+        g2.drawString("Dining Room", (int) (X_BORDER + 2.5* X_SIDE_LENGTH), (int) (Y_BORDER + 13.5* Y_SIDE_LENGTH));
+        g2.drawString("Lounge", X_BORDER + 3* X_SIDE_LENGTH, Y_BORDER + 23* Y_SIDE_LENGTH);
+        g2.drawString("Ball Room", (int) (X_BORDER + 10.5* X_SIDE_LENGTH), Y_BORDER + 6* Y_SIDE_LENGTH);
+        g2.drawString("Hall", X_BORDER + 12* X_SIDE_LENGTH, Y_BORDER + 22* Y_SIDE_LENGTH);
+        g2.drawString("Conservatory", (int) (X_BORDER + 19.5* X_SIDE_LENGTH), Y_BORDER + 4* Y_SIDE_LENGTH);
+        g2.drawString("Billard\nRoom", (int) (X_BORDER + 19.5* X_SIDE_LENGTH), (int) (Y_BORDER + 11.5* Y_SIDE_LENGTH));
+        g2.drawString("Library", X_BORDER + 20* X_SIDE_LENGTH, (int) (Y_BORDER + 17.2* Y_SIDE_LENGTH));
+        g2.drawString("Study", X_BORDER + 20* X_SIDE_LENGTH, (int) (Y_BORDER + 23.8* Y_SIDE_LENGTH));
+    }
+
+    public void initialiseDoors() {
+        tile[4][6].setDoorDirection(Direction.UP); // Kitchen door
+
+        tile[7][12].setDoorDirection(Direction.LEFT); // dining room door
+        tile[6][15].setDoorDirection(Direction.UP); // dining room door
+
+        tile[5][19].setDoorDirection(Direction.DOWN); // lounge door
+
+        tile[8][5].setDoorDirection(Direction.RIGHT); // ballroom door
+        tile[9][7].setDoorDirection(Direction.UP); // ballroom door
+        tile[14][7].setDoorDirection(Direction.UP); // ballroom door
+        tile[15][5].setDoorDirection(Direction.LEFT); // ballroom door
+
+
+        tile[11][16].setDoorDirection(Direction.UP); // Cellar Door
+        tile[12][16].setDoorDirection(Direction.UP); // Cellar Door
+        tile[13][16].setDoorDirection(Direction.UP); // Cellar Door
+
+        tile[11][18].setDoorDirection(Direction.DOWN); // Hall Door
+        tile[12][18].setDoorDirection(Direction.DOWN); // Hall Door
+
+        tile[18][4].setDoorDirection(Direction.UP); // Conservatory door
+
+        tile[18][9].setDoorDirection(Direction.RIGHT); // billard room door
+        tile[22][12].setDoorDirection(Direction.UP); // billard room door
+
+        tile[20][14].setDoorDirection(Direction.DOWN); // library door
+        tile[17][16].setDoorDirection(Direction.RIGHT); // library door
+
+        tile[17][21].setDoorDirection(Direction.DOWN); // study door
+    }
+
+    private void drawWalls(Graphics2D g2) {
         // filling the walls for the kitchen
         g2.fill(new Rectangle(X_BORDER + 6* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + Y_SIDE_LENGTH - wallWidth/2, wallWidth, 6* Y_SIDE_LENGTH + wallWidth)); //vertical
         g2.fill(new Rectangle(X_BORDER - wallWidth/2, Y_BORDER + Y_SIDE_LENGTH - wallWidth/2, wallWidth, 5* Y_SIDE_LENGTH + wallWidth)); // vertical
@@ -258,18 +298,6 @@ public class Board extends JComponent {
         g2.fill(new Rectangle(X_BORDER + 14* X_SIDE_LENGTH - wallWidth/2, Y_BORDER - wallWidth/2, X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
 
 
-        g2.setColor(Color.BLACK); // set the color to black
-
-        // display the names of each of the rooms on the JPanel
-        g2.drawString("Kitchen", X_BORDER + 2* X_SIDE_LENGTH, (int) (Y_BORDER + 4.5* Y_SIDE_LENGTH));
-        g2.drawString("Dining Room", (int) (X_BORDER + 2.5* X_SIDE_LENGTH), (int) (Y_BORDER + 13.5* Y_SIDE_LENGTH));
-        g2.drawString("Lounge", X_BORDER + 3* X_SIDE_LENGTH, Y_BORDER + 23* Y_SIDE_LENGTH);
-        g2.drawString("Ball Room", (int) (X_BORDER + 10.5* X_SIDE_LENGTH), Y_BORDER + 6* Y_SIDE_LENGTH);
-        g2.drawString("Hall", X_BORDER + 12* X_SIDE_LENGTH, Y_BORDER + 22* Y_SIDE_LENGTH);
-        g2.drawString("Conservatory", (int) (X_BORDER + 19.5* X_SIDE_LENGTH), Y_BORDER + 4* Y_SIDE_LENGTH);
-        g2.drawString("Billard\nRoom", (int) (X_BORDER + 19.5* X_SIDE_LENGTH), (int) (Y_BORDER + 11.5* Y_SIDE_LENGTH));
-        g2.drawString("Library", X_BORDER + 20* X_SIDE_LENGTH, (int) (Y_BORDER + 17.2* Y_SIDE_LENGTH));
-        g2.drawString("Study", X_BORDER + 20* X_SIDE_LENGTH, (int) (Y_BORDER + 23.8* Y_SIDE_LENGTH));
     }
 
     // assign a roomType for each tile

@@ -35,6 +35,8 @@ public class Character extends Token{
                     nextTile = board.getTile(x, y-1); // tile player wants to move to
                     if (!currTile.hasWallUp(nextTile)) {
                         return false; // player cant move to that tile
+                    } else if (nextTile.getDoorDirection() == Direction.UP) {
+                        nextTile = board.getRoom(nextTile.getRoomType().ordinal()).addToken();
                     }
                 } else {
                     return false; // player cant move to that tile
@@ -47,7 +49,7 @@ public class Character extends Token{
                     if (currTile.hasWallDown(nextTile)) {
                         return false; // player cant move to that tile
                     } else if (nextTile.getDoorDirection() == Direction.DOWN) {
-
+                        nextTile = board.getRoom(currTile.getRoomType().ordinal()).addToken();
                     }
                 } else {
                     return false; // player cant move to that tile
