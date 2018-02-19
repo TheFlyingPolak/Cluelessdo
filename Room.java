@@ -10,8 +10,9 @@ public class Room {
     private int tokenNum; // number of tokens in the room
     private RoomType roomType;
     private Tile[] tokenPositions;
+    private Tile[] doorEntrances;
 
-    Room(Board board, int x, int y, RoomType roomType) {
+    Room(Board board, int x, int y, RoomType roomType, Tile[] doors) {
         tokenNum = 0;
         this.roomType = roomType;
         tokenPositions = new Tile[12]; // Tiles where the tokens are placed in the room so that the tokens are positioned in the centre of the room
@@ -29,6 +30,8 @@ public class Room {
         tokenPositions[9] = board.getTile(x+2, y-1);
         tokenPositions[10] = board.getTile(x+2, y);
         tokenPositions[11] = board.getTile(x+2, y+1);
+
+        this.doorEntrances = doors;
     }
 
     // get the room index for the rooms array in the board
@@ -38,6 +41,14 @@ public class Room {
 
     public Tile addToken() {
         return tokenPositions[tokenNum++];
+    }
+
+    public int getNumDoors() {
+        return doorEntrances.length;
+    }
+
+    public Tile getDoor(int doorEntranceNum) {
+        return doorEntrances[doorEntranceNum];
     }
 
     public boolean removeToken() {

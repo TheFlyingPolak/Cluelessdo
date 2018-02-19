@@ -10,8 +10,6 @@
 16305706 Mark Hartnett
  */
 
-import java.awt.*;
-
 public class Character extends Token{
     private CharacterNames name;
 
@@ -83,7 +81,7 @@ public class Character extends Token{
             super.moveToken(nextTile);
             return true; // move successful
         } else {
-            return false; // nexttile has not been set due t
+            return false; // nextTile has not been set due t
         }
     }
 

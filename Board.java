@@ -66,16 +66,16 @@ public class Board extends JComponent {
     // initialise the rooms and assign them to the rooms array where their order is the same as the enum. The x and y parameters are the coordinates of the centre tile of the room
     public void initialiseRooms() {
         rooms = new Room[10];
-        rooms[0] = new Room(this, 2, 3, RoomType.KITCHEN);
-        rooms[1] = new Room(this, 4, 13, RoomType.DINING);
-        rooms[2] = new Room(this, 3, 22, RoomType.LOUNGE);
-        rooms[3] = new Room(this, 12, 4, RoomType.BALLROOM);
-        rooms[4] = new Room(this, 12, 13, RoomType.CELLAR);
-        rooms[5] = new Room(this, 11, 14, RoomType.HALL);
-        rooms[6] = new Room(this, 20, 3, RoomType.CONSERVATORY);
-        rooms[7] = new Room(this, 21, 10, RoomType.BILLARD);
-        rooms[8] = new Room(this, 21, 16, RoomType.LIBRARY);
-        rooms[9] = new Room(this, 21, 22, RoomType.STUDY);
+        rooms[0] = new Room(this, 2, 3, RoomType.KITCHEN, new Tile[] {tile[4][7]});
+        rooms[1] = new Room(this, 4, 13, RoomType.DINING, new Tile[] {tile[8][12], tile[6][16]});
+        rooms[2] = new Room(this, 3, 22, RoomType.LOUNGE, new Tile[] {tile[5][18]});
+        rooms[3] = new Room(this, 12, 4, RoomType.BALLROOM, new Tile[] {tile[7][5], tile[9][8], tile[14][8], tile[16][5]});
+        rooms[4] = new Room(this, 12, 13, RoomType.CELLAR, new Tile[] {tile[11][17], tile[12][17], tile[13][17]});
+        rooms[5] = new Room(this, 11, 14, RoomType.HALL, new Tile[] {tile[11][17], tile[12][17], tile[15][20]});
+        rooms[6] = new Room(this, 20, 3, RoomType.CONSERVATORY, new Tile[] {tile[8][12]});
+        rooms[7] = new Room(this, 21, 10, RoomType.BILLARD, new Tile[] {tile[18][5], tile[17][9]});
+        rooms[8] = new Room(this, 21, 16, RoomType.LIBRARY, new Tile[] {tile[20][13], tile[16][16]});
+        rooms[9] = new Room(this, 21, 22, RoomType.STUDY, new Tile[] {tile[17][20]});
     }
 
     public void paintComponent(Graphics g) {

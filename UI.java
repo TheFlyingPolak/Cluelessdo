@@ -17,7 +17,7 @@ public class UI extends JFrame {
 
     // UI constructor
     UI() throws IOException {
-        super("UI"); // constructor of super class, parameter is the title of the frame
+        super("Cluelessdo"); // constructor of super class, parameter is the title of the frame
 
         boardPanel = new JPanel(new BorderLayout());  // Panel which contains the JLayeredPane
         layers = new JLayeredPane();    // Layered container for board and token drawing panel

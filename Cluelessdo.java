@@ -23,8 +23,8 @@ public class Cluelessdo {
         @return returns false if move is illegal, true if move has been made successfully
      */
     public boolean movePlayer(int playerIndex, Direction dir) {
-        if (!tokenPanel.playerTokens.get(playerIndex).moveToken(dir, ui.getBoard())) { // move the player and check if not successful
-            String playerName = tokenPanel.playerTokens.get(playerIndex).getName().toString(); // get the players name
+        if (!tokenPanel.getPlayerTokens().get(playerIndex).moveToken(dir, ui.getBoard())) { // move the player and check if not successful
+            String playerName = tokenPanel.getPlayerTokens().get(playerIndex).getName().toString(); // get the players name
             playerName = playerName.substring(0, 1) + playerName.substring(1).toLowerCase(); // capitalise the first letter and set the rest to lower case
             String errorMessage = playerName + " cannot move " + dir.toString().toLowerCase(); // make error message
             ui.getInfo().append(errorMessage); // add error message to info panel
@@ -45,10 +45,13 @@ public class Cluelessdo {
         int joey = 3;
         Direction dir = Direction.UP;
         game.movePlayer(monica, dir);
-        game.tokenPanel.playerTokens.get(monica).moveToken(game.ui.getBoard().getTile(4, 7)); // place monica at door
+        game.tokenPanel.getPlayerTokens().get(monica).moveToken(game.ui.getBoard().getTile(4, 7)); // place monica at door
         game.movePlayer(monica, dir); // move monica into room
-        game.tokenPanel.playerTokens.get(joey).moveToken(game.ui.getBoard().getTile(4, 7)); // place monica at door
+        game.tokenPanel.getPlayerTokens().get(joey).moveToken(game.ui.getBoard().getTile(4, 7)); // place monica at door
         game.movePlayer(joey, dir); // move joey into room
+
+        //SHowing code to move player out of room
+        game.tokenPanel.getPlayerToken(monica).moveToken(game.ui.getBoard().getRoom(RoomType.KITCHEN.ordinal()).getDoor(0));
 
         game.tokenPanel.repaint();
 

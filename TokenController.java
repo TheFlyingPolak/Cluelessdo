@@ -21,8 +21,8 @@ import java.util.ArrayList;
 
 public class TokenController extends JPanel {
     /** ArrayLists used to store Character and Weapon objects */
-    public ArrayList<Character> playerTokens;
-    public ArrayList<Weapon> weaponTokens;
+    private ArrayList<Character> playerTokens;
+    private ArrayList<Weapon> weaponTokens;
 
     /** BufferedImage objects used to store images of weapons in the game */
     private BufferedImage pistol, wrench, pipe, rope, dagger, candlestick,
@@ -56,6 +56,14 @@ public class TokenController extends JPanel {
         addPlayerToken(new Character(board.getTile(7, 24), CharacterNames.SCARLET));
 
         readImages();
+    }
+
+    public ArrayList<Character> getPlayerTokens() {
+        return playerTokens;
+    }
+
+    public ArrayList<Weapon> getWeaponTokens() {
+        return weaponTokens;
     }
 
     /**
