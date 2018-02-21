@@ -11,6 +11,7 @@ public class Room {
     private RoomType roomType;
     private Tile[] tokenPositions;
     private Tile[] doorEntrances;
+    private Room secretPassage;
 
     Room(Board board, int x, int y, RoomType roomType, Tile[] doors) {
         tokenNum = 0;
@@ -32,6 +33,15 @@ public class Room {
         tokenPositions[11] = board.getTile(x+2, y+1);
 
         this.doorEntrances = doors;
+        secretPassage = null;
+    }
+
+    public RoomType getRoomType() {
+        return roomType;
+    }
+
+    public void setSecretPassage(Room secretPassage) {
+        this.secretPassage = secretPassage;
     }
 
     // get the room index for the rooms array in the board

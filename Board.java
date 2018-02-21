@@ -76,6 +76,11 @@ public class Board extends JComponent {
         rooms[7] = new Room(this, 21, 10, RoomType.BILLARD, new Tile[] {tile[18][5], tile[17][9]});
         rooms[8] = new Room(this, 21, 16, RoomType.LIBRARY, new Tile[] {tile[20][13], tile[16][16]});
         rooms[9] = new Room(this, 21, 22, RoomType.STUDY, new Tile[] {tile[17][20]});
+
+        rooms[RoomType.KITCHEN.ordinal()].setSecretPassage(rooms[RoomType.STUDY.ordinal()]);
+        rooms[RoomType.STUDY.ordinal()].setSecretPassage(rooms[RoomType.KITCHEN.ordinal()]);
+        rooms[RoomType.LOUNGE.ordinal()].setSecretPassage(rooms[RoomType.CONSERVATORY.ordinal()]);
+        rooms[RoomType.CONSERVATORY.ordinal()].setSecretPassage(rooms[RoomType.LOUNGE.ordinal()]);
     }
 
     public void paintComponent(Graphics g) {
