@@ -305,130 +305,40 @@ public class Board extends JComponent {
 
     }
 
-    // assign a roomType for each tile
     public void setRoomTypes() {
-        // assigning the kitchen tiles with their type
-        for (int i = 0; i < 6; i++) {
-            for (int j = 1; j < 6; j++) {
-                tile[i][j].setRoomType(RoomType.KITCHEN);
-            }
-        }
-        for (int i = 1; i < 6; i++) {
-            tile[i][6].setRoomType(RoomType.KITCHEN);
-        }
+        // 2-D array of the roomtypes for each tile corresponding to the tiles 2-D array
+        RoomType[][] roomTypes = {
+            {RoomType.NO_ROOM, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.NO_ROOM, RoomType.CORRIDOR, RoomType.NO_ROOM, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.NO_ROOM, RoomType.CORRIDOR, RoomType.NO_ROOM, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE},
+            {RoomType.NO_ROOM, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE},
+            {RoomType.NO_ROOM, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE},
+            {RoomType.NO_ROOM, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE},
+            {RoomType.NO_ROOM, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE},
+            {RoomType.NO_ROOM, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.KITCHEN, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE},
+            {RoomType.NO_ROOM, RoomType.NO_ROOM, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.LOUNGE, RoomType.NO_ROOM},
+            {RoomType.NO_ROOM, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.DINING, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR},
+            {RoomType.NO_ROOM, RoomType.CORRIDOR, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.NO_ROOM},
+            {RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.HALL, RoomType.HALL, RoomType.HALL, RoomType.HALL, RoomType.HALL, RoomType.HALL, RoomType.HALL},
+            {RoomType.NO_ROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CORRIDOR, RoomType.HALL, RoomType.HALL, RoomType.HALL, RoomType.HALL, RoomType.HALL, RoomType.HALL, RoomType.HALL},
+            {RoomType.NO_ROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CORRIDOR, RoomType.HALL, RoomType.HALL, RoomType.HALL, RoomType.HALL, RoomType.HALL, RoomType.HALL, RoomType.HALL},
+            {RoomType.NO_ROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CORRIDOR, RoomType.HALL, RoomType.HALL, RoomType.HALL, RoomType.HALL, RoomType.HALL, RoomType.HALL, RoomType.HALL},
+            {RoomType.NO_ROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CORRIDOR, RoomType.HALL, RoomType.HALL, RoomType.HALL, RoomType.HALL, RoomType.HALL, RoomType.HALL, RoomType.HALL},
+            {RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CELLAR, RoomType.CORRIDOR, RoomType.HALL, RoomType.HALL, RoomType.HALL, RoomType.HALL, RoomType.HALL, RoomType.HALL, RoomType.HALL},
+            {RoomType.NO_ROOM, RoomType.CORRIDOR, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.BALLROOM, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.NO_ROOM},
+            {RoomType.NO_ROOM, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR},
+            {RoomType.NO_ROOM, RoomType.NO_ROOM, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.LIBRARY, RoomType.LIBRARY, RoomType.LIBRARY, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.STUDY, RoomType.STUDY, RoomType.STUDY, RoomType.NO_ROOM},
+            {RoomType.NO_ROOM, RoomType.CONSERVATORY, RoomType.CONSERVATORY, RoomType.CONSERVATORY, RoomType.CONSERVATORY, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.BILLARD, RoomType.BILLARD, RoomType.BILLARD, RoomType.BILLARD, RoomType.BILLARD, RoomType.CORRIDOR, RoomType.LIBRARY, RoomType.LIBRARY, RoomType.LIBRARY, RoomType.LIBRARY, RoomType.LIBRARY, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.STUDY, RoomType.STUDY, RoomType.STUDY, RoomType.STUDY},
+            {RoomType.NO_ROOM, RoomType.CONSERVATORY, RoomType.CONSERVATORY, RoomType.CONSERVATORY, RoomType.CONSERVATORY, RoomType.CONSERVATORY, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.BILLARD, RoomType.BILLARD, RoomType.BILLARD, RoomType.BILLARD, RoomType.BILLARD, RoomType.CORRIDOR, RoomType.LIBRARY, RoomType.LIBRARY, RoomType.LIBRARY, RoomType.LIBRARY, RoomType.LIBRARY, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.STUDY, RoomType.STUDY, RoomType.STUDY, RoomType.STUDY},
+            {RoomType.NO_ROOM, RoomType.CONSERVATORY, RoomType.CONSERVATORY, RoomType.CONSERVATORY, RoomType.CONSERVATORY, RoomType.CONSERVATORY, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.BILLARD, RoomType.BILLARD, RoomType.BILLARD, RoomType.BILLARD, RoomType.BILLARD, RoomType.CORRIDOR, RoomType.LIBRARY, RoomType.LIBRARY, RoomType.LIBRARY, RoomType.LIBRARY, RoomType.LIBRARY, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.STUDY, RoomType.STUDY, RoomType.STUDY, RoomType.STUDY},
+            {RoomType.NO_ROOM, RoomType.CONSERVATORY, RoomType.CONSERVATORY, RoomType.CONSERVATORY, RoomType.CONSERVATORY, RoomType.CONSERVATORY, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.BILLARD, RoomType.BILLARD, RoomType.BILLARD, RoomType.BILLARD, RoomType.BILLARD, RoomType.CORRIDOR, RoomType.LIBRARY, RoomType.LIBRARY, RoomType.LIBRARY, RoomType.LIBRARY, RoomType.LIBRARY, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.STUDY, RoomType.STUDY, RoomType.STUDY, RoomType.STUDY},
+            {RoomType.NO_ROOM, RoomType.CONSERVATORY, RoomType.CONSERVATORY, RoomType.CONSERVATORY, RoomType.CONSERVATORY, RoomType.CONSERVATORY, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.BILLARD, RoomType.BILLARD, RoomType.BILLARD, RoomType.BILLARD, RoomType.BILLARD, RoomType.CORRIDOR, RoomType.LIBRARY, RoomType.LIBRARY, RoomType.LIBRARY, RoomType.LIBRARY, RoomType.LIBRARY, RoomType.CORRIDOR, RoomType.CORRIDOR, RoomType.STUDY, RoomType.STUDY, RoomType.STUDY, RoomType.STUDY},
+            {RoomType.NO_ROOM, RoomType.CONSERVATORY, RoomType.CONSERVATORY, RoomType.CONSERVATORY, RoomType.CONSERVATORY, RoomType.NO_ROOM, RoomType.CORRIDOR, RoomType.NO_ROOM, RoomType.BILLARD, RoomType.BILLARD, RoomType.BILLARD, RoomType.BILLARD, RoomType.BILLARD, RoomType.NO_ROOM, RoomType.NO_ROOM, RoomType.LIBRARY, RoomType.LIBRARY, RoomType.LIBRARY, RoomType.NO_ROOM, RoomType.CORRIDOR, RoomType.NO_ROOM, RoomType.STUDY, RoomType.STUDY, RoomType.STUDY, RoomType.STUDY},
+        };
 
-        // assigning the Dining room tiles with their type
-        for (int i = 0; i < 5; i++) {
-            tile[i][9].setRoomType(RoomType.DINING);
-        }
-        for (int i = 0; i < 8; i++) {
-            for (int j = 10; j < 16; j++) {
-                tile[i][j].setRoomType(RoomType.DINING);
-            }
-        }
-
-        // assigning the Lounge tiles with their type
-        for (int i = 0; i < 7; i++) {
-            for (int j = 19; j < 25; j++) {
-                tile[i][j].setRoomType(RoomType.LOUNGE);
-            }
-        }
-        for (int i = 0; i < 6; i++) {
-            tile[i][24].setRoomType(RoomType.LOUNGE);
-        }
-
-        // assigning the Ball room tiles with their type
-        for (int i = 10; i < 14; i++) {
-            tile[i][1].setRoomType(RoomType.BALLROOM);
-        }
-        for (int i = 8; i < 16; i++) {
-            for (int j = 2; j < 8; j++) {
-                tile[i][j].setRoomType(RoomType.BALLROOM);
-            }
-        }
-
-        // assigning the Cellar tiles with their type
-        for (int i = 10; i < 15; i++) {
-            for (int j = 10; j < 17; j++) {
-                tile[i][j].setRoomType(RoomType.CELLAR);
-            }
-        }
-
-        // assigning the Hall tiles with their type
-        for (int i = 9; i < 15; i++) {
-            for (int j = 18; j < 25; j++) {
-                tile[i][j].setRoomType(RoomType.HALL);
-            }
-        }
-
-        // assigning the Conservatory tiles with their type
-        for (int i = 18; i < 24; i++) {
-            for (int j = 1; j < 5; j++) {
-                tile[i][j].setRoomType(RoomType.CONSERVATORY);
-            }
-        }
-        for (int i = 19; i < 24; i++) {
-            tile[i][5].setRoomType(RoomType.CONSERVATORY);
-        }
-
-        // assigning the Billard tiles with their type
-        for (int i = 18; i < 24; i++) {
-            for (int j = 8; j < 13; j++) {
-                tile[i][j].setRoomType(RoomType.BILLARD);
-            }
-        }
-
-        // assigning the Library tiles with their type
-        for (int i = 18; i < 24; i++) {
-            for (int j = 14; j < 19; j++) {
-                tile[i][j].setRoomType(RoomType.LIBRARY);
-            }
-        }
-        for (int j = 15; j < 18; j++) {
-            tile[17][j].setRoomType(RoomType.LIBRARY);
-        }
-
-        // assigning the Study tiles with their type
-        for (int i = 17; i < 24; i++) {
-            for (int j = 21; j < 24; j++) {
-                tile[i][j].setRoomType(RoomType.STUDY);
-            }
-        }
-        for (int i = 18; i < 24; i++) {
-            tile[i][24].setRoomType(RoomType.STUDY);
-        }
-
-        // assigning the rest of the tiles with roomType Corridor tiles (may not be corridor tiles, the green tiles are set manually)
+        // loop through 2-D board array setting the roomType for each tile
         for (int i = 0; i < 24; i++) {
             for (int j = 0; j < 25; j++) {
-                if (tile[i][j].getRoomType() == null) {
-                    tile[i][j].setRoomType(RoomType.CORRIDOR);
-                }
+                tile[i][j].setRoomType(roomTypes[i][j]);
             }
         }
-
-        // assigning the tiles that are not part of the board i.e the green as
-        for (int i = 0; i < 24; i++) {
-            if (i != 9 && i != 14) {
-                tile[i][0].setRoomType(RoomType.NO_ROOM);
-            }
-        }
-        tile[6][1].setRoomType(RoomType.NO_ROOM);
-        tile[17][1].setRoomType(RoomType.NO_ROOM);
-        tile[17][0].setRoomType(RoomType.NO_ROOM);
-        tile[0][6].setRoomType(RoomType.NO_ROOM);
-        tile[0][8].setRoomType(RoomType.NO_ROOM);
-        tile[0][16].setRoomType(RoomType.NO_ROOM);
-        tile[0][18].setRoomType(RoomType.NO_ROOM);
-        tile[6][24].setRoomType(RoomType.NO_ROOM);
-        tile[8][24].setRoomType(RoomType.NO_ROOM);
-        tile[15][24].setRoomType(RoomType.NO_ROOM);
-        tile[17][24].setRoomType(RoomType.NO_ROOM);
-        tile[23][5].setRoomType(RoomType.NO_ROOM);
-        tile[23][7].setRoomType(RoomType.NO_ROOM);
-        tile[23][13].setRoomType(RoomType.NO_ROOM);
-        tile[23][14].setRoomType(RoomType.NO_ROOM);
-        tile[23][18].setRoomType(RoomType.NO_ROOM);
-        tile[23][20].setRoomType(RoomType.NO_ROOM);
     }
 }
