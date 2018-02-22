@@ -46,7 +46,7 @@ public class Character extends Token{
                     nextTile = board.getTile(x, y+1);
                     if (currTile.hasWallUp(nextTile) || nextTile.isOccupied()) {
                         return false; // player cant move to that tile
-                    } else if (nextTile.getDoorDirection() == Direction.UP) {
+                    } else if (nextTile.getDoorDirection() == Direction.DOWN) {
                         nextTile = board.getRoom(nextTile.getRoomType().ordinal()).addToken();
                     }
                 } else {
@@ -59,7 +59,7 @@ public class Character extends Token{
                     nextTile = board.getTile(x-1, y);
                     if (currTile.hasWallUp(nextTile) || nextTile.isOccupied()) {
                         return false; // player cant move to that tile
-                    } else if (nextTile.getDoorDirection() == Direction.UP) {
+                    } else if (nextTile.getDoorDirection() == Direction.LEFT) {
                         nextTile = board.getRoom(nextTile.getRoomType().ordinal()).addToken();
                     }
                 } else {
@@ -72,7 +72,7 @@ public class Character extends Token{
                     nextTile = board.getTile(x + 1, y);
                     if (currTile.hasWallUp(nextTile) || nextTile.isOccupied()) {
                         return false; // player cant move to that tile
-                    } else if (nextTile.getDoorDirection() == Direction.UP) {
+                    } else if (nextTile.getDoorDirection() == Direction.RIGHT) {
                         nextTile = board.getRoom(nextTile.getRoomType().ordinal()).addToken();
                     }
                 } else {
@@ -87,6 +87,14 @@ public class Character extends Token{
         } else {
             return false; // nextTile has not been set due t
         }
+    }
+
+    public boolean moveOutOfRoom(Tile nextTile) {
+        if (nextTile.isOccupied()) {
+            return false;
+        }
+        super.moveToken(nextTile);
+        return true;
     }
 
     public CharacterNames getName(){

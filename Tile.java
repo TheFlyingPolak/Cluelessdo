@@ -65,22 +65,22 @@ public class Tile {
 
     // function to check whether there's a wall below the tile
     boolean hasWallDown(Tile sideTile) {
-        return ((tileY != 25-1 && !getRoomType().equals(sideTile.getRoomType())) || (tileY == 25-1 && !roomType.equals(RoomType.NO_ROOM))) && doorDirection == null;
+        return ((tileY != 25-1 && !getRoomType().equals(sideTile.getRoomType())) || (tileY == 25-1 && !roomType.equals(RoomType.NO_ROOM))) && sideTile.getDoorDirection() == null;
     }
 
     // function to check whether there's a wall above the tile
     boolean hasWallUp(Tile sideTile) {
-        return ((!getRoomType().equals(sideTile.getRoomType())) || (tileY == 0 && (tileX == 9 || tileX == 14))) && doorDirection == null;
+        return ((!getRoomType().equals(sideTile.getRoomType())) || (tileY == 0 && (tileX == 9 || tileX == 14))) && sideTile.getDoorDirection() == null;
     }
 
     // function to check whether there's a wall to the left of tile
     boolean hasWallLeft(Tile sideTile) {
-        return ((tileX != 0 && !getRoomType().equals(sideTile.getRoomType())) || (tileX == 0 && !roomType.equals(RoomType.NO_ROOM))) && doorDirection == null;
+        return ((tileX != 0 && !getRoomType().equals(sideTile.getRoomType())) || (tileX == 0 && !roomType.equals(RoomType.NO_ROOM))) && sideTile.getDoorDirection() == null;
     }
 
     // function to check whether there's a wall to the right of the tile
     boolean hasWallRight(Tile sideTile) {
-        return ((tileX != 24-1 && !getRoomType().equals(sideTile.getRoomType())) || (tileX == 24-1 && !roomType.equals(RoomType.NO_ROOM))) && doorDirection == null;
+        return ((tileX != 24-1 && !getRoomType().equals(sideTile.getRoomType())) || (tileX == 24-1 && !roomType.equals(RoomType.NO_ROOM))) && sideTile.getDoorDirection() == null;
     }
 
     public void setOccupied(boolean occupied) {
