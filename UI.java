@@ -23,7 +23,7 @@ public class UI extends JFrame {
         layers = new JLayeredPane();    // Layered container for board and token drawing panel
         board = new Board(); // board component
         info = new InfoPanel(); // info panel
-        cmd = new CmdPanel(info); // command pannel
+        cmd = new CmdPanel(); // command pannel
 
         info.setPreferredSize(new Dimension(400, board.getYBoard())); // set the preferred size of the info panel
 

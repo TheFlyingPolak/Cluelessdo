@@ -27,14 +27,20 @@ public class Cluelessdo {
             String playerName = tokenPanel.getPlayerTokens().get(playerIndex).getName().toString(); // get the players name
             playerName = playerName.substring(0, 1) + playerName.substring(1).toLowerCase(); // capitalise the first letter and set the rest to lower case
             String errorMessage = playerName + " cannot move " + dir.toString().toLowerCase(); // make error message
-            ui.getInfo().append(errorMessage); // add error message to info panel
+            ui.getInfo().addText(errorMessage); // add error message to info panel
             return false; // move not successful
         }
         return true; // move successful
     }
 
+    /*public void initializePlayers(){
+        ui.getInfo().addText("Please enter your name");
+
+    }*/
+
     public static void main(String[] args) throws IOException {
         Cluelessdo game = new Cluelessdo();
+
 
         // Test code to show how to move a player
         int rachel = 1;
@@ -50,8 +56,10 @@ public class Cluelessdo {
         game.tokenPanel.getPlayerTokens().get(joey).moveToken(game.ui.getBoard().getTile(4, 7)); // place monica at door
         game.movePlayer(joey, dir); // move joey into room
 
-        //SHowing code to move player out of room
+        //Showing code to move player out of room
         game.tokenPanel.getPlayerToken(monica).moveToken(game.ui.getBoard().getRoom(RoomType.KITCHEN.ordinal()).getDoor(0));
+
+        //game.initializePlayers();
 
         game.tokenPanel.repaint();
 

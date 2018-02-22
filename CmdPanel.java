@@ -1,36 +1,47 @@
-import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.util.*;
 import java.awt.event.ActionListener;
+import javax.swing.*;
+import java.awt.*;
 
-/*
-16310943 James Byrne
-16314761 Jakub Gajewski
-16305706 Mark Hartnett
- */
+public class CmdPanel extends JPanel  {
 
-// allows user to input commands to the game
-public class CmdPanel extends JPanel{
-    private JTextField inputText; // JTextField for users to type text
-    private InfoPanel info; // reference to the InfoPanel
+    private static final long serialVersionUID = 1L;
+    private static final int FONT_SIZE = 14;
 
-    // Constructor
-    CmdPanel(InfoPanel infoPanel) {
-        inputText = new JTextField(); // create JTextField Object
-        inputText.setColumns(55); // set the columns for the inputText object
-        inputText.addActionListener(new Listener()); // add listner to inputText object
+    private final JTextField commandField = new JTextField();
+    private final LinkedList<String> commandBuffer = new LinkedList<>();
 
-        info = infoPanel; // assign infoPanel to info
-
-        add(inputText); // add inputText object to the class
-    }
-
-    // Listener
-    private class Listener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            String content = inputText.getText(); // assign text from inputText JTextField to a string
-            info.append(content + "\n"); // add contents of inputText to infoPanel
-            inputText.setText(""); // clear the text
-            info.getText().select(Integer.MAX_VALUE, 0); // scroll vertical scrollbar to the bottom (so you can see current activity
+    CmdPanel() {
+        class AddActionListener implements ActionListener {
+            public void actionPerformed(ActionEvent event)	{
+                synchronized (commandBuffer) {
+                    commandBuffer.add(commandField.getText());
+                    commandField.setText("");
+                    commandBuffer.notify();
+                }
+            }
         }
+        ActionListener listener = new AddActionListener();
+        commandField.addActionListener(listener);
+        commandField.setFont(new Font("Times New Roman", Font.PLAIN, FONT_SIZE));
+        setLayout(new BorderLayout());
+        add(commandField, BorderLayout.CENTER);
     }
+
+    public String getCommand() {
+        String command;
+        synchronized(commandBuffer) {
+            while (commandBuffer.isEmpty()) {
+                try {
+                    commandBuffer.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            command = commandBuffer.pop();
+        }
+        return command;
+    }
+
 }
