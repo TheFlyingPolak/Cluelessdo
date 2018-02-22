@@ -1,15 +1,16 @@
 /*
+ * 16310943 James Byrne
+ * 16314763 Jakub Gajewski
+ * 16305706 Mark Hartnett
+ *
  * Class used to create a circularly linked list of human players
  * playing the game
  */
 public class CircularlyLinkedList {
 
     private static class Node{
-        //element of the position in the linked list
-        private Player player;
-
-        //reference to next node in the list
-        private Node next;
+        private Player player;  //element of the position in the linked list
+        private Node next;      //reference to next node in the list
 
         //creates a given element before a certain node
         public Node(Player p, Node n){
@@ -43,6 +44,7 @@ public class CircularlyLinkedList {
 
     //constructs a circularly linked list
     public CircularlyLinkedList(){
+
     }
 
     //function returns the size of the circularly linked list

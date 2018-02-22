@@ -1,7 +1,11 @@
 /*
-*   The Player class is the class that contains the information of the
-*   person playing the game.
-*/
+ * 16310943 James Byrne
+ * 16314763 Jakub Gajewski
+ * 16305706 Mark Hartnett
+ *
+ * The Player class is the class that contains the information of the
+ * person playing the game.
+ */
 public class Player {
     //name of the human playing the game
     private String playerName;

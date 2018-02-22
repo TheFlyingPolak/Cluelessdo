@@ -31,7 +31,7 @@ public class UI extends JFrame {
         boardPanel.add(layers);
         board.setBounds(0, 0, board.getXBoard(), board.getYBoard());
 
-        layers.add(board, new Integer(1));
+        layers.add(board, Integer.valueOf(1));
 
         setSize(board.getXBoard() + 400, board.getYBoard() + 60); // set size of the UI
 

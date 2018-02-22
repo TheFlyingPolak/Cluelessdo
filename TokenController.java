@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 /*
 16310943 James Byrne
-16314761 Jakub Gajewski
+16314763 Jakub Gajewski
 16305706 Mark Hartnett
  */
 
@@ -78,7 +78,7 @@ public class TokenController extends JPanel {
     }
 
     /**
-     * Methods to find and return a Charaacter or Weapon object by its index in the corresponding list.
+     * Methods to find and return a Character or Weapon object by its index in the corresponding list.
      */
     public Character getPlayerToken(int index){
         return playerTokens.get(index);
@@ -138,9 +138,6 @@ public class TokenController extends JPanel {
                     //g2.setColor(Color.MAGENTA); break;
                     g2.drawImage(plum, dimension.width - (plum.getWidth() / 2), dimension.height - (green.getHeight() / 2), this); break;
             }
-            /** Get position of the token on the game board and draw */
-            //Dimension dimension = tmp.getPosition();
-            //g2.fillOval(dimension.height, dimension.width, 21, 21);
         }
 
         /** Draw specified image on the game board according to weapon type */

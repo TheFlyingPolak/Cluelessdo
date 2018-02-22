@@ -9,13 +9,16 @@ import java.io.IOException;
 
 public class Cluelessdo {
     TokenController tokenPanel;
+    DicePanel dicePanel;
     UI ui;
 
     Cluelessdo() throws IOException {
         ui = new UI();
         tokenPanel = new TokenController(ui.getBoard());     // Token drawing panel
+        dicePanel = new DicePanel(ui.getBoard());
 
-        ui.getLayers().add(tokenPanel, new Integer(2));
+        ui.getLayers().add(tokenPanel, Integer.valueOf(2));
+        ui.getLayers().add(dicePanel, Integer.valueOf(3));
     }
 
     /*
@@ -37,6 +40,33 @@ public class Cluelessdo {
         ui.getInfo().addText("Please enter your name");
 
     }*/
+
+    private void doCommand(String command){
+        switch (command){
+            case "roll":
+                ui.getInfo().addText("Rolling...");
+                ui.getInfo().addText("You rolled " + dicePanel.rollDice());
+                break;
+            case "u":
+                break;
+            case "d":
+                break;
+            case "l":
+                break;
+            case "r":
+                break;
+            case "done":
+                break;
+            case "passage":
+                break;
+            case "quit":
+                System.exit(0);
+                break;
+            default:
+                ui.getInfo().addText("Invalid command: \"" + command + "\"");
+                break;
+        }
+    }
 
     public static void main(String[] args) throws IOException {
         Cluelessdo game = new Cluelessdo();
@@ -64,5 +94,10 @@ public class Cluelessdo {
         game.tokenPanel.repaint();
 
         game.ui.setVisible(true);
+
+        while (true){
+            String command = game.ui.getCmd().getCommand();
+            game.doCommand(command);
+        }
     }
 }
