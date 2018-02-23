@@ -78,15 +78,27 @@ public class TokenController extends JPanel {
     }
 
     /**
-     * Methods to find and return a Character or Weapon object by its index in the corresponding list.
+     * Methods to find and return a Character or Weapon object by its type enum.
      */
-    public Character getPlayerToken(int index){
-        return playerTokens.get(index);
+    public Character getPlayerToken(CharacterNames name) {
+        for (Character tmp: playerTokens){
+            if (tmp.getName() == name)
+                return tmp;
+        }
+        return null;
     }
 
-    public Weapon getWeaponToken(int index){
-        return weaponTokens.get(index);
+    public Weapon getWeaponToken(WeaponTypes type){
+        for (Weapon tmp: weaponTokens){
+            if (tmp.getType() == type)
+                return tmp;
+        }
+        return null;
     }
+
+    /**
+     * Methods to find and return a Character or Weapon by its type.
+     */
 
     /**
      * Attempts to read images to be used to represent tokens.
