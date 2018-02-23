@@ -4,7 +4,7 @@
  * 16305706 Mark Hartnett
  *
  * The Player class is the class that contains the information of the
- * person playing the game.
+ * person playing the game
  */
 public class Player {
     //name of the human playing the game
