@@ -18,9 +18,9 @@ public class Cluelessdo {
     Cluelessdo() throws IOException {
         ui = new UI();
         tokenPanel = new TokenController(ui.getBoard());     // Token drawing panel
-        dicePanel = new DicePanel(ui.getBoard());
+        //dicePanel = new DicePanel(ui.getBoard());
         ui.getLayers().add(tokenPanel, Integer.valueOf(2));
-        ui.getLayers().add(dicePanel, Integer.valueOf(3));
+        //ui.getLayers().add(dicePanel, Integer.valueOf(3));
         players = new CircularlyLinkedList();
     }
 
@@ -200,8 +200,8 @@ public class Cluelessdo {
         }
         ui.getInfo().addText("All players ready! Type \"play\" to begin!");
 
-        do{
-        } while (!ui.getCmd().getCommand().equals("play"));
+        /*do{
+        } while (!ui.getCmd().getCommand().equals("play"));*/
     }
 
     public static void main(String[] args) throws IOException {
@@ -210,7 +210,8 @@ public class Cluelessdo {
         game.ui.setVisible(true);
 
         game.enterPlayers();
-
+        game.players.playerTurns(game.ui,game.tokenPanel);
+        
         while (true){
             String command = game.ui.getCmd().getCommand();
             game.doCommand(command);

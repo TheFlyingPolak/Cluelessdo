@@ -22,4 +22,14 @@ public class Player {
         this.playerToken = playerToken;
         this.live = false;
     }
+    
+    //access playerName
+    public String getPlayerName() {
+        return playerName;
+    }
+    
+    //access playerToken
+    public Character getPlayerToken() {
+        return playerToken;
+    }
 }

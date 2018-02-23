@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /*
  * 16310943 James Byrne
  * 16314763 Jakub Gajewski
@@ -90,6 +92,56 @@ public class CircularlyLinkedList {
     public void addLast(Player p){
         addFirst(p);
         tail = tail.getNext();
+    }
+    
+    //Circle through the players in the list
+    public void playerTurns(UI ui,TokenController tokenPanel) {
+        //A node to walk through each player
+        Node walk = tail.getNext();
+        
+        //do while loop loops through list of players while all the players are still playing
+        do {
+            ui.getInfo().addText(walk.getPlayer().getPlayerName() + " it's your turn! Type roll, to roll the dice");
+            String command = ui.getCmd().getCommand().toLowerCase();
+            
+            if(command.contentEquals("roll")){
+                //generate random number between 1-6
+                Random rn = new Random();
+                int roll = rn.nextInt(6) + 1;
+                ui.getInfo().addText("You rolled a " + roll);
+                ui.getInfo().addText("You can move " + roll + " places on the board\nEnter up,down,left or right to control your token");
+                
+                //loop allows the player to move the number of times there dice roll has given them
+                while(roll>0){
+                    
+                    String direction = ui.getCmd().getCommand().toLowerCase();
+                    
+                    if(direction.contentEquals("up")){
+                        walk.getPlayer().getPlayerToken().moveToken(Direction.UP,ui.getBoard());
+                        ui.getInfo().addText("up");
+                    }
+                    else if(direction.contentEquals("down")){
+                        walk.getPlayer().getPlayerToken().moveToken(Direction.DOWN,ui.getBoard());
+                        ui.getInfo().addText("down");
+                    }
+                    else if(direction.contentEquals("left")){
+                        walk.getPlayer().getPlayerToken().moveToken(Direction.LEFT,ui.getBoard());
+                        ui.getInfo().addText("left");
+                    }
+                    else if(direction.contentEquals("right")){
+                        walk.getPlayer().getPlayerToken().moveToken(Direction.RIGHT,ui.getBoard());
+                        ui.getInfo().addText("right");
+                    }
+                    else{
+                        ui.getInfo().addText("invalid");
+                    }
+                    tokenPanel.repaint();
+                    roll--;
+                }
+            }
+            walk = walk.getNext();
+            
+        } while (!isEmpty());
     }
 
 }
