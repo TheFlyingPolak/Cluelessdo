@@ -44,11 +44,20 @@ public class Room {
         this.secretPassage = secretPassage;
     }
 
+    public Room getSecretPassage() {
+        return secretPassage;
+    }
+
+    public boolean hasSecretPasssage() {
+        return secretPassage == null;
+    }
+
     // get the room index for the rooms array in the board
     public int getRoomIndex() {
         return roomType.ordinal();
     }
 
+    // add token to the room, i.e. have the token in the room
     public Tile addToken() {
         return tokenPositions[tokenNum++];
     }
@@ -61,11 +70,12 @@ public class Room {
         return doorEntrances[doorEntranceNum];
     }
 
+    // remove token to the room, i.e. have the token leave the room
     public boolean removeToken() {
-        if (tokenNum == 0) {
-            return false;
+        if (tokenNum == 0) { // if there are no tokens in the room
+            return false; // unsuccessful
         }
         tokenNum--;
-        return true;
+        return true; // successful
     }
 }

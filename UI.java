@@ -22,7 +22,7 @@ public class UI extends JFrame {
         boardPanel = new JPanel(new BorderLayout());  // Panel which contains the JLayeredPane
         layers = new JLayeredPane();    // Layered container for board and token drawing panel
         board = new Board(); // board component
-        info = new InfoPanel(); // info panel
+        info = new InfoPanel("Welcome to Cluelessdo! How many players will be playing? (2-6)"); // info panel
         cmd = new CmdPanel(); // command pannel
 
         info.setPreferredSize(new Dimension(400, board.getYBoard())); // set the preferred size of the info panel
