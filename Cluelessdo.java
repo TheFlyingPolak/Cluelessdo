@@ -18,9 +18,9 @@ public class Cluelessdo {
     Cluelessdo() throws IOException {
         ui = new UI();
         tokenPanel = new TokenController(ui.getBoard());     // Token drawing panel
-        //dicePanel = new DicePanel(ui.getBoard());
+        dicePanel = new DicePanel(ui.getBoard());
         ui.getLayers().add(tokenPanel, Integer.valueOf(2));
-        //ui.getLayers().add(dicePanel, Integer.valueOf(3));
+        ui.getLayers().add(dicePanel, Integer.valueOf(3));
         players = new CircularlyLinkedList();
     }
 
@@ -66,7 +66,7 @@ public class Cluelessdo {
         switch (command){
             case "roll":
                 ui.getInfo().addText("Rolling...");
-                //ui.getInfo().addText("You rolled " + dicePanel.rollDice());
+                ui.getInfo().addText("You rolled " + dicePanel.rollDice());
                 break;
             case "u":
                 break;
