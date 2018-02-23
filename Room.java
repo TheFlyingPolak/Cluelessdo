@@ -49,7 +49,7 @@ public class Room {
     }
 
     public boolean hasSecretPasssage() {
-        return secretPassage == null;
+        return secretPassage != null;
     }
 
     // get the room index for the rooms array in the board
