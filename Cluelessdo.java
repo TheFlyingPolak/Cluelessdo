@@ -7,30 +7,34 @@
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Iterator;
 
 public class Cluelessdo {
     private TokenController tokenPanel;
     private DicePanel dicePanel;
     private UI ui;
-    private CircularlyLinkedList players;
+    private CircularlyLinkedList<Player> players;
+    private Iterator<Player> playerIterator;
     private int numberOfPlayers = 0;
+    private boolean running;
 
     Cluelessdo() throws IOException {
         ui = new UI();
         tokenPanel = new TokenController(ui.getBoard());     // Token drawing panel
-        //dicePanel = new DicePanel(ui.getBoard());
+        dicePanel = new DicePanel(ui.getBoard());
         ui.getLayers().add(tokenPanel, Integer.valueOf(2));
-        //ui.getLayers().add(dicePanel, Integer.valueOf(3));
-        players = new CircularlyLinkedList();
+        ui.getLayers().add(dicePanel, Integer.valueOf(3));
+        players = new CircularlyLinkedList<>();
+        running = true;
     }
 
     /**
      * checks to see if the move is valid, if valid moves the player, if not prints error message onto info panel
      * @return returns false if move is illegal, true if move has been made successfully
      */
-    public boolean moveCharacter(int playerIndex, Direction dir) {
-        if (!tokenPanel.getPlayerTokens().get(playerIndex).moveToken(dir, ui.getBoard())) { // move the player and check if not successful
-            String playerName = tokenPanel.getPlayerTokens().get(playerIndex).getName().toString(); // get the players name
+    public boolean moveCharacter(Character playerToken, Direction dir) {
+        if (!playerToken.moveToken(dir, ui.getBoard())) { // move the player and check if not successful
+            String playerName = playerToken.getName().toString(); // get the players name
             playerName = playerName.substring(0, 1) + playerName.substring(1).toLowerCase(); // capitalise the first letter and set the rest to lower case
             String errorMessage = playerName + " cannot move " + dir.toString().toLowerCase(); // make error message
             ui.getInfo().addText(errorMessage); // add error message to info panel
@@ -39,12 +43,16 @@ public class Cluelessdo {
         return true; // move successful
     }
 
-    public boolean moveSecretPassage(int playerIndex) {
-        Room currRoom = ui.getBoard().getRoom(tokenPanel.getPlayerTokens().get(playerIndex).getCurrentTile().getRoomType().ordinal()); // get the room that the player is currently in
+    /**
+     * checks to see if the room occupied by the player has a secret passage and attempts to use it if it does
+     * @return false if move is illegal
+     */
+    public boolean moveSecretPassage(Character playerToken) {
+        Room currRoom = ui.getBoard().getRoom(playerToken.getCurrentTile().getRoomType().ordinal()); // get the room that the player is currently in
         if (currRoom.hasSecretPasssage()) {
             Room nextRoom = currRoom.getSecretPassage(); // get the room that the secret passage brings players to
 
-            tokenPanel.getPlayerTokens().get(playerIndex).moveToken(nextRoom.addToken()); // move the player to the token in the room that the secret passage is connected to
+            playerToken.moveToken(nextRoom.addToken()); // move the player to the token in the room that the secret passage is connected to
             return true; // successful
         } else {
             return false; // cannot move player
@@ -59,34 +67,52 @@ public class Cluelessdo {
         return ui;
     }
 
+    public boolean isRunning(){
+        return running;
+    }
+
     /**
      * Checks if the parameter is a valid game command string. If yes, executes the command.
      */
-    private void doCommand(String command){
+    private CommandTypes doCommand(){
+        String command = ui.getCmd().getCommand();
         switch (command){
             case "roll":
-                ui.getInfo().addText("Rolling...");
-                ui.getInfo().addText("You rolled " + dicePanel.rollDice());
-                break;
+                return CommandTypes.ROLL;
             case "u":
-                break;
+                return CommandTypes.MOVE_UP;
             case "d":
-                break;
+                return CommandTypes.MOVE_DOWN;
             case "l":
-                break;
+                return CommandTypes.MOVE_LEFT;
             case "r":
-                break;
+                return CommandTypes.MOVE_RIGHT;
             case "done":
-                break;
+                return CommandTypes.DONE;
             case "passage":
-                break;
+                return CommandTypes.PASSAGE;
             case "quit":
-                System.exit(0);
+                ui.getInfo().addText("Are you sure you want to quit? (y/n)");
+                boolean loop = true;
+                do{
+                    switch (ui.getCmd().getCommand()){
+                        case "y":
+                        case "yes":
+                            System.exit(0);
+                            break;
+                        case "n":
+                        case "no":
+                            ui.getInfo().addText("Welcome back to the game!");
+                            loop = false;
+                            break;
+                    }
+                } while (loop);
                 break;
             default:
                 ui.getInfo().addText("Invalid command: \"" + command + "\"");
                 break;
         }
+        return null;
     }
 
     /**
@@ -200,21 +226,41 @@ public class Cluelessdo {
         }
         ui.getInfo().addText("All players ready! Type \"play\" to begin!");
 
-        /*do{
-        } while (!ui.getCmd().getCommand().equals("play"));*/
+        do{
+        } while (!ui.getCmd().getCommand().equals("play"));
+
+        playerIterator = players.iterator();
+    }
+
+    public void playTurn(Player currentPlayer){
+        CommandTypes command;
+        int numberOfMoves;
+        ui.getInfo().addText(currentPlayer.getPlayerName() + ", it's your turn! Type \"roll\" to roll the dice.");
+        do{
+            command = doCommand();
+            if (command == CommandTypes.ROLL){
+                numberOfMoves = dicePanel.rollDice();
+                ui.getInfo().addText("You rolled " + numberOfMoves);
+            }
+        } while (command != CommandTypes.ROLL);
+
+        do{
+            ui.getInfo().addText("Type \"done\"");
+            command = doCommand();
+        } while (command != CommandTypes.DONE);
     }
 
     public static void main(String[] args) throws IOException {
         Cluelessdo game = new Cluelessdo();
+        Player currentPlayer;
         game.tokenPanel.repaint();
         game.ui.setVisible(true);
 
         game.enterPlayers();
-        game.players.playerTurns(game.ui,game.tokenPanel);
-        
-        while (true){
-            String command = game.ui.getCmd().getCommand();
-            game.doCommand(command);
+
+        while (game.isRunning()){
+            currentPlayer = game.playerIterator.next();
+            game.playTurn(currentPlayer);
         }
     }
 }

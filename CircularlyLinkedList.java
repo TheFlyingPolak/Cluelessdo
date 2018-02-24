@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.Iterator;
 
 /*
  * 16310943 James Byrne
@@ -8,45 +9,16 @@ import java.util.Random;
  * Class used to create a circularly linked list of human players
  * playing the game
  */
-public class CircularlyLinkedList {
-
-    private static class Node{
-        private Player player;  //element of the position in the linked list
-        private Node next;      //reference to next node in the list
-
-        //creates a given element before a certain node
-        public Node(Player p, Node n){
-            player = p;
-            next = n;
-        }
-
-        //accessor methods
-        public Player getPlayer() {
-            return player;
-        }
-
-        public Node getNext() {
-            return next;
-        }
-
-        //mutator methods
-        public void setPlayer(Player p) {
-            player = p;
-        }
-
-        public void setNext(Node n) {
-            next = n;
-        }
-
-    }
-
-    //private Node head = null;
-    private Node tail = null;
-    private int size = 0;
+public class CircularlyLinkedList<E> implements Iterable<E> {
+    private Node<E> head;
+    private Node<E> tail;
+    private int size;
 
     //constructs a circularly linked list
     public CircularlyLinkedList(){
-
+        head = null;
+        tail = null;
+        size = 0;
     }
 
     //function returns the size of the circularly linked list
@@ -60,48 +32,106 @@ public class CircularlyLinkedList {
     }
 
     //returns the first player in the circularly linked list
-    public Player first(){
+    public E getFirst(){
         if (isEmpty()){
             return null;
         }
-        return tail.getNext().getPlayer();
+        return head.getElement();
     }
 
     //returns the last player in the circularly linked list
-    public Player last(){
-        if(isEmpty()){
+    public E getLast(){
+        if (isEmpty())
             return null;
-        }
-        return tail.getPlayer();
+        return tail.getElement();
     }
 
     //add a player to the start of the list
     public void addFirst(Player p){
-        if(isEmpty()){
-            tail = new Node(p,null);
-            tail.setNext(tail);
+        Node n = new Node(p, null);
+        n.setNext(head);
+        if (head == null){
+            head = n;
+            n.setNext(head);
+            tail = head;
         }
         else{
-            Node n = new Node(p,tail.getNext());
             tail.setNext(n);
+            head = n;
         }
         size++;
     }
 
     //add player to tail of list
     public void addLast(Player p){
-        addFirst(p);
-        tail = tail.getNext();
+        Node n = new Node(p, null);
+        n.setNext(head);
+        if (head == null){
+            head = n;
+            n.setNext(head);
+            tail = head;
+        }
+        else{
+            tail.setNext(n);
+            tail = n;
+        }
+        size++;
+    }
+
+    @Override
+    public Iterator<E> iterator(){
+        return new ListIterator();
+    }
+
+    private static class Node<E>{
+        private E element;  //element of the position in the linked list
+        private Node next;      //reference to next node in the list
+
+        //creates a given element before a certain node
+        public Node(E e, Node n){
+            element = e;
+            next = n;
+        }
+
+        public E getElement(){
+            return element;
+        }
+
+        public Node getNext() {
+            return next;
+        }
+
+        public void setNext(Node n) {
+            next = n;
+        }
+    }
+
+    private class ListIterator implements Iterator<E>{
+        Node<E> current;
+
+        public ListIterator(){
+            current = head;
+        }
+
+        public boolean hasNext(){
+            return current.getElement() != null;
+        }
+
+        public E next(){
+            E res = current.getElement();
+            current = current.getNext();
+            return res;
+        }
     }
     
     //Circle through the players in the list
-    public void playerTurns(UI ui,TokenController tokenPanel) {
+    /*public void playerTurns(UI ui,TokenController tokenPanel) {
         //A node to walk through each player
         Node walk = tail.getNext();
         
         //do while loop loops through list of players while all the players are still playing
         do {
-            ui.getInfo().addText(walk.getPlayer().getPlayerName() + " it's your turn! Type roll, to roll the dice");
+            ui.getInfo().addText(walk.getElement().getPlayerName() + " it's your turn! Type roll, to roll the dice");
             String command = ui.getCmd().getCommand().toLowerCase();
             
             if(command.contentEquals("roll")){
@@ -142,6 +172,6 @@ public class CircularlyLinkedList {
             walk = walk.getNext();
             
         } while (!isEmpty());
-    }
+    }*/
 
 }
