@@ -248,7 +248,7 @@ public class Cluelessdo {
             command = doCommand();
             if (command == CommandTypes.ROLL){
                 numberOfMoves = dicePanel.rollDice();
-                ui.getInfo().addText("You rolled " + numberOfMoves);
+                ui.getInfo().addText("You rolled " + numberOfMoves + ". Enter 'u', 'd', 'l' or 'r' to move up, down, left or right respectively");
             }
         } while (command != CommandTypes.ROLL);
 

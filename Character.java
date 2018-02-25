@@ -44,7 +44,7 @@ public class Character extends Token{
             case DOWN: {
                 if (y != 25-1) { // if player is on the bottom edge of the board
                     nextTile = board.getTile(x, y+1);
-                    if (currTile.hasWallUp(board) || nextTile.isOccupied()) {
+                    if (currTile.hasWallDown(board) || nextTile.isOccupied()) {
                         return false; // player cant move to that tile
                     } else if (nextTile.getDoorDirection() == Direction.DOWN) {
                         nextTile = board.getRoom(nextTile.getRoomType().ordinal()).addToken();
@@ -57,7 +57,7 @@ public class Character extends Token{
             case LEFT: {
                 if (x != 0) {// if player is on the left edge of the board
                     nextTile = board.getTile(x-1, y);
-                    if (currTile.hasWallUp(board) || nextTile.isOccupied()) {
+                    if (currTile.hasWallLeft(board) || nextTile.isOccupied()) {
                         return false; // player cant move to that tile
                     } else if (nextTile.getDoorDirection() == Direction.LEFT) {
                         nextTile = board.getRoom(nextTile.getRoomType().ordinal()).addToken();
@@ -70,7 +70,7 @@ public class Character extends Token{
             case RIGHT: {// if player is on the right edge of the board
                 if (x != 24-1) {
                     nextTile = board.getTile(x + 1, y);
-                    if (currTile.hasWallUp(board) || nextTile.isOccupied()) {
+                    if (currTile.hasWallRight(board) || nextTile.isOccupied()) {
                         return false; // player cant move to that tile
                     } else if (nextTile.getDoorDirection() == Direction.RIGHT) {
                         nextTile = board.getRoom(nextTile.getRoomType().ordinal()).addToken();

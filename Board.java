@@ -148,7 +148,7 @@ public class Board extends JComponent {
 
         g2.setColor(new Color(109, 31, 36));
 
-        drawWalls2(g2);
+        drawWalls(g2);
 
         g2.setColor(Color.BLACK); // set the color to black
 
@@ -194,25 +194,6 @@ public class Board extends JComponent {
         tile[17][16].setDoorDirection(Direction.RIGHT); // library door
 
         tile[17][21].setDoorDirection(Direction.DOWN); // study door
-    }
-
-    private void drawWalls2(Graphics2D g2) {
-        for (int i = 0; i < 24; i++) {
-            for (int j = 0; j < 25; j++) {
-                if (tile[i][j].hasWallDown(this)) {
-                    g2.fill(new Rectangle(X_BORDER + i* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + (j+1)*Y_SIDE_LENGTH - wallWidth/2, Y_SIDE_LENGTH, wallWidth)); //vertical
-                }
-                if (tile[i][j].hasWallRight(this)) {
-                    g2.fill(new Rectangle(X_BORDER + (i+1)* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + (j)*Y_SIDE_LENGTH - wallWidth/2, wallWidth, Y_SIDE_LENGTH)); //vertical
-                }
-                if (tile[i][j].hasWallLeft(this)) {
-                    g2.fill(new Rectangle(X_BORDER + (i)* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + (j)*Y_SIDE_LENGTH - wallWidth/2, wallWidth, Y_SIDE_LENGTH)); //vertical
-                }
-                if (tile[i][j].hasWallUp(this)) {
-                    g2.fill(new Rectangle(X_BORDER + i* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + j*Y_SIDE_LENGTH - wallWidth/2, Y_SIDE_LENGTH, wallWidth)); //vertical
-                }
-            }
-        }
     }
 
     private void drawWalls(Graphics2D g2) {
