@@ -32,9 +32,8 @@ public class Cluelessdo {
      * checks to see if the move is valid, if valid moves the player, if not prints error message onto info panel
      * @return returns false if move is illegal, true if move has been made successfully
      */
-    public boolean moveCharacter(Character playerToken, Direction dir) {
+    public boolean moveCharacter(Character playerToken, Direction dir, String playerName) {
         if (!playerToken.moveToken(dir, ui.getBoard())) { // move the player and check if not successful
-            String playerName = playerToken.getName().toString(); // get the players name
             playerName = playerName.substring(0, 1) + playerName.substring(1).toLowerCase(); // capitalise the first letter and set the rest to lower case
             String errorMessage = playerName + " cannot move " + dir.toString().toLowerCase(); // make error message
             ui.getInfo().addText(errorMessage); // add error message to info panel
@@ -151,7 +150,7 @@ public class Cluelessdo {
 
             /** Select playable character */
             ui.getInfo().addText("Who would you like to play as, " + name + "? Available characters:");
-            final CharacterNames[] allCharacterNames = {CharacterNames.MUSTARD, CharacterNames.WHITE, CharacterNames.GREEN, CharacterNames.SCARLET, CharacterNames.PEACOCK, CharacterNames.PLUM};
+            final CharacterNames[] allCharacterNames = {CharacterNames.JOEY, CharacterNames.MONICA, CharacterNames.CHANDLER, CharacterNames.PHOEBE, CharacterNames.RACHEL, CharacterNames.ROSS};
             for (int j = 0; j < 6; j++){
                 if (!Arrays.asList(characterNames).contains(allCharacterNames[j]))
                     ui.getInfo().addText(allCharacterNames[j].toString());
@@ -162,62 +161,62 @@ public class Cluelessdo {
                 switch (character){
                     case "mustard":
                     case "joey":
-                        if (Arrays.asList(characterNames).contains(CharacterNames.MUSTARD)) {
-                            ui.getInfo().addText("Someone has already chosen Mustard. Try again.");
+                        if (Arrays.asList(characterNames).contains(CharacterNames.JOEY)) {
+                            ui.getInfo().addText("Someone has already chosen Joey. Try again.");
                             break;
                         }
-                        characterNames[i] = CharacterNames.MUSTARD;
-                        players.addLast(new Player(name, tokenPanel.getPlayerToken(CharacterNames.MUSTARD)));
+                        characterNames[i] = CharacterNames.JOEY;
+                        players.addLast(new Player(name, tokenPanel.getPlayerToken(CharacterNames.JOEY)));
                         loop = false;
                         break;
                     case "scarlet":
                     case "phoebe":
-                        if (Arrays.asList(characterNames).contains(CharacterNames.SCARLET)){
-                            ui.getInfo().addText("Someone has already chosen Scarlet. Try again.");
+                        if (Arrays.asList(characterNames).contains(CharacterNames.PHOEBE)){
+                            ui.getInfo().addText("Someone has already chosen Phoebe. Try again.");
                             break;
                         }
-                        characterNames[i] = CharacterNames.SCARLET;
-                        players.addLast(new Player(name, tokenPanel.getPlayerToken(CharacterNames.SCARLET)));
+                        characterNames[i] = CharacterNames.PHOEBE;
+                        players.addLast(new Player(name, tokenPanel.getPlayerToken(CharacterNames.PHOEBE)));
                         loop = false;
                         break;
                     case "white":
                     case "monica":
-                        if (Arrays.asList(characterNames).contains(CharacterNames.WHITE)){
-                            ui.getInfo().addText("Someone has already chosen White. Try again.");
+                        if (Arrays.asList(characterNames).contains(CharacterNames.MONICA)){
+                            ui.getInfo().addText("Someone has already chosen Monica. Try again.");
                             break;
                         }
-                        characterNames[i] = CharacterNames.WHITE;
-                        players.addLast(new Player(name, tokenPanel.getPlayerToken(CharacterNames.WHITE)));
+                        characterNames[i] = CharacterNames.MONICA;
+                        players.addLast(new Player(name, tokenPanel.getPlayerToken(CharacterNames.MONICA)));
                         loop = false;
                         break;
                     case "green":
                     case "chandler":
-                        if (Arrays.asList(characterNames).contains(CharacterNames.GREEN)){
-                            ui.getInfo().addText("Someone has already chosen Green. Try again.");
+                        if (Arrays.asList(characterNames).contains(CharacterNames.CHANDLER)){
+                            ui.getInfo().addText("Someone has already chosen Chandler. Try again.");
                             break;
                         }
-                        characterNames[i] = CharacterNames.GREEN;
-                        players.addLast(new Player(name, tokenPanel.getPlayerToken(CharacterNames.GREEN)));
+                        characterNames[i] = CharacterNames.CHANDLER;
+                        players.addLast(new Player(name, tokenPanel.getPlayerToken(CharacterNames.CHANDLER)));
                         loop = false;
                         break;
                     case "plum":
                     case "ross":
-                        if (Arrays.asList(characterNames).contains(CharacterNames.PLUM)){
-                            ui.getInfo().addText("Someone has already chosen Plum. Try again.");
+                        if (Arrays.asList(characterNames).contains(CharacterNames.ROSS)){
+                            ui.getInfo().addText("Someone has already chosen Ross. Try again.");
                             break;
                         }
-                        characterNames[i] = CharacterNames.PLUM;
-                        players.addLast(new Player(name, tokenPanel.getPlayerToken(CharacterNames.PLUM)));
+                        characterNames[i] = CharacterNames.ROSS;
+                        players.addLast(new Player(name, tokenPanel.getPlayerToken(CharacterNames.ROSS)));
                         loop = false;
                         break;
                     case "peacock":
                     case "rachel":
-                        if (Arrays.asList(characterNames).contains(CharacterNames.PEACOCK)){
-                            ui.getInfo().addText("Someone has already chosen Peacock. Try again.");
+                        if (Arrays.asList(characterNames).contains(CharacterNames.RACHEL)){
+                            ui.getInfo().addText("Someone has already chosen Rachel. Try again.");
                             break;
                         }
-                        characterNames[i] = CharacterNames.PEACOCK;
-                        players.addLast(new Player(name, tokenPanel.getPlayerToken(CharacterNames.PEACOCK)));
+                        characterNames[i] = CharacterNames.RACHEL;
+                        players.addLast(new Player(name, tokenPanel.getPlayerToken(CharacterNames.RACHEL)));
                         loop = false;
                         break;
                     default:
@@ -314,19 +313,19 @@ public class Cluelessdo {
                 command = doCommand();
                 switch (command) {
                     case MOVE_UP:
-                        if (moveCharacter(currentPlayer.getPlayerToken(), Direction.UP))
+                        if (moveCharacter(currentPlayer.getPlayerToken(), Direction.UP, currentPlayer.getPlayerName()))
                             numberOfMoves--;
                         break;
                     case MOVE_DOWN:
-                        if (moveCharacter(currentPlayer.getPlayerToken(), Direction.DOWN))
+                        if (moveCharacter(currentPlayer.getPlayerToken(), Direction.DOWN, currentPlayer.getPlayerName()))
                             numberOfMoves--;
                         break;
                     case MOVE_LEFT:
-                        if (moveCharacter(currentPlayer.getPlayerToken(), Direction.LEFT))
+                        if (moveCharacter(currentPlayer.getPlayerToken(), Direction.LEFT, currentPlayer.getPlayerName()))
                             numberOfMoves--;
                         break;
                     case MOVE_RIGHT:
-                        if (moveCharacter(currentPlayer.getPlayerToken(), Direction.RIGHT))
+                        if (moveCharacter(currentPlayer.getPlayerToken(), Direction.RIGHT, currentPlayer.getPlayerName()))
                             numberOfMoves--;
                         break;
                     case PASSAGE:

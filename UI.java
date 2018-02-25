@@ -25,7 +25,7 @@ public class UI extends JFrame {
         info = new InfoPanel("Welcome to Cluelessdo! How many players will be playing? (2-6)"); // info panel
         cmd = new CmdPanel(); // command pannel
 
-        info.setPreferredSize(new Dimension(400, board.getYBoard())); // set the preferred size of the info panel
+        info.setPreferredSize(new Dimension(400, 100)); // set the preferred size of the info panel
 
         boardPanel.setSize(board.getXBoard(), board.getYBoard());
         boardPanel.add(layers);

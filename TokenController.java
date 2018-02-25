@@ -26,7 +26,7 @@ public class TokenController extends JPanel {
 
     /** BufferedImage objects used to store images of weapons in the game */
     private BufferedImage pistol, wrench, pipe, rope, dagger, candlestick,
-            green, plum, mustard, white, scarlett, peacock;
+            chandler, ross, joey, monica, phoebe, rachel;
 
     /**
      * Constructor of the class TokenController. Initialises the token ArrayLists and attempts to load images.
@@ -48,12 +48,12 @@ public class TokenController extends JPanel {
         addWeaponToken(new Weapon(board.getTile(12, 12), WeaponTypes.WRENCH));
         addWeaponToken(new Weapon(board.getTile(13, 12), WeaponTypes.DAGGER));
 
-        addPlayerToken(new Character(board.getTile(14, 0), CharacterNames.GREEN));
-        addPlayerToken(new Character(board.getTile(23, 6), CharacterNames.PEACOCK));
-        addPlayerToken(new Character(board.getTile(9, 0), CharacterNames.WHITE));
-        addPlayerToken(new Character(board.getTile(0, 17), CharacterNames.MUSTARD));
-        addPlayerToken(new Character(board.getTile(23, 19), CharacterNames.PLUM));
-        addPlayerToken(new Character(board.getTile(7, 24), CharacterNames.SCARLET));
+        addPlayerToken(new Character(board.getTile(14, 0), CharacterNames.CHANDLER));
+        addPlayerToken(new Character(board.getTile(23, 6), CharacterNames.RACHEL));
+        addPlayerToken(new Character(board.getTile(9, 0), CharacterNames.MONICA));
+        addPlayerToken(new Character(board.getTile(0, 17), CharacterNames.JOEY));
+        addPlayerToken(new Character(board.getTile(23, 19), CharacterNames.ROSS));
+        addPlayerToken(new Character(board.getTile(7, 24), CharacterNames.PHOEBE));
 
         readImages();
     }
@@ -104,12 +104,12 @@ public class TokenController extends JPanel {
      * Attempts to read images to be used to represent tokens.
      */
     private void readImages() throws IOException {
-        green = ImageIO.read(getClass().getResource(("images/green.png")));
-        plum = ImageIO.read(getClass().getResource(("images/plum.png")));
-        mustard = ImageIO.read(getClass().getResource(("images/mustard.png")));
-        white = ImageIO.read(getClass().getResource(("images/white.png")));
-        scarlett = ImageIO.read(getClass().getResource(("images/scarlett.png")));
-        peacock = ImageIO.read(getClass().getResource(("images/peacock.png")));
+        chandler = ImageIO.read(getClass().getResource(("images/green.png")));
+        ross = ImageIO.read(getClass().getResource(("images/plum.png")));
+        joey = ImageIO.read(getClass().getResource(("images/mustard.png")));
+        monica = ImageIO.read(getClass().getResource(("images/white.png")));
+        phoebe = ImageIO.read(getClass().getResource(("images/scarlett.png")));
+        rachel = ImageIO.read(getClass().getResource(("images/peacock.png")));
 
         pistol = ImageIO.read(getClass().getResource(("images/pistol.png")));
         wrench = ImageIO.read(getClass().getResource(("images/wrench.png")));
@@ -131,24 +131,24 @@ public class TokenController extends JPanel {
         for (Character tmp: playerTokens){
             Dimension dimension = tmp.getPosition();
             switch (tmp.getName()){
-                case SCARLET:
+                case PHOEBE:
                     //g2.setColor(Color.RED); break;
-                    g2.drawImage(scarlett, dimension.width - (scarlett.getWidth() / 2), dimension.height - (scarlett.getHeight() / 2), this); break;
-                case MUSTARD:
+                    g2.drawImage(phoebe, dimension.width - (phoebe.getWidth() / 2), dimension.height - (phoebe.getHeight() / 2), this); break;
+                case JOEY:
                     //g2.setColor(Color.ORANGE); break;
-                    g2.drawImage(mustard, dimension.width - (mustard.getWidth() / 2), dimension.height - (mustard.getHeight() / 2), this); break;
-                case PEACOCK:
+                    g2.drawImage(joey, dimension.width - (joey.getWidth() / 2), dimension.height - (joey.getHeight() / 2), this); break;
+                case RACHEL:
                     //g2.setColor(Color.BLUE); break;
-                    g2.drawImage(peacock, dimension.width - (peacock.getWidth() / 2), dimension.height - (peacock.getHeight() / 2), this); break;
-                case WHITE:
+                    g2.drawImage(rachel, dimension.width - (rachel.getWidth() / 2), dimension.height - (rachel.getHeight() / 2), this); break;
+                case MONICA:
                     //g2.setColor(Color.WHITE); break;
-                    g2.drawImage(white, dimension.width - (white.getWidth() / 2), dimension.height - (white.getHeight() / 2), this); break;
-                case GREEN:
+                    g2.drawImage(monica, dimension.width - (monica.getWidth() / 2), dimension.height - (monica.getHeight() / 2), this); break;
+                case CHANDLER:
                     //g2.setColor(Color.GREEN); break;
-                    g2.drawImage(green, dimension.width - (green.getWidth() / 2), dimension.height - (green.getHeight() / 2), this); break;
-                case PLUM:
+                    g2.drawImage(chandler, dimension.width - (chandler.getWidth() / 2), dimension.height - (chandler.getHeight() / 2), this); break;
+                case ROSS:
                     //g2.setColor(Color.MAGENTA); break;
-                    g2.drawImage(plum, dimension.width - (plum.getWidth() / 2), dimension.height - (green.getHeight() / 2), this); break;
+                    g2.drawImage(ross, dimension.width - (ross.getWidth() / 2), dimension.height - (chandler.getHeight() / 2), this); break;
             }
         }
 

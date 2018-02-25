@@ -11,5 +11,5 @@
  */
 
 public enum CharacterNames {
-    SCARLET, PEACOCK, PLUM, MUSTARD, WHITE, GREEN
+    PHOEBE, RACHEL, ROSS, JOEY, MONICA, CHANDLER
 }
