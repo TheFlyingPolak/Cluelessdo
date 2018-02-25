@@ -341,4 +341,12 @@ public class Board extends JComponent {
             }
         }
     }
+
+    public Room getRoomByType(RoomType type){
+        for (int i = 0; i < rooms.length; i++){
+            if (rooms[i].getRoomType() == type)
+                return rooms[i];
+        }
+        return null;
+    }
 }

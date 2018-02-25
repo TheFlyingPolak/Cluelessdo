@@ -228,11 +228,16 @@ public class Cluelessdo {
         playerIterator = players.iterator();
     }
 
-
+    /**
+     * Method to control the progression of a single turn, i.e. dice roll, all movement and number of moves remaining
+     * @param currentPlayer the player to take the turn
+     */
     public void playTurn(Player currentPlayer){
         CommandTypes command;
         int numberOfMoves = 0;
         ui.getInfo().addText(currentPlayer.getPlayerName() + ", it's your turn! Type \"roll\" to roll the dice.");
+
+        /** Execute dice roll and record the number on the dice */
         do{
             command = doCommand();
             if (command == CommandTypes.ROLL){
@@ -241,13 +246,64 @@ public class Cluelessdo {
             }
         } while (command != CommandTypes.ROLL);
 
+        /** Overall control over player action after the dice roll. Main loop repeats until numberOfMoves
+         *  reaches 0 through exhaustion of moves or the user typing "done" */
         do{
+            /** Ask player to end the turn once numberOfMoves == 0 and the loop has repeated */
             if (numberOfMoves == 0){
                 do{
                     ui.getInfo().addText("You are out of moves! Type \"done\" to end your turn.");
                     command = doCommand();
                 } while (command != CommandTypes.DONE);
             }
+            /** If player is in a room, ask player to choose an exit or use a secret passage */
+            else if (currentPlayer.getPlayerToken().getCurrentTile().getRoomType() != RoomType.CORRIDOR){
+                ui.getInfo().addText("Select exit to take or use secret passage");
+
+                /** Collect information about the room the player is occupying */
+                int numberOfRoomExits = ui.getBoard().getRoomByType(currentPlayer.getPlayerToken().getCurrentTile().getRoomType()).getNumberOfDoors();
+                Tile[] doors = new Tile[numberOfRoomExits];
+                for (int i = 0; i < numberOfRoomExits; i++) {
+                    doors[i] = ui.getBoard().getRoomByType(currentPlayer.getPlayerToken().getCurrentTile().getRoomType()).getDoor(i);
+                    ui.getInfo().addText("Door " + (i + 1) + ": " + doors[i].getTileX() + "," + doors[i].getTileY());
+                }
+
+                /** Prompt user to select exit or secret passage */
+                boolean loop = true;
+                do{
+                    String commandString = ui.getCmd().getCommand();
+                    /** User selects secret passage */
+                    if (commandString.equals("pass") || commandString.equals("passage")){
+                        if (moveSecretPassage(currentPlayer.getPlayerToken())) {
+                            numberOfMoves = 0;
+                            loop = false;
+                        }
+                        else
+                            ui.getInfo().addText("This room does not have a secret passage!");
+                    }
+                    /** User does not select passage. Check whether user input matches a door index */
+                    else {
+                        try {
+                            int doorSelection = Integer.parseInt(commandString);
+                            if (doorSelection < 1 || doorSelection > numberOfRoomExits)
+                                ui.getInfo().addText("Please choose a number between 1 and " + numberOfRoomExits);
+                            else{
+                                if (!currentPlayer.getPlayerToken().moveOutOfRoom(doors[doorSelection - 1]))
+                                    ui.getInfo().addText("This door seems to be blocked. Choose a different one.");
+                                else {
+                                    tokenPanel.repaint();
+                                    numberOfMoves--;
+                                    loop = false;
+                                }
+                            }
+                        }
+                        catch (NumberFormatException e){
+                            ui.getInfo().addText("Invalid input: \"" + commandString + "\"");
+                        }
+                    }
+                } while (loop);
+            }
+            /** If player is not in a room, continue normal progression of movement */
             else{
                 command = doCommand();
                 switch (command) {
@@ -268,15 +324,14 @@ public class Cluelessdo {
                             numberOfMoves--;
                         break;
                     case PASSAGE:
-                        if (moveSecretPassage(currentPlayer.getPlayerToken()))
-                            numberOfMoves = 0;
-                        else
-                            ui.getInfo().addText("Cannot use secret passage");
+                        ui.getInfo().addText("Cannot use secret passage: you are not in a room");
                     case DONE:
                         ui.getInfo().addText("You have ended your turn!");
                         numberOfMoves = 0;
                         break;
                 }
+                if (currentPlayer.getPlayerToken().getCurrentTile().getRoomType() != RoomType.CORRIDOR)
+                    numberOfMoves = 0;
             }
         } while (command != CommandTypes.DONE);
     }

@@ -62,7 +62,7 @@ public class Room {
         return tokenPositions[tokenNum++];
     }
 
-    public int getNumDoors() {
+    public int getNumberOfDoors() {
         return doorEntrances.length;
     }
 

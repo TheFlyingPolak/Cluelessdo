@@ -13,14 +13,10 @@ public class Player {
     //the character token that the player has chosen to move around the room
     private Character playerToken;
 
-    //boolean value that states whether or not it is the players turn
-    private boolean live;
-
     //constructor of the player object
     public Player(String playerName, Character playerToken){
         this.playerName = playerName;
         this.playerToken = playerToken;
-        this.live = false;
     }
     
     //access playerName
