@@ -150,7 +150,12 @@ public class Cluelessdo {
             name = commandLineInput;
 
             /** Select playable character */
-            ui.getInfo().addText("Who would you like to play as, " + name + "?");
+            ui.getInfo().addText("Who would you like to play as, " + name + "? Available characters:");
+            final CharacterNames[] allCharacterNames = {CharacterNames.MUSTARD, CharacterNames.WHITE, CharacterNames.GREEN, CharacterNames.SCARLET, CharacterNames.PEACOCK, CharacterNames.PLUM};
+            for (int j = 0; j < 6; j++){
+                if (!Arrays.asList(characterNames).contains(allCharacterNames[j]))
+                    ui.getInfo().addText(allCharacterNames[j].toString());
+            }
             boolean loop = true;
             do{
                 character = ui.getCmd().getCommand().toLowerCase();
@@ -225,6 +230,7 @@ public class Cluelessdo {
         do{
         } while (!ui.getCmd().getCommand().equals("play"));
 
+        ui.getInfo().clear();
         playerIterator = players.iterator();
     }
 
