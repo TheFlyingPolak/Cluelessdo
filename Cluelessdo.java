@@ -40,6 +40,7 @@ public class Cluelessdo {
             ui.getInfo().addText(errorMessage); // add error message to info panel
             return false; // move not successful
         }
+        tokenPanel.repaint();
         return true; // move successful
     }
 
@@ -51,8 +52,8 @@ public class Cluelessdo {
         Room currRoom = ui.getBoard().getRoom(playerToken.getCurrentTile().getRoomType().ordinal()); // get the room that the player is currently in
         if (currRoom.hasSecretPasssage()) {
             Room nextRoom = currRoom.getSecretPassage(); // get the room that the secret passage brings players to
-
             playerToken.moveToken(nextRoom.addToken()); // move the player to the token in the room that the secret passage is connected to
+            tokenPanel.repaint();
             return true; // successful
         } else {
             return false; // cannot move player
@@ -72,26 +73,21 @@ public class Cluelessdo {
     }
 
     /**
-     * Checks if the parameter is a valid game command string. If yes, executes the command.
+     * Gets a string from the command panel and checks if it is a valid game command string. If yes, returns
+     * a CommandTypes value corresponding to that command string.
+     * For the command "quit" prompts the user to confirm and ends the program.
      */
     private CommandTypes doCommand(){
-        String command = ui.getCmd().getCommand();
+        String command = ui.getCmd().getCommand().toLowerCase();
         switch (command){
-            case "roll":
-                return CommandTypes.ROLL;
-            case "u":
-                return CommandTypes.MOVE_UP;
-            case "d":
-                return CommandTypes.MOVE_DOWN;
-            case "l":
-                return CommandTypes.MOVE_LEFT;
-            case "r":
-                return CommandTypes.MOVE_RIGHT;
-            case "done":
-                return CommandTypes.DONE;
-            case "passage":
-                return CommandTypes.PASSAGE;
-            case "quit":
+            case "roll": return CommandTypes.ROLL;
+            case "u": case "up": return CommandTypes.MOVE_UP;
+            case "d": case "down": return CommandTypes.MOVE_DOWN;
+            case "l": case "left": return CommandTypes.MOVE_LEFT;
+            case "r": case "right": return CommandTypes.MOVE_RIGHT;
+            case "done": return CommandTypes.DONE;
+            case "passage": case "pass": return CommandTypes.PASSAGE;
+            case "quit": case "exit":
                 ui.getInfo().addText("Are you sure you want to quit? (y/n)");
                 boolean loop = true;
                 do{
@@ -110,9 +106,9 @@ public class Cluelessdo {
                 break;
             default:
                 ui.getInfo().addText("Invalid command: \"" + command + "\"");
-                break;
+                return CommandTypes.INVALID;
         }
-        return null;
+        return CommandTypes.INVALID;
     }
 
     /**
@@ -121,7 +117,7 @@ public class Cluelessdo {
     private void enterPlayers(){
         String commandLineInput;
 
-        /* Ask for the number of players until the user enters a valid number */
+        /** Ask for the number of players until the user enters a valid number */
         do{
             commandLineInput = ui.getCmd().getCommand();
             try {
@@ -144,7 +140,7 @@ public class Cluelessdo {
         // Temporary array used to check whether a player has already chosen a character
         CharacterNames[] characterNames = new CharacterNames[numberOfPlayers];
 
-        /* Ask all players to input their name and select the character they wish to play as */
+        /** Ask all players to input their name and select the character they wish to play as */
         for (int i = 0; i < numberOfPlayers; i++){
             /* Enter player name */
             String name;
@@ -153,7 +149,7 @@ public class Cluelessdo {
             commandLineInput = ui.getCmd().getCommand();
             name = commandLineInput;
 
-            /* Select playable character */
+            /** Select playable character */
             ui.getInfo().addText("Who would you like to play as, " + name + "?");
             boolean loop = true;
             do{
@@ -232,9 +228,10 @@ public class Cluelessdo {
         playerIterator = players.iterator();
     }
 
+
     public void playTurn(Player currentPlayer){
         CommandTypes command;
-        int numberOfMoves;
+        int numberOfMoves = 0;
         ui.getInfo().addText(currentPlayer.getPlayerName() + ", it's your turn! Type \"roll\" to roll the dice.");
         do{
             command = doCommand();
@@ -245,8 +242,42 @@ public class Cluelessdo {
         } while (command != CommandTypes.ROLL);
 
         do{
-            ui.getInfo().addText("Type \"done\"");
-            command = doCommand();
+            if (numberOfMoves == 0){
+                do{
+                    ui.getInfo().addText("You are out of moves! Type \"done\" to end your turn.");
+                    command = doCommand();
+                } while (command != CommandTypes.DONE);
+            }
+            else{
+                command = doCommand();
+                switch (command) {
+                    case MOVE_UP:
+                        if (moveCharacter(currentPlayer.getPlayerToken(), Direction.UP))
+                            numberOfMoves--;
+                        break;
+                    case MOVE_DOWN:
+                        if (moveCharacter(currentPlayer.getPlayerToken(), Direction.DOWN))
+                            numberOfMoves--;
+                        break;
+                    case MOVE_LEFT:
+                        if (moveCharacter(currentPlayer.getPlayerToken(), Direction.LEFT))
+                            numberOfMoves--;
+                        break;
+                    case MOVE_RIGHT:
+                        if (moveCharacter(currentPlayer.getPlayerToken(), Direction.RIGHT))
+                            numberOfMoves--;
+                        break;
+                    case PASSAGE:
+                        if (moveSecretPassage(currentPlayer.getPlayerToken()))
+                            numberOfMoves = 0;
+                        else
+                            ui.getInfo().addText("Cannot use secret passage");
+                    case DONE:
+                        ui.getInfo().addText("You have ended your turn!");
+                        numberOfMoves = 0;
+                        break;
+                }
+            }
         } while (command != CommandTypes.DONE);
     }
 
