@@ -41,12 +41,12 @@ public class TokenController extends JPanel {
 
         setBounds(0, 0, board.getXBoard(), board.getYBoard());
 
-        addWeaponToken(new Weapon(board.getTile(1, 1), WeaponTypes.PISTOL));
-        addWeaponToken(new Weapon(board.getTile(5, 5), WeaponTypes.ROPE));
-        addWeaponToken(new Weapon(board.getTile(8, 8), WeaponTypes.CANDLESTICK));
-        addWeaponToken(new Weapon(board.getTile(15, 15), WeaponTypes.PIPE));
-        addWeaponToken(new Weapon(board.getTile(10, 15), WeaponTypes.WRENCH));
-        addWeaponToken(new Weapon(board.getTile(20, 20), WeaponTypes.DAGGER));
+        addWeaponToken(new Weapon(board.getTile(11, 11), WeaponTypes.PISTOL));
+        addWeaponToken(new Weapon(board.getTile(12, 11), WeaponTypes.ROPE));
+        addWeaponToken(new Weapon(board.getTile(13, 11), WeaponTypes.CANDLESTICK));
+        addWeaponToken(new Weapon(board.getTile(11, 12), WeaponTypes.PIPE));
+        addWeaponToken(new Weapon(board.getTile(12, 12), WeaponTypes.WRENCH));
+        addWeaponToken(new Weapon(board.getTile(13, 12), WeaponTypes.DAGGER));
 
         addPlayerToken(new Character(board.getTile(14, 0), CharacterNames.GREEN));
         addPlayerToken(new Character(board.getTile(23, 6), CharacterNames.PEACOCK));
