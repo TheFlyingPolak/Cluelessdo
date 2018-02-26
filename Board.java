@@ -71,42 +71,11 @@ public class Board extends JComponent {
         rooms[2] = new Room(this, 3, 22, RoomType.LOUNGE, new Tile[] {tile[5][18]});
         rooms[3] = new Room(this, 12, 4, RoomType.BALLROOM, new Tile[] {tile[7][5], tile[9][8], tile[14][8], tile[16][5]});
         rooms[4] = new Room(this, 12, 13, RoomType.CELLAR, new Tile[] {tile[11][17], tile[12][17], tile[13][17]});
-        rooms[5] = new Room(this, 11, 14, RoomType.HALL, new Tile[] {tile[11][17], tile[12][17], tile[15][20]});
+        rooms[5] = new Room(this, 11, 21, RoomType.HALL, new Tile[] {tile[11][17], tile[12][17], tile[15][20]});
         rooms[6] = new Room(this, 20, 3, RoomType.CONSERVATORY, new Tile[] {tile[18][5]});
         rooms[7] = new Room(this, 21, 10, RoomType.BILLARD, new Tile[] {tile[17][9], tile[22][13]});
         rooms[8] = new Room(this, 21, 16, RoomType.LIBRARY, new Tile[] {tile[20][13], tile[16][16]});
         rooms[9] = new Room(this, 21, 22, RoomType.STUDY, new Tile[] {tile[17][20]});
-
-
-        tile[4][6].setDoorDirection(Direction.UP); // Kitchen door
-
-        tile[7][12].setDoorDirection(Direction.LEFT); // dining room door
-        tile[6][15].setDoorDirection(Direction.UP); // dining room door
-
-        tile[5][19].setDoorDirection(Direction.DOWN); // lounge door
-
-        tile[8][5].setDoorDirection(Direction.RIGHT); // ballroom door
-        tile[9][7].setDoorDirection(Direction.UP); // ballroom door
-        tile[14][7].setDoorDirection(Direction.UP); // ballroom door
-        tile[15][5].setDoorDirection(Direction.LEFT); // ballroom door
-
-
-        tile[11][16].setDoorDirection(Direction.UP); // Cellar Door
-        tile[12][16].setDoorDirection(Direction.UP); // Cellar Door
-        tile[13][16].setDoorDirection(Direction.UP); // Cellar Door
-
-        tile[11][18].setDoorDirection(Direction.DOWN); // Hall Door
-        tile[12][18].setDoorDirection(Direction.DOWN); // Hall Door
-
-        tile[18][4].setDoorDirection(Direction.UP); // Conservatory door
-
-        tile[18][9].setDoorDirection(Direction.RIGHT); // billard room door
-        tile[22][12].setDoorDirection(Direction.UP); // billard room door
-
-        tile[20][14].setDoorDirection(Direction.DOWN); // library door
-        tile[17][16].setDoorDirection(Direction.RIGHT); // library door
-
-        tile[17][21].setDoorDirection(Direction.DOWN); // study door
 
         rooms[RoomType.KITCHEN.ordinal()].setSecretPassage(rooms[RoomType.STUDY.ordinal()]);
         rooms[RoomType.STUDY.ordinal()].setSecretPassage(rooms[RoomType.KITCHEN.ordinal()]);
@@ -165,6 +134,7 @@ public class Board extends JComponent {
     }
 
     public void initialiseDoors() {
+
         tile[4][6].setDoorDirection(Direction.UP); // Kitchen door
 
         tile[7][12].setDoorDirection(Direction.LEFT); // dining room door
@@ -194,6 +164,7 @@ public class Board extends JComponent {
         tile[17][16].setDoorDirection(Direction.RIGHT); // library door
 
         tile[17][21].setDoorDirection(Direction.DOWN); // study door
+
     }
 
     private void drawWalls(Graphics2D g2) {

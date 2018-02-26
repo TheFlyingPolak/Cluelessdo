@@ -347,6 +347,9 @@ public class Cluelessdo {
         game.tokenPanel.repaint();
         game.ui.setVisible(true);
 
+        game.tokenPanel.getPlayerTokens().get(1).moveToken(game.ui.getBoard().getTile(11, 17));
+
+
         game.enterPlayers();
 
         while (game.isRunning()){
