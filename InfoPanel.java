@@ -2,6 +2,12 @@ import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
 
+/*
+16310943 James Byrne
+16314763 Jakub Gajewski
+16305706 Mark Hartnett
+ */
+
 public class InfoPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;

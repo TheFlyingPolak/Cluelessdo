@@ -1,7 +1,7 @@
 
 /*
 16310943 James Byrne
-16314761 Jakub Gajewski
+16314763 Jakub Gajewski
 16305706 Mark Hartnett
  */
 
@@ -260,6 +260,10 @@ public class Cluelessdo {
                     ui.getInfo().addText("You are out of moves! Type \"done\" to end your turn.");
                     command = doCommand();
                 } while (command != CommandTypes.DONE);
+                if (currentPlayer.getPlayerToken().getCurrentTile().getRoomType() != RoomType.CORRIDOR)
+                    currentPlayer.getPlayerToken().setRoomLastOccupied(currentPlayer.getPlayerToken().getCurrentTile().getRoomType());
+                else
+                    currentPlayer.getPlayerToken().setRoomLastOccupied(null);
             }
             /** If player is in a room, ask player to choose an exit or use a secret passage */
             else if (currentPlayer.getPlayerToken().getCurrentTile().getRoomType() != RoomType.CORRIDOR){
@@ -281,6 +285,7 @@ public class Cluelessdo {
                     if (commandString.equals("pass") || commandString.equals("passage")){
                         if (moveSecretPassage(currentPlayer.getPlayerToken())) {
                             numberOfMoves = 0;
+                            currentPlayer.getPlayerToken().setRoomLastOccupied(currentPlayer.getPlayerToken().getCurrentTile().getRoomType());
                             loop = false;
                         }
                         else
@@ -333,10 +338,13 @@ public class Cluelessdo {
                     case DONE:
                         ui.getInfo().addText("You have ended your turn!");
                         numberOfMoves = 0;
+                        currentPlayer.getPlayerToken().setRoomLastOccupied(null);
                         break;
                 }
-                if (currentPlayer.getPlayerToken().getCurrentTile().getRoomType() != RoomType.CORRIDOR)
+                if (currentPlayer.getPlayerToken().getCurrentTile().getRoomType() != RoomType.CORRIDOR) {
                     numberOfMoves = 0;
+                    currentPlayer.getPlayerToken().setRoomLastOccupied(currentPlayer.getPlayerToken().getCurrentTile().getRoomType());
+                }
             }
         } while (command != CommandTypes.DONE);
     }

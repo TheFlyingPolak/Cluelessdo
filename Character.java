@@ -6,16 +6,18 @@
 
 /*
 16310943 James Byrne
-16314761 Jakub Gajewski
+16314763 Jakub Gajewski
 16305706 Mark Hartnett
  */
 
 public class Character extends Token{
     private CharacterNames name;
+    private RoomType roomLastOccupied;
 
     public Character(Tile currentTile, CharacterNames name){
         super(currentTile);
         this.name = name;
+        roomLastOccupied = null;
     }
 
     /*
@@ -33,7 +35,11 @@ public class Character extends Token{
                     nextTile = board.getTile(x, y-1); // tile player wants to move to
                     if (currTile.hasWallUp(board) || nextTile.isOccupied()) {
                         return false; // player cant move to that tile
-                    } else if (nextTile.getDoorDirection() == Direction.UP) {
+                    }
+                    else if (nextTile.getRoomType() == roomLastOccupied){
+                        return false; // Player cannot return to same room in the same turn
+                    }
+                    else if (nextTile.getDoorDirection() == Direction.UP) {
                         nextTile = board.getRoom(nextTile.getRoomType().ordinal()).addToken();
                     }
                 } else {
@@ -46,7 +52,11 @@ public class Character extends Token{
                     nextTile = board.getTile(x, y+1);
                     if (currTile.hasWallDown(board) || nextTile.isOccupied()) {
                         return false; // player cant move to that tile
-                    } else if (nextTile.getDoorDirection() == Direction.DOWN) {
+                    }
+                    else if (nextTile.getRoomType() == roomLastOccupied){
+                        return false; // Player cannot return to same room in the same turn
+                    }
+                    else if (nextTile.getDoorDirection() == Direction.DOWN) {
                         nextTile = board.getRoom(nextTile.getRoomType().ordinal()).addToken();
                     }
                 } else {
@@ -59,7 +69,11 @@ public class Character extends Token{
                     nextTile = board.getTile(x-1, y);
                     if (currTile.hasWallLeft(board) || nextTile.isOccupied()) {
                         return false; // player cant move to that tile
-                    } else if (nextTile.getDoorDirection() == Direction.LEFT) {
+                    }
+                    else if (nextTile.getRoomType() == roomLastOccupied){
+                        return false; // Player cannot return to same room in the same turn
+                    }
+                    else if (nextTile.getDoorDirection() == Direction.LEFT) {
                         nextTile = board.getRoom(nextTile.getRoomType().ordinal()).addToken();
                     }
                 } else {
@@ -72,7 +86,11 @@ public class Character extends Token{
                     nextTile = board.getTile(x + 1, y);
                     if (currTile.hasWallRight(board) || nextTile.isOccupied()) {
                         return false; // player cant move to that tile
-                    } else if (nextTile.getDoorDirection() == Direction.RIGHT) {
+                    }
+                    else if (nextTile.getRoomType() == roomLastOccupied){
+                        return false; // Player cannot return to same room in the same turn
+                    }
+                    else if (nextTile.getDoorDirection() == Direction.RIGHT) {
                         nextTile = board.getRoom(nextTile.getRoomType().ordinal()).addToken();
                     }
                 } else {
@@ -99,5 +117,13 @@ public class Character extends Token{
 
     public CharacterNames getName(){
         return name;
+    }
+
+    public RoomType getRoomLastOccupied(){
+        return roomLastOccupied;
+    }
+
+    public void setRoomLastOccupied(RoomType room){
+        roomLastOccupied = room;
     }
 }

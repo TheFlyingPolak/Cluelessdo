@@ -4,6 +4,12 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import java.awt.*;
 
+/*
+16310943 James Byrne
+16314763 Jakub Gajewski
+16305706 Mark Hartnett
+ */
+
 public class CmdPanel extends JPanel  {
 
     private static final long serialVersionUID = 1L;

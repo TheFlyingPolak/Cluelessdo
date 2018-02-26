@@ -6,8 +6,7 @@ import java.util.Iterator;
  * 16314763 Jakub Gajewski
  * 16305706 Mark Hartnett
  *
- * Class used to create a circularly linked list of human players
- * playing the game
+ * Implementation of a circular linked list used to store human players in the game
  */
 public class CircularlyLinkedList<E> implements Iterable<E> {
     private Node<E> head;
