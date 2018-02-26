@@ -81,6 +81,9 @@ public class DicePanel extends JPanel implements Runnable{
             repaint();
             try{
                 Thread.sleep(100 + (i * 10));
+                if(i==11){
+                    Thread.sleep(1000);
+                }
             }
             catch (InterruptedException e){
                 e.printStackTrace();
