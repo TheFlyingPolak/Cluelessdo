@@ -64,9 +64,9 @@ public class Tile {
     }
 
     // function to check whether there's a wall below the tile
-    boolean hasWallDown(Board board) {
+    boolean hasWallDown(Map map) {
         if (tileY != 25-1) {
-            Tile sideTile = board.getTile(tileX, tileY + 1);
+            Tile sideTile = map.getTile(tileX, tileY + 1);
             return !getRoomType().equals(sideTile.getRoomType()) && (sideTile.getDoorDirection() != Direction.DOWN && getDoorDirection() != Direction.UP);
         } else {
             return !roomType.equals(RoomType.NO_ROOM);
@@ -74,9 +74,9 @@ public class Tile {
     }
 
     // function to check whether there's a wall above the tile
-    boolean hasWallUp(Board board) {
+    boolean hasWallUp(Map map) {
         if (tileY != 0) {
-            Tile sideTile = board.getTile(tileX, tileY - 1);
+            Tile sideTile = map.getTile(tileX, tileY - 1);
             return !getRoomType().equals(sideTile.getRoomType()) && (sideTile.getDoorDirection() != Direction.UP && getDoorDirection() != Direction.DOWN);
         } else {
             return tileX == 9 || tileX == 14;
@@ -84,9 +84,9 @@ public class Tile {
     }
 
     // function to check whether there's a wall to the left of tile
-    boolean hasWallLeft(Board board) {
+    boolean hasWallLeft(Map map) {
         if (tileX != 0) {
-            Tile sideTile = board.getTile(tileX - 1, tileY);
+            Tile sideTile = map.getTile(tileX - 1, tileY);
             return !getRoomType().equals(sideTile.getRoomType()) && (sideTile.getDoorDirection() != Direction.LEFT && getDoorDirection() != Direction.RIGHT);
         } else {
             return !roomType.equals(RoomType.NO_ROOM);
@@ -94,9 +94,9 @@ public class Tile {
     }
 
     // function to check whether there's a wall to the right of the tile
-    boolean hasWallRight(Board board) {
+    boolean hasWallRight(Map map) {
         if (tileX != 24-1) {
-            Tile sideTile = board.getTile(tileX + 1, tileY);
+            Tile sideTile = map.getTile(tileX + 1, tileY);
             return !getRoomType().equals(sideTile.getRoomType()) && (sideTile.getDoorDirection() != Direction.RIGHT && getDoorDirection() != Direction.LEFT);
         } else {
             return !roomType.equals(RoomType.NO_ROOM);

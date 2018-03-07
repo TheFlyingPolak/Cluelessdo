@@ -11,24 +11,24 @@ public class Room {
     private Tile[] doorEntrances;
     private Room secretPassage;
 
-    Room(Board board, int x, int y, RoomType roomType, Tile[] doors) {
+    Room(Map map, int x, int y, RoomType roomType, Tile[] doors) {
         tokenNum = 0;
         this.roomType = roomType;
         tokenPositions = new Tile[12]; // Tiles where the tokens are placed in the room so that the tokens are positioned in the centre of the room
 
         // Assign 12 tiles in the centre in the order that the players should be positioned so that the players are in the centre
-        tokenPositions[0] = board.getTile(x, y);
-        tokenPositions[1] = board.getTile(x+1, y);
-        tokenPositions[2] = board.getTile(x, y+1);
-        tokenPositions[3] = board.getTile(x+1, y+1);
-        tokenPositions[4] = board.getTile(x-1, y);
-        tokenPositions[5] = board.getTile(x-1, y-1);
-        tokenPositions[6] = board.getTile(x-1, y-1);
-        tokenPositions[7] = board.getTile(x, y-1);
-        tokenPositions[8] = board.getTile(x+1, y-1);
-        tokenPositions[9] = board.getTile(x+2, y-1);
-        tokenPositions[10] = board.getTile(x+2, y);
-        tokenPositions[11] = board.getTile(x+2, y+1);
+        tokenPositions[0] = map.getTile(x, y);
+        tokenPositions[1] = map.getTile(x+1, y);
+        tokenPositions[2] = map.getTile(x, y+1);
+        tokenPositions[3] = map.getTile(x+1, y+1);
+        tokenPositions[4] = map.getTile(x-1, y);
+        tokenPositions[5] = map.getTile(x-1, y-1);
+        tokenPositions[6] = map.getTile(x-1, y-1);
+        tokenPositions[7] = map.getTile(x, y-1);
+        tokenPositions[8] = map.getTile(x+1, y-1);
+        tokenPositions[9] = map.getTile(x+2, y-1);
+        tokenPositions[10] = map.getTile(x+2, y);
+        tokenPositions[11] = map.getTile(x+2, y+1);
 
         this.doorEntrances = doors;
         secretPassage = null;

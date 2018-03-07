@@ -24,7 +24,7 @@ public class Character extends Token{
         checks to see if the move is valid, if valid moves the player
         @return returns false if move is illegal, true if move has been made successfully
      */
-    boolean moveToken(Direction dir, Board board) {
+    boolean moveToken(Direction dir, Map map) {
         Tile currTile = getCurrentTile();
         int x = currTile.getTileX(); // player X position on board
         int y = currTile.getTileY(); // player Y position on board
@@ -32,15 +32,15 @@ public class Character extends Token{
         switch(dir) {
             case UP: {
                 if (y != 0) { // if player is on the top edge of the board
-                    nextTile = board.getTile(x, y-1); // tile player wants to move to
-                    if (currTile.hasWallUp(board) || nextTile.isOccupied()) {
+                    nextTile = map.getTile(x, y-1); // tile player wants to move to
+                    if (currTile.hasWallUp(map) || nextTile.isOccupied()) {
                         return false; // player cant move to that tile
                     }
                     else if (nextTile.getRoomType() == roomLastOccupied){
                         return false; // Player cannot return to same room in the same turn
                     }
                     else if (nextTile.getDoorDirection() == Direction.UP) {
-                        nextTile = board.getRoom(nextTile.getRoomType().ordinal()).addToken();
+                        nextTile = map.getRoom(nextTile.getRoomType().ordinal()).addToken();
                     }
                 } else {
                     return false; // player cant move to that tile
@@ -49,15 +49,15 @@ public class Character extends Token{
             }
             case DOWN: {
                 if (y != 25-1) { // if player is on the bottom edge of the board
-                    nextTile = board.getTile(x, y+1);
-                    if (currTile.hasWallDown(board) || nextTile.isOccupied()) {
+                    nextTile = map.getTile(x, y+1);
+                    if (currTile.hasWallDown(map) || nextTile.isOccupied()) {
                         return false; // player cant move to that tile
                     }
                     else if (nextTile.getRoomType() == roomLastOccupied){
                         return false; // Player cannot return to same room in the same turn
                     }
                     else if (nextTile.getDoorDirection() == Direction.DOWN) {
-                        nextTile = board.getRoom(nextTile.getRoomType().ordinal()).addToken();
+                        nextTile = map.getRoom(nextTile.getRoomType().ordinal()).addToken();
                     }
                 } else {
                     return false; // player cant move to that tile
@@ -66,15 +66,15 @@ public class Character extends Token{
             }
             case LEFT: {
                 if (x != 0) {// if player is on the left edge of the board
-                    nextTile = board.getTile(x-1, y);
-                    if (currTile.hasWallLeft(board) || nextTile.isOccupied()) {
+                    nextTile = map.getTile(x-1, y);
+                    if (currTile.hasWallLeft(map) || nextTile.isOccupied()) {
                         return false; // player cant move to that tile
                     }
                     else if (nextTile.getRoomType() == roomLastOccupied){
                         return false; // Player cannot return to same room in the same turn
                     }
                     else if (nextTile.getDoorDirection() == Direction.LEFT) {
-                        nextTile = board.getRoom(nextTile.getRoomType().ordinal()).addToken();
+                        nextTile = map.getRoom(nextTile.getRoomType().ordinal()).addToken();
                     }
                 } else {
                     return false; // player cant move to that tile
@@ -83,15 +83,15 @@ public class Character extends Token{
             }
             case RIGHT: {// if player is on the right edge of the board
                 if (x != 24-1) {
-                    nextTile = board.getTile(x + 1, y);
-                    if (currTile.hasWallRight(board) || nextTile.isOccupied()) {
+                    nextTile = map.getTile(x + 1, y);
+                    if (currTile.hasWallRight(map) || nextTile.isOccupied()) {
                         return false; // player cant move to that tile
                     }
                     else if (nextTile.getRoomType() == roomLastOccupied){
                         return false; // Player cannot return to same room in the same turn
                     }
                     else if (nextTile.getDoorDirection() == Direction.RIGHT) {
-                        nextTile = board.getRoom(nextTile.getRoomType().ordinal()).addToken();
+                        nextTile = map.getRoom(nextTile.getRoomType().ordinal()).addToken();
                     }
                 } else {
                     return false; // player cant move to that tile

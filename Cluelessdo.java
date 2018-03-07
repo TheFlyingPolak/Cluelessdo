@@ -23,7 +23,7 @@ public class Cluelessdo {
 
     Cluelessdo() throws IOException {
         ui = new UI();
-        tokenPanel = new TokenController(ui.getBoard());     // Token drawing panel
+        tokenPanel = new TokenController(ui.getBoard().getMap(),ui.getBoard());     // Token drawing panel
         dicePanel = new DicePanel(ui.getBoard());
         ui.getLayers().add(tokenPanel, Integer.valueOf(2));
         ui.getLayers().add(dicePanel, Integer.valueOf(3));
@@ -36,7 +36,7 @@ public class Cluelessdo {
      * @return returns false if move is illegal, true if move has been made successfully
      */
     public boolean moveCharacter(Character playerToken, Direction dir, String playerName) {
-        if (!playerToken.moveToken(dir, ui.getBoard())) { // move the player and check if not successful
+        if (!playerToken.moveToken(dir, ui.getBoard().getMap())) { // move the player and check if not successful
             playerName = playerName.substring(0, 1) + playerName.substring(1).toLowerCase(); // capitalise the first letter and set the rest to lower case
             String errorMessage = playerName + " cannot move " + dir.toString().toLowerCase(); // make error message
             ui.getInfo().addText(errorMessage); // add error message to info panel
@@ -51,7 +51,7 @@ public class Cluelessdo {
      * @return false if move is illegal
      */
     public boolean moveSecretPassage(Character playerToken) {
-        Room currRoom = ui.getBoard().getRoom(playerToken.getCurrentTile().getRoomType().ordinal()); // get the room that the player is currently in
+        Room currRoom = ui.getBoard().getMap().getRoom(playerToken.getCurrentTile().getRoomType().ordinal()); // get the room that the player is currently in
         if (currRoom.hasSecretPasssage()) {
             Room nextRoom = currRoom.getSecretPassage(); // get the room that the secret passage brings players to
             playerToken.moveToken(nextRoom.addToken()); // move the player to the token in the room that the secret passage is connected to
@@ -60,14 +60,6 @@ public class Cluelessdo {
         } else {
             return false; // cannot move player
         }
-    }
-
-    public TokenController getTokenPanel() {
-        return tokenPanel;
-    }
-
-    public UI getUi() {
-        return ui;
     }
 
     public boolean isRunning(){
@@ -273,10 +265,10 @@ public class Cluelessdo {
                 ui.getInfo().addText("Select exit to take or use secret passage");
 
                 /** Collect information about the room the player is occupying */
-                int numberOfRoomExits = ui.getBoard().getRoomByType(currentPlayer.getPlayerToken().getCurrentTile().getRoomType()).getNumberOfDoors();
+                int numberOfRoomExits = ui.getBoard().getMap().getRoomByType(currentPlayer.getPlayerToken().getCurrentTile().getRoomType()).getNumberOfDoors();
                 Tile[] doors = new Tile[numberOfRoomExits];
                 for (int i = 0; i < numberOfRoomExits; i++) {
-                    doors[i] = ui.getBoard().getRoomByType(currentPlayer.getPlayerToken().getCurrentTile().getRoomType()).getDoor(i);
+                    doors[i] = ui.getBoard().getMap().getRoomByType(currentPlayer.getPlayerToken().getCurrentTile().getRoomType()).getDoor(i);
                     ui.getInfo().addText("Door " + (i + 1) + ": " + doors[i].getTileX() + "," + doors[i].getTileY());
                 }
 

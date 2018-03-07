@@ -32,7 +32,7 @@ public class TokenController extends JPanel {
      * Constructor of the class TokenController. Initialises the token ArrayLists and attempts to load images.
      * If image is not found, an error message is printed to the console.
      */
-    public TokenController(Board board) throws IOException {
+    public TokenController(Map map,Board board) throws IOException {
         super(null);
         playerTokens = new ArrayList<>();
         weaponTokens = new ArrayList<>();
@@ -41,19 +41,19 @@ public class TokenController extends JPanel {
 
         setBounds(0, 0, board.getXBoard(), board.getYBoard());
 
-        addWeaponToken(new Weapon(board.getTile(11, 11), WeaponTypes.PISTOL));
-        addWeaponToken(new Weapon(board.getTile(12, 11), WeaponTypes.ROPE));
-        addWeaponToken(new Weapon(board.getTile(13, 11), WeaponTypes.CANDLESTICK));
-        addWeaponToken(new Weapon(board.getTile(11, 12), WeaponTypes.PIPE));
-        addWeaponToken(new Weapon(board.getTile(12, 12), WeaponTypes.WRENCH));
-        addWeaponToken(new Weapon(board.getTile(13, 12), WeaponTypes.DAGGER));
+        addWeaponToken(new Weapon(map.getTile(11, 11), WeaponTypes.PISTOL));
+        addWeaponToken(new Weapon(map.getTile(12, 11), WeaponTypes.ROPE));
+        addWeaponToken(new Weapon(map.getTile(13, 11), WeaponTypes.CANDLESTICK));
+        addWeaponToken(new Weapon(map.getTile(11, 12), WeaponTypes.PIPE));
+        addWeaponToken(new Weapon(map.getTile(12, 12), WeaponTypes.WRENCH));
+        addWeaponToken(new Weapon(map.getTile(13, 12), WeaponTypes.DAGGER));
 
-        addPlayerToken(new Character(board.getTile(14, 0), CharacterNames.CHANDLER));
-        addPlayerToken(new Character(board.getTile(23, 6), CharacterNames.RACHEL));
-        addPlayerToken(new Character(board.getTile(9, 0), CharacterNames.MONICA));
-        addPlayerToken(new Character(board.getTile(0, 17), CharacterNames.JOEY));
-        addPlayerToken(new Character(board.getTile(23, 19), CharacterNames.ROSS));
-        addPlayerToken(new Character(board.getTile(7, 24), CharacterNames.PHOEBE));
+        addPlayerToken(new Character(map.getTile(14, 0), CharacterNames.CHANDLER));
+        addPlayerToken(new Character(map.getTile(23, 6), CharacterNames.RACHEL));
+        addPlayerToken(new Character(map.getTile(9, 0), CharacterNames.MONICA));
+        addPlayerToken(new Character(map.getTile(0, 17), CharacterNames.JOEY));
+        addPlayerToken(new Character(map.getTile(23, 19), CharacterNames.ROSS));
+        addPlayerToken(new Character(map.getTile(7, 24), CharacterNames.PHOEBE));
 
         readImages();
     }

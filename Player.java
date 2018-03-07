@@ -18,6 +18,10 @@ public class Player {
         this.playerName = playerName;
         this.playerToken = playerToken;
     }
+
+    public boolean hasName(String name) {
+        return this.playerName.toLowerCase().equals(name.trim());
+    }
     
     //access playerName
     public String getPlayerName() {
@@ -27,5 +31,10 @@ public class Player {
     //access playerToken
     public Character getPlayerToken() {
         return playerToken;
+    }
+
+    @Override
+    public String toString() {
+        return playerName + " (" + playerToken.getName() + ")";
     }
 }
