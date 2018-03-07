@@ -122,53 +122,56 @@ public class Board extends JComponent {
         g2.setColor(Color.BLACK); // set the color to black
 
         // display the names of each of the rooms on the JPanel
-        g2.drawString("Kitchen", X_BORDER + 2* X_SIDE_LENGTH, (int) (Y_BORDER + 4.5* Y_SIDE_LENGTH));
-        g2.drawString("Dining Room", (int) (X_BORDER + 2.5* X_SIDE_LENGTH), (int) (Y_BORDER + 13.5* Y_SIDE_LENGTH));
-        g2.drawString("Lounge", X_BORDER + 3* X_SIDE_LENGTH, Y_BORDER + 23* Y_SIDE_LENGTH);
-        g2.drawString("Ball Room", (int) (X_BORDER + 10.5* X_SIDE_LENGTH), Y_BORDER + 6* Y_SIDE_LENGTH);
-        g2.drawString("Hall", X_BORDER + 12* X_SIDE_LENGTH, Y_BORDER + 22* Y_SIDE_LENGTH);
-        g2.drawString("Conservatory", (int) (X_BORDER + 19.5* X_SIDE_LENGTH), Y_BORDER + 4* Y_SIDE_LENGTH);
-        g2.drawString("Billard\nRoom", (int) (X_BORDER + 19.5* X_SIDE_LENGTH), (int) (Y_BORDER + 11.5* Y_SIDE_LENGTH));
-        g2.drawString("Library", X_BORDER + 20* X_SIDE_LENGTH, (int) (Y_BORDER + 17.2* Y_SIDE_LENGTH));
-        g2.drawString("Study", X_BORDER + 20* X_SIDE_LENGTH, (int) (Y_BORDER + 23.8* Y_SIDE_LENGTH));
+        g2.drawString("Monica + Chandler's", (int) (X_BORDER + .2* X_SIDE_LENGTH), (int) (Y_BORDER + 4.2* Y_SIDE_LENGTH));
+        g2.drawString("Kitchen", (int) (X_BORDER + 1.7*X_SIDE_LENGTH) , (int) (Y_BORDER + 4.8* Y_SIDE_LENGTH));
+        g2.drawString("Monica + Chandler's", (int) (X_BORDER + 1.2* X_SIDE_LENGTH), (int) (Y_BORDER + 13.5* Y_SIDE_LENGTH));
+        g2.drawString("Living Room", (int) (X_BORDER + 2.2* X_SIDE_LENGTH), (int) (Y_BORDER + 14.1* Y_SIDE_LENGTH));
+        g2.drawString("Rachel's Office", (int) (X_BORDER + 1.5* X_SIDE_LENGTH), Y_BORDER + 23* Y_SIDE_LENGTH);
+        g2.drawString("Central Perk", (int) (X_BORDER + 10.5* X_SIDE_LENGTH), Y_BORDER + 6* Y_SIDE_LENGTH);
+        g2.drawString("The Geller", (int) (X_BORDER + 10.5* X_SIDE_LENGTH), Y_BORDER + 22* Y_SIDE_LENGTH);
+        g2.drawString("Household", (int) (X_BORDER + 10.45* X_SIDE_LENGTH), (int) (Y_BORDER + 22.6* Y_SIDE_LENGTH));
+        g2.drawString("Joey's Kitchen", (int) (X_BORDER + 19.5* X_SIDE_LENGTH), Y_BORDER + 4* Y_SIDE_LENGTH);
+        g2.drawString("Joey's Living Room", (int) (X_BORDER + 18.5* X_SIDE_LENGTH), (int) (Y_BORDER + 10.5* Y_SIDE_LENGTH));
+        g2.drawString("Phoebe's Apartment", X_BORDER + 18* X_SIDE_LENGTH, (int) (Y_BORDER + 17.2* Y_SIDE_LENGTH));
+        g2.drawString("Allesandro's", X_BORDER + 19* X_SIDE_LENGTH, (int) (Y_BORDER + 23.8* Y_SIDE_LENGTH));
     }
 
     public void initialiseDoors() {
 
-        tile[4][6].setDoorDirection(Direction.UP); // Kitchen door
+        tile[4][6].setDoorDirection(Direction.UP); // Monica + Chandler's Kitchen door
 
-        tile[7][12].setDoorDirection(Direction.LEFT); // dining room door
-        tile[6][15].setDoorDirection(Direction.UP); // dining room door
+        tile[7][12].setDoorDirection(Direction.LEFT); // Monica + Chandler's Living Room door
+        tile[6][15].setDoorDirection(Direction.UP); // Monica + Chandler's Living Room door
 
-        tile[5][19].setDoorDirection(Direction.DOWN); // lounge door
+        tile[5][19].setDoorDirection(Direction.DOWN); // Rachel's Office door
 
-        tile[8][5].setDoorDirection(Direction.RIGHT); // ballroom door
-        tile[9][7].setDoorDirection(Direction.UP); // ballroom door
-        tile[14][7].setDoorDirection(Direction.UP); // ballroom door
-        tile[15][5].setDoorDirection(Direction.LEFT); // ballroom door
+        tile[8][5].setDoorDirection(Direction.RIGHT); // Central Perk door
+        tile[9][7].setDoorDirection(Direction.UP); // Central Perk door
+        tile[14][7].setDoorDirection(Direction.UP); // Central Perk door
+        tile[15][5].setDoorDirection(Direction.LEFT); // Central Perk door
 
 
-        tile[11][16].setDoorDirection(Direction.UP); // Cellar Door
-        tile[12][16].setDoorDirection(Direction.UP); // Cellar Door
-        tile[13][16].setDoorDirection(Direction.UP); // Cellar Door
+        tile[11][16].setDoorDirection(Direction.UP); // Monica + Chandler's Balcony Door
+        tile[12][16].setDoorDirection(Direction.UP); // Monica + Chandler's Balcony Door
+        tile[13][16].setDoorDirection(Direction.UP); // Monica + Chandler's Balcony Door
 
-        tile[11][18].setDoorDirection(Direction.DOWN); // Hall Door
-        tile[12][18].setDoorDirection(Direction.DOWN); // Hall Door
+        tile[11][18].setDoorDirection(Direction.DOWN); // The Geller Household Door
+        tile[12][18].setDoorDirection(Direction.DOWN); // The Geller Household Door
 
-        tile[18][4].setDoorDirection(Direction.UP); // Conservatory door
+        tile[18][4].setDoorDirection(Direction.UP); // Joey's Kitchen door
 
-        tile[18][9].setDoorDirection(Direction.RIGHT); // billard room door
-        tile[22][12].setDoorDirection(Direction.UP); // billard room door
+        tile[18][9].setDoorDirection(Direction.RIGHT); // Joey's Living Room door
+        tile[22][12].setDoorDirection(Direction.UP); // Joey's Living Room room door
 
-        tile[20][14].setDoorDirection(Direction.DOWN); // library door
-        tile[17][16].setDoorDirection(Direction.RIGHT); // library door
+        tile[20][14].setDoorDirection(Direction.DOWN); // Phoebe's Apartment door
+        tile[17][16].setDoorDirection(Direction.RIGHT); // Phoebe's Apartment door
 
-        tile[17][21].setDoorDirection(Direction.DOWN); // study door
+        tile[17][21].setDoorDirection(Direction.DOWN); // Allesandro's door
 
     }
 
     private void drawWalls(Graphics2D g2) {
-        // filling the walls for the kitchen
+        // filling the walls for Monica + Chandler's Kitchen
         g2.fill(new Rectangle(X_BORDER + 6* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + Y_SIDE_LENGTH - wallWidth/2, wallWidth, 6* Y_SIDE_LENGTH + wallWidth)); //vertical
         g2.fill(new Rectangle(X_BORDER - wallWidth/2, Y_BORDER + Y_SIDE_LENGTH - wallWidth/2, wallWidth, 5* Y_SIDE_LENGTH + wallWidth)); // vertical
         g2.fill(new Rectangle(X_BORDER + X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 6* Y_SIDE_LENGTH - wallWidth/2, wallWidth, Y_SIDE_LENGTH + wallWidth)); // vertical
@@ -177,7 +180,7 @@ public class Board extends JComponent {
         g2.fill(new Rectangle(X_BORDER + X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 7* Y_SIDE_LENGTH - wallWidth/2, 3* X_SIDE_LENGTH + wallWidth/2,  wallWidth)); // horizontal
         g2.fill(new Rectangle(X_BORDER + 5* X_SIDE_LENGTH, Y_BORDER + 7* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2,  wallWidth)); // horizontal
 
-        // filling the walls for the Dining Room
+        // filling the walls for Monica + Chandler's Living Room
         g2.fill(new Rectangle(X_BORDER - wallWidth/2, Y_BORDER + 9* Y_SIDE_LENGTH, wallWidth, 7* Y_SIDE_LENGTH)); // vertical
         g2.fill(new Rectangle(X_BORDER + 5* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 9* Y_SIDE_LENGTH, wallWidth, Y_SIDE_LENGTH)); // vertical
         g2.fill(new Rectangle(X_BORDER + 8* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 10* Y_SIDE_LENGTH, wallWidth, 2* Y_SIDE_LENGTH)); // vertical
@@ -187,7 +190,7 @@ public class Board extends JComponent {
         g2.fill(new Rectangle(X_BORDER - wallWidth/2, Y_BORDER + 16* Y_SIDE_LENGTH - wallWidth/2, 6* X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
         g2.fill(new Rectangle(X_BORDER + 7* X_SIDE_LENGTH, Y_BORDER + 16* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
 
-        // filling the walls for the lounge
+        // filling the walls for Rachel's Office
         g2.fill(new Rectangle(X_BORDER - wallWidth/2, Y_BORDER + 19* Y_SIDE_LENGTH, wallWidth, 6* Y_SIDE_LENGTH)); // vertical
         g2.fill(new Rectangle(X_BORDER + 6* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 24* Y_SIDE_LENGTH - wallWidth/2, wallWidth, Y_SIDE_LENGTH + wallWidth)); // vertical
         g2.fill(new Rectangle(X_BORDER + 7* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 19* Y_SIDE_LENGTH, wallWidth, 5* Y_SIDE_LENGTH)); // vertical
@@ -196,7 +199,7 @@ public class Board extends JComponent {
         g2.fill(new Rectangle(X_BORDER - wallWidth/2, Y_BORDER + 25* Y_SIDE_LENGTH - wallWidth/2, 6* X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
         g2.fill(new Rectangle(X_BORDER + 6* X_SIDE_LENGTH, Y_BORDER + 24* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
 
-        // filling the walls for the Ball Room
+        // filling the walls for Central Perk
         g2.fill(new Rectangle(X_BORDER + 10* X_SIDE_LENGTH - wallWidth/2, Y_BORDER, wallWidth, 2* Y_SIDE_LENGTH + wallWidth/2)); // vertical
         g2.fill(new Rectangle(X_BORDER + 14* X_SIDE_LENGTH - wallWidth/2, Y_BORDER, wallWidth, 2* Y_SIDE_LENGTH + wallWidth/2)); // vertical
         g2.fill(new Rectangle(X_BORDER + 8* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 2* Y_SIDE_LENGTH - wallWidth/2, wallWidth, 3* Y_SIDE_LENGTH + wallWidth/2)); // vertical
@@ -210,14 +213,14 @@ public class Board extends JComponent {
         g2.fill(new Rectangle(X_BORDER + 15* X_SIDE_LENGTH, Y_BORDER + 8* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
         g2.fill(new Rectangle(X_BORDER + 10* X_SIDE_LENGTH, Y_BORDER + 8* Y_SIDE_LENGTH - wallWidth/2, 4* X_SIDE_LENGTH, wallWidth)); //horizontal
 
-        // filling the walls for the Cellar
+        // filling the walls for Monica + Chandler's Balcony
         g2.fill(new Rectangle(X_BORDER + 10* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 10* Y_SIDE_LENGTH, wallWidth, 7* Y_SIDE_LENGTH + wallWidth/2)); // vertical
         g2.fill(new Rectangle(X_BORDER + 15* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 10* Y_SIDE_LENGTH, wallWidth, 7* Y_SIDE_LENGTH + wallWidth/2)); // vertical
         g2.fill(new Rectangle(X_BORDER + 10* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 10* Y_SIDE_LENGTH - wallWidth/2, 5* X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
         g2.fill(new Rectangle(X_BORDER + 10* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 17* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
         g2.fill(new Rectangle(X_BORDER + 14* X_SIDE_LENGTH, Y_BORDER + 17* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
 
-        // filling the walls for the Hall
+        // filling the walls for The Geller Household
         g2.fill(new Rectangle(X_BORDER + 9* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 18* Y_SIDE_LENGTH, wallWidth, 7* Y_SIDE_LENGTH + wallWidth/2)); // vertical
         g2.fill(new Rectangle(X_BORDER + 15* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 18* Y_SIDE_LENGTH - wallWidth/2, wallWidth, 2* Y_SIDE_LENGTH + wallWidth/2)); // vertical
         g2.fill(new Rectangle(X_BORDER + 15* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 21* Y_SIDE_LENGTH, wallWidth, 4* Y_SIDE_LENGTH + wallWidth/2)); // vertical
@@ -225,7 +228,7 @@ public class Board extends JComponent {
         g2.fill(new Rectangle(X_BORDER + 13* X_SIDE_LENGTH, Y_BORDER + 18* Y_SIDE_LENGTH - wallWidth/2, 2* X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
         g2.fill(new Rectangle(X_BORDER + 9* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 25* Y_SIDE_LENGTH - wallWidth/2, 6* X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
 
-        // filling the walls for the Conservatory
+        // filling the walls for Joey's Kitchen
         g2.fill(new Rectangle(X_BORDER + 18* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + Y_SIDE_LENGTH, wallWidth, 4* Y_SIDE_LENGTH)); // vertical
         g2.fill(new Rectangle(X_BORDER + 19* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 5* Y_SIDE_LENGTH, wallWidth, Y_SIDE_LENGTH + wallWidth/2)); // vertical
         g2.fill(new Rectangle(X_BORDER + 23* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 5* Y_SIDE_LENGTH, wallWidth, Y_SIDE_LENGTH + wallWidth/2)); // vertical
@@ -234,7 +237,7 @@ public class Board extends JComponent {
         g2.fill(new Rectangle(X_BORDER + 23* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 5* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
         g2.fill(new Rectangle(X_BORDER + 19* X_SIDE_LENGTH, Y_BORDER + 6* Y_SIDE_LENGTH - wallWidth/2, 4* X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
 
-        // filling the walls for the Billard Room
+        // filling the walls for Joey's Living Room
         g2.fill(new Rectangle(X_BORDER + 18* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 8* Y_SIDE_LENGTH - wallWidth/2, 6* X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
         g2.fill(new Rectangle(X_BORDER + 18* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 13* Y_SIDE_LENGTH - wallWidth/2, 4* X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
         g2.fill(new Rectangle(X_BORDER + 23* X_SIDE_LENGTH, Y_BORDER + 13* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth/2, wallWidth)); //horizontal
@@ -242,7 +245,7 @@ public class Board extends JComponent {
         g2.fill(new Rectangle(X_BORDER + 18* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 10* Y_SIDE_LENGTH, wallWidth, 3* Y_SIDE_LENGTH)); // vertical
         g2.fill(new Rectangle(X_BORDER + 24* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 8* Y_SIDE_LENGTH, wallWidth, 5* Y_SIDE_LENGTH)); // vertical
 
-        // filling the walls for the Library
+        // filling the walls for Phoebe's Apartment
         g2.fill(new Rectangle(X_BORDER + 18* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 14* Y_SIDE_LENGTH, wallWidth, Y_SIDE_LENGTH)); // vertical
         g2.fill(new Rectangle(X_BORDER + 23* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 14* Y_SIDE_LENGTH, wallWidth, Y_SIDE_LENGTH)); // vertical
         g2.fill(new Rectangle(X_BORDER + 18* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 18* Y_SIDE_LENGTH, wallWidth, Y_SIDE_LENGTH)); // vertical
@@ -258,7 +261,7 @@ public class Board extends JComponent {
         g2.fill(new Rectangle(X_BORDER + 17* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 18* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
         g2.fill(new Rectangle(X_BORDER + 23* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 18* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
 
-        // filling the walls for the Study
+        // filling the walls for Allesandro's
         g2.fill(new Rectangle(X_BORDER + 17* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 21* Y_SIDE_LENGTH, wallWidth, 3* Y_SIDE_LENGTH + wallWidth/2)); //vertical
         g2.fill(new Rectangle(X_BORDER + 18* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 24* Y_SIDE_LENGTH - wallWidth/2, wallWidth, Y_SIDE_LENGTH + wallWidth)); // vertical
         g2.fill(new Rectangle(X_BORDER + 24* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 21* Y_SIDE_LENGTH - wallWidth/2, wallWidth, 4* Y_SIDE_LENGTH + wallWidth)); // vertical

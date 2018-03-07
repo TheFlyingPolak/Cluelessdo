@@ -8,6 +8,9 @@
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 public class Cluelessdo {
     private TokenController tokenPanel;
@@ -349,8 +352,24 @@ public class Cluelessdo {
         } while (command != CommandTypes.DONE);
     }
 
+    public void playMusic(String path){
+
+        try{
+            AudioInputStream audioInputStream =
+                    AudioSystem.getAudioInputStream(
+                            this.getClass().getResource(path));
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        }
+        catch(Exception ex)
+        {
+        }
+    }
+
     public static void main(String[] args) throws IOException {
         Cluelessdo game = new Cluelessdo();
+        game.playMusic("Friends.wav");
         Player currentPlayer;
         game.tokenPanel.repaint();
         game.ui.setVisible(true);
