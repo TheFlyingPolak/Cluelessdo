@@ -107,18 +107,21 @@ public class CircularlyLinkedList<E> implements Iterable<E> {
 
     private class ListIterator implements Iterator<E>{
         Node<E> current;
+        int nextNode;
 
         public ListIterator(){
             current = head;
+            nextNode = 0;
         }
 
         public boolean hasNext(){
-            return current.getElement() != null;
+            return nextNode < size;
         }
 
         public E next(){
             E res = current.getElement();
             current = current.getNext();
+            nextNode++;
             return res;
         }
     }
