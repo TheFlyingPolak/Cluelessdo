@@ -6,6 +6,7 @@
  */
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import javax.sound.sampled.AudioInputStream;
@@ -219,6 +220,10 @@ public class Cluelessdo {
                 }
             } while (loop);
         }
+
+        PlayerOrder playerOrder = new PlayerOrder(players, ui, dicePanel);
+        players = playerOrder.playerStartOrder(players);
+
         ui.getInfo().addText("All players ready! Type \"play\" to begin!");
 
         do{

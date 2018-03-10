@@ -9,12 +9,8 @@ import java.awt.*;
 
 public class Board extends JComponent {
     //construct a logical board
-    private Map map = new Map();
+    private Map map;
 
-    //method to access the logical representation of the board through the Board class
-    public Map getMap() {
-        return map;
-    }
 
     //sideLength = length of tile side
     public static final int X_SIDE_LENGTH = 23;
@@ -32,7 +28,13 @@ public class Board extends JComponent {
     //JFrame frame = new JFrame("Boardgame");
 
     public Board() {
+        map = new Map();
         setSize(getXBoard(), getYBoard());
+    }
+
+    //method to access the logical representation of the board through the Board class
+    public Map getMap() {
+        return map;
     }
 
     public int getXBoard() {
