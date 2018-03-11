@@ -221,10 +221,23 @@ public class Cluelessdo {
             } while (loop);
         }
 
+        // get the players to roll the dice and then order them in that order for them to play
         PlayerOrder playerOrder = new PlayerOrder(players, ui, dicePanel);
         players = playerOrder.playerStartOrder(players);
 
-        ui.getInfo().addText("All players ready! Type \"play\" to begin!");
+        // get the name of each of the players in the order that they are going to play
+        String names = "";
+        int playerNum = 0;
+        for (Player player : players) {
+            if (playerNum == players.getSize()-1) {
+                names = names.substring(0, names.length()-2) + " and then " + player.getPlayerName();
+            } else {
+                names += player.getPlayerName() + ", ";
+            }
+            playerNum++;
+        }
+
+        ui.getInfo().addText("The player order is " + names + "\nType \"play\" to begin!");
 
         do{
         } while (!ui.getCmd().getCommand().equals("play"));
