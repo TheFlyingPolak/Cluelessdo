@@ -10,6 +10,7 @@ public class Notes {
     NoteItem[] noteRooms = new NoteItem[9];
     JFrame notes;
 
+    //constructor sets all cards as a blank char as they have not been seen yet
     Notes(){
         notePlayers[0]=new NoteItem("Ross",' ');
         notePlayers[1]=new NoteItem("Phoebe",' ');
@@ -36,23 +37,30 @@ public class Notes {
         noteRooms[8]=new NoteItem("Joey's Living Room",' ');
     }
 
+    //creates a jframe to display the notes
     public void showNotes(){
         notes = new JFrame("Notes");
-
+        
+        //create header for the suspect cards
         String x = "Person\t\t               Found\n\n";
 
+        //add player name and whether or not they hae been checked off on the notes
         for(int i=0; i<6; i++){
             x += (notePlayers[i].getName() + "\t\t\t" + notePlayers[i].getChecked() + "\n");
         }
 
+        //create header for the suspect weapon cards
         x += "\nWeapon\t\t               Found\n\n";
 
+        //add weapon and whether or not they hae been checked off on the notes
         for(int i=0; i<6; i++){
             x += (noteWeapons[i].getName() + "\t\t\t" + noteWeapons[i].getChecked() + "\n");
         }
 
+        //create header for the suspected room cards
         x += "\nRooms\t\t               Found\n\n";
 
+        //add rooms and whether or not they hae been checked off on the notes
         for(int i=0; i<6; i++){
             if(noteRooms[i].getName().length()<16) {
                 x += (noteRooms[i].name + "\t\t\t" + noteRooms[i].getChecked() + "\n");
@@ -65,7 +73,7 @@ public class Notes {
             }
         }
 
-
+        //create an uneditable text area to display all of the info
         JTextArea textArea = new JTextArea(x);
         textArea.setEditable(false);
         notes.add(textArea);
