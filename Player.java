@@ -13,10 +13,14 @@ public class Player {
     //the character token that the player has chosen to move around the room
     private Character playerToken;
 
+    //the note page each player has to record the cards they have and have seen
+    private Notes playerNotes;
+    
     //constructor of the player object
     public Player(String playerName, Character playerToken){
         this.playerName = playerName;
         this.playerToken = playerToken;
+        this.playerNotes = new Notes();
     }
 
     public boolean hasName(String name) {
@@ -31,6 +35,11 @@ public class Player {
     //access playerToken
     public Character getPlayerToken() {
         return playerToken;
+    }
+    
+    //access the playerNotes
+    public Notes getPlayerNotes() {
+        return playerNotes;
     }
 
     @Override

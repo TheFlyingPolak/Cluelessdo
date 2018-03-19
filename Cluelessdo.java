@@ -82,6 +82,7 @@ public class Cluelessdo {
             case "r": case "right": return CommandTypes.MOVE_RIGHT;
             case "done": return CommandTypes.DONE;
             case "passage": case "pass": return CommandTypes.PASSAGE;
+            case "notes" : return CommandTypes.NOTES;
             case "quit": case "exit":
                 ui.getInfo().addText("Are you sure you want to quit? (y/n)");
                 boolean loop = true;
@@ -262,6 +263,11 @@ public class Cluelessdo {
                 numberOfMoves = dicePanel.rollDice();
                 ui.getInfo().addText("You rolled " + numberOfMoves + ". Enter 'u', 'd', 'l' or 'r' to move up, down, left or right respectively");
             }
+            
+            if (command == CommandTypes.NOTES){
+                currentPlayer.getPlayerNotes().showNotes();
+            }
+            
         } while (command != CommandTypes.ROLL);
 
         /** Overall control over player action after the dice roll. Main loop repeats until numberOfMoves
@@ -270,7 +276,12 @@ public class Cluelessdo {
             /** Ask player to end the turn once numberOfMoves == 0 and the loop has repeated */
             if (numberOfMoves == 0){
                 do{
-                    ui.getInfo().addText("You are out of moves! Type \"done\" to end your turn.");
+                    if(command == CommandTypes.NOTES){
+                        currentPlayer.getPlayerNotes().showNotes();
+                    }
+                    else {
+                        ui.getInfo().addText("You are out of moves! Type \"done\" to end your turn.");
+                    }
                     command = doCommand();
                 } while (command != CommandTypes.DONE);
                 if (currentPlayer.getPlayerToken().getCurrentTile().getRoomType() != RoomType.CORRIDOR)
@@ -346,6 +357,9 @@ public class Cluelessdo {
                         if (moveCharacter(currentPlayer.getPlayerToken(), Direction.RIGHT, currentPlayer.getPlayerName()))
                             numberOfMoves--;
                         break;
+                    case NOTES:
+                        currentPlayer.getPlayerNotes().showNotes();
+                        break;
                     case PASSAGE:
                         ui.getInfo().addText("Cannot use secret passage: you are not in a room");
                     case DONE:
@@ -363,23 +377,21 @@ public class Cluelessdo {
     }
 
     public void playMusic(String path){
-
+        
         try{
-            AudioInputStream audioInputStream =
-                    AudioSystem.getAudioInputStream(
-                            this.getClass().getResource(path));
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource(path));
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
         }
-        catch(Exception ex)
+        catch(Exception exception)
         {
         }
     }
 
     public static void main(String[] args) throws IOException {
         Cluelessdo game = new Cluelessdo();
-        game.playMusic("Friends.wav");
+        //game.playMusic("Friends.wav"); turned off while testing
         Player currentPlayer;
         game.tokenPanel.repaint();
         game.ui.setVisible(true);
