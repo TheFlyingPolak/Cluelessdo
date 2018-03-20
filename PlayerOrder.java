@@ -69,7 +69,11 @@ public class PlayerOrder {
 
             // check that the right command has been entered, if not, inform the player and ask them to enter roll again
             while (!cmdInput.equals("roll")) {
-                ui.getInfo().addText(name + ", you can only roll the dice right now, try again!");
+                if (cmdInput.equals("help")) {
+                    ui.getInfo().addText("Enter \"roll\" to roll the dice to order all of the players, the player with the highest will go first, second highest second, so on and so forth");
+                } else {
+                    ui.getInfo().addText(name + ", you can only roll the dice right now, try again!");
+                }
                 cmdInput = ui.getCmd().getCommand();
             }
 

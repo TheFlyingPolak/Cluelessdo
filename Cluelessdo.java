@@ -100,6 +100,8 @@ public class Cluelessdo {
                     }
                 } while (loop);
                 break;
+            case "help":
+                return CommandTypes.HELP;
             default:
                 ui.getInfo().addText("Invalid command: \"" + command + "\"");
                 return CommandTypes.INVALID;
@@ -116,21 +118,24 @@ public class Cluelessdo {
         /** Ask for the number of players until the user enters a valid number */
         do{
             commandLineInput = ui.getCmd().getCommand();
-            try {
-                numberOfPlayers = Integer.parseInt(commandLineInput);
+            if (commandLineInput.equals("help")) { // if the player entered help
+                ui.getInfo().addText("Enter the number of players, there must be at least 2 players and at most 6");
+            } else {
+                try {
+                    numberOfPlayers = Integer.parseInt(commandLineInput);
+                } catch (NumberFormatException e) {
+                    ui.getInfo().addText("Your input, \"" + commandLineInput + "\" is not a number");
+                    continue;
+                }
+                if (numberOfPlayers < 0)
+                    ui.getInfo().addText("It's not possible to play with less than 1 players! Try a different number.");
+                else if (numberOfPlayers == 1)
+                    ui.getInfo().addText("Playing by yourself is quite pointless isn't it? Bring some friends and try again!");
+                else if (numberOfPlayers > 6)
+                    ui.getInfo().addText("Whoa! We can't fit " + numberOfPlayers + " players on the board! Try 6 or less!");
+                else
+                    ui.getInfo().addText(numberOfPlayers + " players playing! Let's get to know them!");
             }
-            catch (NumberFormatException e){
-                ui.getInfo().addText("Your input, \"" + commandLineInput + "\" is not a number");
-                continue;
-            }
-            if (numberOfPlayers < 0)
-                ui.getInfo().addText("It's not possible to play with less than 1 players! Try a different number.");
-            else if (numberOfPlayers == 1)
-                ui.getInfo().addText("Playing by yourself is quite pointless isn't it? Bring some friends and try again!");
-            else if (numberOfPlayers > 6)
-                ui.getInfo().addText("Whoa! We can't fit " + numberOfPlayers + " players on the board! Try 6 or less!");
-            else
-                ui.getInfo().addText(numberOfPlayers + " players playing! Let's get to know them!");
         } while (numberOfPlayers < 2 || numberOfPlayers > 6);
 
         // Temporary array used to check whether a player has already chosen a character
@@ -143,6 +148,12 @@ public class Cluelessdo {
             String character;
             ui.getInfo().addText("Player " + (i + 1) + ", what's your name?");
             commandLineInput = ui.getCmd().getCommand();
+
+            while (commandLineInput.equals("help")) { // if the user enters help (ensure that if the user enters help again that the message displays)
+                ui.getInfo().addText("Enter the name you want to give Player " + (i+1));
+                commandLineInput = ui.getCmd().getCommand();
+            }
+
             name = commandLineInput;
 
             /** Select playable character */
@@ -216,6 +227,9 @@ public class Cluelessdo {
                         players.addLast(new Player(name, tokenPanel.getPlayerToken(CharacterNames.RACHEL)));
                         loop = false;
                         break;
+                    case "help":
+                        ui.getInfo().addText("Pick one of the characters listed above by entering their name");
+                        break;
                     default:
                         ui.getInfo().addText(character + " is not a valid character in this game");
                 }
@@ -240,8 +254,13 @@ public class Cluelessdo {
 
         ui.getInfo().addText("The player order is " + names + "\nType \"play\" to begin!");
 
-        do{
-        } while (!ui.getCmd().getCommand().equals("play"));
+        String command;
+        do {
+            command = ui.getCmd().getCommand();
+            if (command.equals("help")) { // if the player enters help
+                ui.getInfo().addText("You just need to enter \"play\" to start the game!");
+            }
+        } while (!command.equals("play"));
 
         ui.getInfo().clear();
         playerIterator = players.iterator();
@@ -261,11 +280,13 @@ public class Cluelessdo {
             command = doCommand();
             if (command == CommandTypes.ROLL){
                 numberOfMoves = dicePanel.rollDice();
-                ui.getInfo().addText("You rolled " + numberOfMoves + ". Enter 'u', 'd', 'l' or 'r' to move up, down, left or right respectively");
-            }
-            
-            if (command == CommandTypes.NOTES){
+                if (currentPlayer.getPlayerToken().getCurrentTile().getRoomType() == RoomType.CORRIDOR) { // if the character of the player is in the corridor
+                    ui.getInfo().addText("You rolled " + numberOfMoves + ". Enter 'u', 'd', 'l' or 'r' to move up, down, left or right respectively, \"pass\" to move through the secret passage (if possible), \"notes\" to look at your notes, \"done\" when you are finished your turn");
+                }
+            } else if (command == CommandTypes.NOTES) {
                 currentPlayer.getPlayerNotes().showNotes();
+            } else if (command == CommandTypes.HELP) { // if the player enters help
+                ui.getInfo().addText("Enter \"roll\" to roll the dice or \"notes\" to display your notes");
             }
             
         } while (command != CommandTypes.ROLL);
@@ -276,11 +297,10 @@ public class Cluelessdo {
             /** Ask player to end the turn once numberOfMoves == 0 and the loop has repeated */
             if (numberOfMoves == 0){
                 do{
-                    if(command == CommandTypes.NOTES){
+                    if (command == CommandTypes.NOTES){
                         currentPlayer.getPlayerNotes().showNotes();
-                    }
-                    else {
-                        ui.getInfo().addText("You are out of moves! Type \"done\" to end your turn.");
+                    } else { // if the player enters help or if the wrong input is entered (same message is displayed)
+                        ui.getInfo().addText("You are out of moves! Type \"done\" to end your turn or enter \"notes\" to look at your notes.");
                     }
                     command = doCommand();
                 } while (command != CommandTypes.DONE);
@@ -291,7 +311,7 @@ public class Cluelessdo {
             }
             /** If player is in a room, ask player to choose an exit or use a secret passage */
             else if (currentPlayer.getPlayerToken().getCurrentTile().getRoomType() != RoomType.CORRIDOR){
-                ui.getInfo().addText("Select exit to take or use secret passage");
+                ui.getInfo().addText("Select the exit to take or use secret passage");
 
                 /** Collect information about the room the player is occupying */
                 int numberOfRoomExits = ui.getBoard().getMap().getRoomByType(currentPlayer.getPlayerToken().getCurrentTile().getRoomType()).getNumberOfDoors();
@@ -314,6 +334,8 @@ public class Cluelessdo {
                         }
                         else
                             ui.getInfo().addText("This room does not have a secret passage!");
+                    } else if (commandString.equals("help")) { // if the user enters help
+                        ui.getInfo().addText("Enter \"pass\" or \"passage\" to use the secret passage (if possible) or enter the door number you want to exit the room by");
                     }
                     /** User does not select passage. Check whether user input matches a door index */
                     else {
@@ -362,6 +384,10 @@ public class Cluelessdo {
                         break;
                     case PASSAGE:
                         ui.getInfo().addText("Cannot use secret passage: you are not in a room");
+                        break;
+                    case HELP:
+                        ui.getInfo().addText("Enter \"u\" to move up, \"d\" to move down, \"l\" to move left, \"r\" to move right,\n\"passage\" to move through the secret passage,\n\"notes\" to display your notes,\n\"done\" When you are finished your turn");
+                        break;
                     case DONE:
                         ui.getInfo().addText("You have ended your turn!");
                         numberOfMoves = 0;
@@ -395,7 +421,7 @@ public class Cluelessdo {
         Player currentPlayer;
         game.tokenPanel.repaint();
         game.ui.setVisible(true);
-
+        
         game.enterPlayers();
 
         while (game.isRunning()){
