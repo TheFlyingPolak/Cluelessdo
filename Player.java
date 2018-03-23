@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Collection;
+
 /*
  * 16310943 James Byrne
  * 16314763 Jakub Gajewski
@@ -9,6 +12,8 @@
 public class Player {
     //name of the human playing the game
     private String playerName;
+
+    private final ArrayList<Card> cards = new ArrayList<>();
 
     //the character token that the player has chosen to move around the room
     private Character playerToken;
@@ -40,6 +45,10 @@ public class Player {
     //access the playerNotes
     public Notes getPlayerNotes() {
         return playerNotes;
+    }
+
+    public Collection<Card> getCards(){
+        return cards;
     }
 
     @Override

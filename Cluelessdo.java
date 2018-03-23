@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.function.Predicate;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -21,6 +22,8 @@ public class Cluelessdo {
     private Iterator<Player> playerIterator;
     private int numberOfPlayers = 0;
     private boolean running;
+    private ArrayList<Card> publicCards = new ArrayList<>();    // List of cards visible to all players. Initially contains all cards
+    private final Envelope envelope = new Envelope();
 
     Cluelessdo() throws IOException {
         ui = new UI();
@@ -107,6 +110,30 @@ public class Cluelessdo {
                 return CommandTypes.INVALID;
         }
         return CommandTypes.INVALID;
+    }
+
+    public void dealCards(){
+        /** Remove cards already present in the envelope */
+        Predicate<Card> predicate = (Card c) -> c.getName().equals(envelope.getLocation().getName()) || c.getName().equals(envelope.getMurderer().getName()) || c.getName().equals(envelope.getWeapon().getName());
+        publicCards.removeIf(predicate);
+
+        /** Distribute public cards among players */
+        int cardCount = 0;
+        while (cardCount + numberOfPlayers <= publicCards.size()){
+            for (int i = 0; i < players.getSize(); i++){
+                Player player = playerIterator.next();
+                Card card = publicCards.get(0);
+                player.getCards().add(card);
+                publicCards.remove(0);
+                player.getPlayerNotes().getNoteItem(card.getName()).setOwned();
+            }
+        }
+        for (Card tmp: publicCards){
+            for (int i = 0; i < players.getSize(); i++){
+                Player player = playerIterator.next();
+                player.getPlayerNotes().getNoteItem(tmp.getName()).setSeen();
+            }
+        }
     }
 
     /**
@@ -403,7 +430,6 @@ public class Cluelessdo {
     }
 
     public void playMusic(String path){
-        
         try{
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource(path));
             Clip clip = AudioSystem.getClip();
@@ -421,8 +447,26 @@ public class Cluelessdo {
         Player currentPlayer;
         game.tokenPanel.repaint();
         game.ui.setVisible(true);
-        
+
         game.enterPlayers();
+        CardGenerator.generate(game.publicCards);
+        game.dealCards();
+
+        /** List all cards for debugging purposes */
+        System.out.println("Envelope: " + game.envelope.getLocation() + ", " + game.envelope.getMurderer() + ", " + game.envelope.getWeapon());
+        for (Player player: game.players){
+            System.out.print(player.getPlayerName() + ": ");
+            for (Card card: player.getCards()){
+                System.out.print(card + ", ");
+            }
+            System.out.println();
+        }
+        System.out.print("Leftover: ");
+        for (Card card: game.publicCards){
+            System.out.print(card + ", ");
+        }
+        System.out.println();
+        /** Debugging end */
 
         while (game.isRunning()){
             currentPlayer = game.playerIterator.next();

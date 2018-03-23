@@ -5,36 +5,36 @@
 import javax.swing.*;
 
 public class Notes {
-    NoteItem[] notePlayers = new NoteItem[6];
-    NoteItem[] noteWeapons = new NoteItem[6];
-    NoteItem[] noteRooms = new NoteItem[9];
-    JFrame notes;
+    private NoteItem[] notePlayers = new NoteItem[6];
+    private NoteItem[] noteWeapons = new NoteItem[6];
+    private NoteItem[] noteRooms = new NoteItem[9];
+    private JFrame notes;
 
     //constructor sets all cards as a blank char as they have not been seen yet
     Notes(){
-        notePlayers[0]=new NoteItem("Ross",' ');
-        notePlayers[1]=new NoteItem("Phoebe",' ');
-        notePlayers[2]=new NoteItem("Joey",' ');
-        notePlayers[3]=new NoteItem("Monica",' ');
-        notePlayers[4]=new NoteItem("Rachel",' ');
-        notePlayers[5]=new NoteItem("Chandler",' ');
+        notePlayers[0]=new NoteItem("Ross", "ROSS", ' ');
+        notePlayers[1]=new NoteItem("Phoebe", "PHOEBE",' ');
+        notePlayers[2]=new NoteItem("Joey", "JOEY",' ');
+        notePlayers[3]=new NoteItem("Monica", "MONICA", ' ');
+        notePlayers[4]=new NoteItem("Rachel", "RACHEL", ' ');
+        notePlayers[5]=new NoteItem("Chandler", "CHANDLER", ' ');
 
-        noteWeapons[0]=new NoteItem("Pistol",' ');
-        noteWeapons[1]=new NoteItem("Wrench",' ');
-        noteWeapons[2]=new NoteItem("Dagger",' ');
-        noteWeapons[3]=new NoteItem("Candlestick",' ');
-        noteWeapons[4]=new NoteItem("Rope",' ');
-        noteWeapons[5]=new NoteItem("Pipe",' ');
+        noteWeapons[0]=new NoteItem("Pistol", "PISTOL", ' ');
+        noteWeapons[1]=new NoteItem("Wrench", "WRENCH", ' ');
+        noteWeapons[2]=new NoteItem("Dagger", "DAGGER", ' ');
+        noteWeapons[3]=new NoteItem("Candlestick", "CANDLESTICK", ' ');
+        noteWeapons[4]=new NoteItem("Rope", "ROPE", ' ');
+        noteWeapons[5]=new NoteItem("Pipe", "PIPE", ' ');
 
-        noteRooms[0]=new NoteItem("Monica + Chandler's Kitchen",' ');
-        noteRooms[1]=new NoteItem("Central Perk",' ');
-        noteRooms[2]=new NoteItem("Joey's Kitchen",' ');
-        noteRooms[3]=new NoteItem("Monica & Chandler's Living Room",' ');
-        noteRooms[4]=new NoteItem("Rachel's Office",' ');
-        noteRooms[5]=new NoteItem("Geller Household",' ');
-        noteRooms[6]=new NoteItem("Allesandros",' ');
-        noteRooms[7]=new NoteItem("Phoebe's Apartment",' ');
-        noteRooms[8]=new NoteItem("Joey's Living Room",' ');
+        noteRooms[0]=new NoteItem("Monica + Chandler's Kitchen", "MC_KITCHEN", ' ');
+        noteRooms[1]=new NoteItem("Central Perk", "CENTRALPERK", ' ');
+        noteRooms[2]=new NoteItem("Joey's Kitchen", "J_KITCHEN", ' ');
+        noteRooms[3]=new NoteItem("Monica & Chandler's Living Room", "MC_LIVINGROOM", ' ');
+        noteRooms[4]=new NoteItem("Rachel's Office", "R_OFFICE", ' ');
+        noteRooms[5]=new NoteItem("Geller Household", "GELLERHOUSE", ' ');
+        noteRooms[6]=new NoteItem("Allesandro's", "ALLESANDROS", ' ');
+        noteRooms[7]=new NoteItem("Phoebe's Apartment", "P_APARTMENT", ' ');
+        noteRooms[8]=new NoteItem("Joey's Living Room", "J_LIVINGROOM", ' ');
     }
 
     //creates a jframe to display the notes
@@ -61,7 +61,7 @@ public class Notes {
         x += "\nRooms\t\t               Found\n\n";
 
         //add rooms and whether or not they hae been checked off on the notes
-        for(int i=0; i<6; i++){
+        for(int i=0; i<9; i++){
             if(noteRooms[i].getName().length()<16) {
                 x += (noteRooms[i].name + "\t\t\t" + noteRooms[i].getChecked() + "\n");
             }
@@ -80,8 +80,24 @@ public class Notes {
         notes.pack();
 
         notes.setLocation(1000,0);
+        notes.setSize(400, 500);
         notes.setResizable(false);
         notes.setVisible(true);
     }
 
+    public NoteItem getNoteItem(String enumName) {
+        for (int i = 0; i < notePlayers.length; i++){
+            if (notePlayers[i].getEnumName().equals(enumName))
+                return notePlayers[i];
+        }
+        for (int i = 0; i < noteRooms.length; i++){
+            if (noteRooms[i].getEnumName().equals(enumName))
+                return noteRooms[i];
+        }
+        for (int i = 0; i < noteWeapons.length; i++){
+            if (noteWeapons[i].getEnumName().equals(enumName))
+                return noteWeapons[i];
+        }
+        return null;
+    }
 }
