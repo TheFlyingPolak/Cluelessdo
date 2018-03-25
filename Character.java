@@ -22,88 +22,100 @@ public class Character extends Token{
 
     /*
         checks to see if the move is valid, if valid moves the player
-        @return returns false if move is illegal, true if move has been made successfully
+        @return 0: move valid, 1: wall in the way, 2: player in the way, 3: attempt to return to same room in same turn
      */
-    boolean moveToken(Direction dir, Map map) {
+    int moveToken(Direction dir, Map map) throws NullPointerException{
         Tile currTile = getCurrentTile();
         int x = currTile.getTileX(); // player X position on board
         int y = currTile.getTileY(); // player Y position on board
         Tile nextTile = null;
         switch(dir) {
             case UP: {
-                if (y != 0) { // if player is on the top edge of the board
+                if (y != 0) { // if player is not on the top edge of the board
                     nextTile = map.getTile(x, y-1); // tile player wants to move to
-                    if (currTile.hasWallUp(map) || nextTile.isOccupied()) {
-                        return false; // player cant move to that tile
+                    if (currTile.hasWallUp(map)) {
+                        return 1;   // Cannot move through a wall
+                    }
+                    else if (nextTile.isOccupied()){
+                        return 2;   // Cannot move through another player
                     }
                     else if (nextTile.getRoomType() == roomLastOccupied){
-                        return false; // Player cannot return to same room in the same turn
+                        return 3; // Player cannot return to same room in the same turn
                     }
                     else if (nextTile.getDoorDirection() == Direction.UP) {
                         nextTile = map.getRoom(nextTile.getRoomType().ordinal()).addToken();
                     }
                 } else {
-                    return false; // player cant move to that tile
+                    return 1; // Cannot move outside the map i.e. through a wall
                 }
                 break;
             }
             case DOWN: {
                 if (y != 25-1) { // if player is on the bottom edge of the board
                     nextTile = map.getTile(x, y+1);
-                    if (currTile.hasWallDown(map) || nextTile.isOccupied()) {
-                        return false; // player cant move to that tile
+                    if (currTile.hasWallDown(map)) {
+                        return 1;   // Cannot move through a wall
+                    }
+                    else if (nextTile.isOccupied()){
+                        return 2;   // Cannot move through another player
                     }
                     else if (nextTile.getRoomType() == roomLastOccupied){
-                        return false; // Player cannot return to same room in the same turn
+                        return 3; // Player cannot return to same room in the same turn
                     }
-                    else if (nextTile.getDoorDirection() == Direction.DOWN) {
+                    else if (nextTile.getDoorDirection() == Direction.UP) {
                         nextTile = map.getRoom(nextTile.getRoomType().ordinal()).addToken();
                     }
                 } else {
-                    return false; // player cant move to that tile
+                    return 1; // Cannot move outside the map i.e. through a wall
                 }
                 break;
             }
             case LEFT: {
                 if (x != 0) {// if player is on the left edge of the board
                     nextTile = map.getTile(x-1, y);
-                    if (currTile.hasWallLeft(map) || nextTile.isOccupied()) {
-                        return false; // player cant move to that tile
+                    if (currTile.hasWallLeft(map)) {
+                        return 1;   // Cannot move through a wall
+                    }
+                    else if (nextTile.isOccupied()){
+                        return 2;   // Cannot move through another player
                     }
                     else if (nextTile.getRoomType() == roomLastOccupied){
-                        return false; // Player cannot return to same room in the same turn
+                        return 3; // Player cannot return to same room in the same turn
                     }
-                    else if (nextTile.getDoorDirection() == Direction.LEFT) {
+                    else if (nextTile.getDoorDirection() == Direction.UP) {
                         nextTile = map.getRoom(nextTile.getRoomType().ordinal()).addToken();
                     }
                 } else {
-                    return false; // player cant move to that tile
+                    return 1; // Cannot move outside the map i.e. through a wall
                 }
                 break;
             }
             case RIGHT: {// if player is on the right edge of the board
                 if (x != 24-1) {
                     nextTile = map.getTile(x + 1, y);
-                    if (currTile.hasWallRight(map) || nextTile.isOccupied()) {
-                        return false; // player cant move to that tile
+                    if (currTile.hasWallRight(map)) {
+                        return 1;   // Cannot move through a wall
+                    }
+                    else if (nextTile.isOccupied()){
+                        return 2;   // Cannot move through another player
                     }
                     else if (nextTile.getRoomType() == roomLastOccupied){
-                        return false; // Player cannot return to same room in the same turn
+                        return 3; // Player cannot return to same room in the same turn
                     }
-                    else if (nextTile.getDoorDirection() == Direction.RIGHT) {
+                    else if (nextTile.getDoorDirection() == Direction.UP) {
                         nextTile = map.getRoom(nextTile.getRoomType().ordinal()).addToken();
                     }
                 } else {
-                    return false; // player cant move to that tile
+                    return 1; // Cannot move outside the map i.e. through a wall
                 }
                 break;
             }
         }
         if (nextTile != null) { // if nextTile has not been set
             super.moveToken(nextTile);
-            return true; // move successful
+            return 0; // move successful
         } else {
-            return false; // nextTile has not been set due t
+            throw new NullPointerException("Attempt to move to a tile which has not been initialised");
         }
     }
 

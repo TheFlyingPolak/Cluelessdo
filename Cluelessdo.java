@@ -40,9 +40,22 @@ public class Cluelessdo {
      * @return returns false if move is illegal, true if move has been made successfully
      */
     public boolean moveCharacter(Character playerToken, Direction dir, String playerName) {
-        if (!playerToken.moveToken(dir, ui.getBoard().getMap())) { // move the player and check if not successful
+        int returnCode = playerToken.moveToken(dir, ui.getBoard().getMap());
+        if (returnCode != 0) {
             playerName = playerName.substring(0, 1) + playerName.substring(1).toLowerCase(); // capitalise the first letter and set the rest to lower case
-            String errorMessage = playerName + " cannot move " + dir.toString().toLowerCase(); // make error message
+            String errorMessage = playerName + " cannot move " + dir.toString().toLowerCase() + ": "; // make error message
+            switch(returnCode){
+                case 1:
+                    errorMessage += "Cannot move through a wall.";
+                    break;
+                case 2:
+                    errorMessage += "Cannot move through a token.";
+                    break;
+                case 3:
+                    errorMessage += "Cannot return to the room which you left in the same turn.";
+                    break;
+            }
+
             ui.getInfo().addText(errorMessage); // add error message to info panel
             return false; // move not successful
         }
@@ -307,8 +320,9 @@ public class Cluelessdo {
             command = doCommand();
             if (command == CommandTypes.ROLL){
                 numberOfMoves = dicePanel.rollDice();
+                ui.getInfo().addText("You rolled " + numberOfMoves);
                 if (currentPlayer.getPlayerToken().getCurrentTile().getRoomType() == RoomType.CORRIDOR) { // if the character of the player is in the corridor
-                    ui.getInfo().addText("You rolled " + numberOfMoves + ". Enter 'u', 'd', 'l' or 'r' to move up, down, left or right respectively, \"pass\" to move through the secret passage (if possible), \"notes\" to look at your notes, \"done\" when you are finished your turn");
+                    ui.getInfo().addText("Enter 'u', 'd', 'l' or 'r' to move up, down, left or right respectively, \"pass\" to move through the secret passage (if possible), \"notes\" to look at your notes, \"done\" when you are finished your turn");
                 }
             } else if (command == CommandTypes.NOTES) {
                 currentPlayer.getPlayerNotes().showNotes();
