@@ -46,7 +46,7 @@ public class Notes {
         notes.setLocation(1000,0);
         notes.setResizable(false);
         
-        notes.setLayout(new GridLayout(27,2));
+        notes.setLayout(new GridLayout(31,2));
         
         //create header for the suspect cards
         notes.add(new JLabel("Suspects"));
@@ -58,6 +58,8 @@ public class Notes {
             notes.add(new JLabel(notePlayers[i].getName()));
             notes.add(new JLabel(" " + notePlayers[i].getChecked() + "\n"));
         }
+        notes.add(new JLabel(""));
+        notes.add(new JLabel(""));
         
         //create header for the suspect weapon cards
         notes.add(new JLabel("Weapons"));
@@ -69,6 +71,8 @@ public class Notes {
             notes.add(new JLabel(noteWeapons[i].getName()));
             notes.add(new JLabel(" " + noteWeapons[i].getChecked() + "\n"));
         }
+        notes.add(new JLabel(""));
+        notes.add(new JLabel(""));
         
         //create header for the suspected room cards
         notes.add(new JLabel("Rooms"));
