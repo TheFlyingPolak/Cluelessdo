@@ -46,62 +46,40 @@ public class Notes {
         notes.setLocation(1000,0);
         notes.setResizable(false);
         
-        //create an uneditable text area to display all of the info
-        JTextArea textArea = new JTextArea();
-        textArea.setEditable(false);
-        textArea.setFont(new Font("monospaced", Font.PLAIN, 12));
-        textArea.setTabSize(7);
+        notes.setLayout(new GridLayout(27,2));
         
         //create header for the suspect cards
-        textArea.append("Person\t\t\t\t\tFound\n\n");
+        notes.add(new JLabel("Suspects"));
+        notes.add(new JLabel("  Found"));
+        notes.add(new JLabel(""));
+        notes.add(new JLabel(""));
         //add player name and whether or not they hae been checked off on the notes
         for(int i=0; i<6; i++){
-            if(notePlayers[i].getName().length()<8) {
-                textArea.append(notePlayers[i].getName() + "\t\t\t\t\t" + notePlayers[i].getChecked() + "\n");
-            }
-            else{
-                textArea.append(notePlayers[i].getName() + "\t\t\t\t" + notePlayers[i].getChecked() + "\n");
-            }
+            notes.add(new JLabel(notePlayers[i].getName()));
+            notes.add(new JLabel(" " + notePlayers[i].getChecked() + "\n"));
         }
         
         //create header for the suspect weapon cards
-        textArea.append("\nWeapon\t\t\t\t\tFound\n\n");
+        notes.add(new JLabel("Weapons"));
+        notes.add(new JLabel("  Found"));
+        notes.add(new JLabel(""));
+        notes.add(new JLabel(""));
         //add weapon and whether or not they hae been checked off on the notes
         for(int i=0; i<6; i++){
-            if(i==3) {
-                textArea.append(noteWeapons[i].getName() + "\t\t\t\t" + noteWeapons[i].getChecked() + "\n");
-            }
-            else{
-                textArea.append(noteWeapons[i].getName() + "\t\t\t\t\t" + noteWeapons[i].getChecked() + "\n");
-            }
+            notes.add(new JLabel(noteWeapons[i].getName()));
+            notes.add(new JLabel(" " + noteWeapons[i].getChecked() + "\n"));
         }
         
         //create header for the suspected room cards
-        textArea.append("\nRooms\t\t\t\t\tFound\n\n");
+        notes.add(new JLabel("Rooms"));
+        notes.add(new JLabel("  Found"));
+        notes.add(new JLabel(""));
+        notes.add(new JLabel(""));
         //add rooms and whether or not they hae been checked off on the notes
-        for(int i=0; i<9; i++) {
-            if (i==0) {
-                textArea.append(noteRooms[i].name + "\t\t" + noteRooms[i].getChecked() + "\n");
-            }
-            
-            else if (i==1 || i==6){
-                textArea.append(noteRooms[i].name + "\t\t\t\t" + noteRooms[i].getChecked() + "\n");
-            }
-            
-            else if (i==3) {
-                textArea.append(noteRooms[i].name + "\t" + noteRooms[i].getChecked() + "\n");
-            }
-            
-            else {
-                
-                textArea.append(noteRooms[i].name + "\t\t\t" + noteRooms[i].getChecked() + "\n");
-            }
-            
+        for(int i=0; i<9; i++){
+            notes.add(new JLabel(noteRooms[i].getName()));
+            notes.add(new JLabel(" " + noteRooms[i].getChecked() + "\n"));
         }
-        
-        //add the text area to the frame
-        notes.add(textArea);
-        notes.pack();
         
         notes.setVisible(true);
     }
