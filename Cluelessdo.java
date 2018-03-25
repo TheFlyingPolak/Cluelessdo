@@ -99,6 +99,7 @@ public class Cluelessdo {
             case "done": return CommandTypes.DONE;
             case "passage": case "pass": return CommandTypes.PASSAGE;
             case "notes" : return CommandTypes.NOTES;
+            case "cheat" : return CommandTypes.CHEAT;
             case "quit": case "exit":
                 ui.getInfo().addText("Are you sure you want to quit? (y/n)");
                 boolean loop = true;
@@ -127,7 +128,7 @@ public class Cluelessdo {
 
     public void dealCards(){
         /** Remove cards already present in the envelope */
-        Predicate<Card> predicate = (Card c) -> c.getName().equals(envelope.getLocation().getName()) || c.getName().equals(envelope.getMurderer().getName()) || c.getName().equals(envelope.getWeapon().getName());
+        Predicate<Card> predicate = (Card c) -> c.getEnumName().equals(envelope.getLocation().getEnumName()) || c.getEnumName().equals(envelope.getMurderer().getEnumName()) || c.getEnumName().equals(envelope.getWeapon().getEnumName());
         publicCards.removeIf(predicate);
 
         /** Distribute public cards among players */
@@ -138,13 +139,13 @@ public class Cluelessdo {
                 Card card = publicCards.get(0);
                 player.getCards().add(card);
                 publicCards.remove(0);
-                player.getPlayerNotes().getNoteItem(card.getName()).setOwned();
+                player.getPlayerNotes().getNoteItem(card.getEnumName()).setOwned();
             }
         }
         for (Card tmp: publicCards){
             for (int i = 0; i < players.getSize(); i++){
                 Player player = playerIterator.next();
-                player.getPlayerNotes().getNoteItem(tmp.getName()).setSeen();
+                player.getPlayerNotes().getNoteItem(tmp.getEnumName()).setSeen();
             }
         }
     }
@@ -328,6 +329,8 @@ public class Cluelessdo {
                 currentPlayer.getPlayerNotes().showNotes();
             } else if (command == CommandTypes.HELP) { // if the player enters help
                 ui.getInfo().addText("Enter \"roll\" to roll the dice or \"notes\" to display your notes");
+            } else if (command == CommandTypes.CHEAT){
+                ui.getInfo().addText(envelope.getMurderer().getName() + " in the " + envelope.getLocation().getName() + " with the " + envelope.getWeapon().getName());
             }
             
         } while (command != CommandTypes.ROLL);
@@ -340,7 +343,13 @@ public class Cluelessdo {
                 do{
                     if (command == CommandTypes.NOTES){
                         currentPlayer.getPlayerNotes().showNotes();
-                    } else { // if the player enters help or if the wrong input is entered (same message is displayed)
+                    }
+                    
+                    else if (command == CommandTypes.CHEAT){
+                        ui.getInfo().addText(envelope.getMurderer().getName() + " in the " + envelope.getLocation().getName() + " with the " + envelope.getWeapon().getName());
+                    }
+                    
+                    else { // if the player enters help or if the wrong input is entered (same message is displayed)
                         ui.getInfo().addText("You are out of moves! Type \"done\" to end your turn or enter \"notes\" to look at your notes.");
                     }
                     command = doCommand();
@@ -423,6 +432,9 @@ public class Cluelessdo {
                     case NOTES:
                         currentPlayer.getPlayerNotes().showNotes();
                         break;
+                    case CHEAT:
+                        ui.getInfo().addText(envelope.getMurderer().getName() + " in the " + envelope.getLocation().getName() + " with the " + envelope.getWeapon().getName());
+                        break;
                     case PASSAGE:
                         ui.getInfo().addText("Cannot use secret passage: you are not in a room");
                         break;
@@ -457,7 +469,7 @@ public class Cluelessdo {
 
     public static void main(String[] args) throws IOException {
         Cluelessdo game = new Cluelessdo();
-        //game.playMusic("Friends.wav"); turned off while testing
+        game.playMusic("Friends.wav");
         Player currentPlayer;
         game.tokenPanel.repaint();
         game.ui.setVisible(true);

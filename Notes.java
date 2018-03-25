@@ -39,52 +39,50 @@ public class Notes {
 
     //creates a jframe to display the notes
     public void showNotes(){
+        //initialize jframe and set dimensions etc
         notes = new JFrame("Notes");
+        notes.setSize(400, 500);
+        notes.setLocation(1000,0);
+        notes.setResizable(false);
+        
+        //create an uneditable text area to display all of the info
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
         
         //create header for the suspect cards
-        String x = "Person\t\t               Found\n\n";
-
+        textArea.append("Person\t\t               Found\n\n");
         //add player name and whether or not they hae been checked off on the notes
         for(int i=0; i<6; i++){
-            x += (notePlayers[i].getName() + "\t\t\t" + notePlayers[i].getChecked() + "\n");
+            textArea.append(notePlayers[i].getName() + "\t\t\t" + notePlayers[i].getChecked() + "\n");
         }
-
+        
         //create header for the suspect weapon cards
-        x += "\nWeapon\t\t               Found\n\n";
-
+        textArea.append("\nWeapon\t\t               Found\n\n");
         //add weapon and whether or not they hae been checked off on the notes
         for(int i=0; i<6; i++){
-            x += (noteWeapons[i].getName() + "\t\t\t" + noteWeapons[i].getChecked() + "\n");
+            textArea.append(noteWeapons[i].getName() + "\t\t\t" + noteWeapons[i].getChecked() + "\n");
         }
-
+        
         //create header for the suspected room cards
-        x += "\nRooms\t\t               Found\n\n";
-
+        textArea.append("\nRooms\t\t               Found\n\n");
         //add rooms and whether or not they hae been checked off on the notes
-        for(int i=0; i<9; i++){
-            if(noteRooms[i].getName().length()<16) {
-                x += (noteRooms[i].name + "\t\t\t" + noteRooms[i].getChecked() + "\n");
-            }
-            else if(noteRooms[i].getName().length()>28){
-                x += (noteRooms[i].name + "\t" + noteRooms[i].getChecked() + "\n");
-            }
-            else{
-                x += (noteRooms[i].name + "\t\t" + noteRooms[i].getChecked() + "\n");
+        for(int i=0; i<9; i++) {
+            if (noteRooms[i].getName().length() < 16) {
+                textArea.append(noteRooms[i].name + "\t\t\t" + noteRooms[i].getChecked() + "\n");
+            } else if (noteRooms[i].getName().length() > 28) {
+                textArea.append(noteRooms[i].name + "\t" + noteRooms[i].getChecked() + "\n");
+            } else {
+                textArea.append(noteRooms[i].name + "\t\t" + noteRooms[i].getChecked() + "\n");
             }
         }
-
-        //create an uneditable text area to display all of the info
-        JTextArea textArea = new JTextArea(x);
-        textArea.setEditable(false);
+        
+        //add the text area to the frame
         notes.add(textArea);
         notes.pack();
-
-        notes.setLocation(1000,0);
-        notes.setSize(400, 500);
-        notes.setResizable(false);
+        
         notes.setVisible(true);
     }
-
+    
     public NoteItem getNoteItem(String enumName) {
         for (int i = 0; i < notePlayers.length; i++){
             if (notePlayers[i].getEnumName().equals(enumName))
