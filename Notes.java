@@ -3,13 +3,14 @@
  *  and sets displays whether or not these cards are owned seen
  */
 import javax.swing.*;
+import java.awt.*;
 
 public class Notes {
     private NoteItem[] notePlayers = new NoteItem[6];
     private NoteItem[] noteWeapons = new NoteItem[6];
     private NoteItem[] noteRooms = new NoteItem[9];
     private JFrame notes;
-
+    
     //constructor sets all cards as a blank char as they have not been seen yet
     Notes(){
         notePlayers[0]=new NoteItem("Ross", "ROSS", ' ');
@@ -18,14 +19,14 @@ public class Notes {
         notePlayers[3]=new NoteItem("Monica", "MONICA", ' ');
         notePlayers[4]=new NoteItem("Rachel", "RACHEL", ' ');
         notePlayers[5]=new NoteItem("Chandler", "CHANDLER", ' ');
-
+        
         noteWeapons[0]=new NoteItem("Pistol", "PISTOL", ' ');
         noteWeapons[1]=new NoteItem("Wrench", "WRENCH", ' ');
         noteWeapons[2]=new NoteItem("Dagger", "DAGGER", ' ');
         noteWeapons[3]=new NoteItem("Candlestick", "CANDLESTICK", ' ');
         noteWeapons[4]=new NoteItem("Rope", "ROPE", ' ');
         noteWeapons[5]=new NoteItem("Pipe", "PIPE", ' ');
-
+        
         noteRooms[0]=new NoteItem("Monica + Chandler's Kitchen", "MC_KITCHEN", ' ');
         noteRooms[1]=new NoteItem("Central Perk", "CENTRALPERK", ' ');
         noteRooms[2]=new NoteItem("Joey's Kitchen", "J_KITCHEN", ' ');
@@ -36,7 +37,7 @@ public class Notes {
         noteRooms[7]=new NoteItem("Phoebe's Apartment", "P_APARTMENT", ' ');
         noteRooms[8]=new NoteItem("Joey's Living Room", "J_LIVINGROOM", ' ');
     }
-
+    
     //creates a jframe to display the notes
     public void showNotes(){
         //initialize jframe and set dimensions etc
@@ -48,32 +49,54 @@ public class Notes {
         //create an uneditable text area to display all of the info
         JTextArea textArea = new JTextArea();
         textArea.setEditable(false);
+        textArea.setFont(new Font("monospaced", Font.PLAIN, 12));
+        textArea.setTabSize(7);
         
         //create header for the suspect cards
-        textArea.append("Person\t\t               Found\n\n");
+        textArea.append("Person\t\t\t\t\tFound\n\n");
         //add player name and whether or not they hae been checked off on the notes
         for(int i=0; i<6; i++){
-            textArea.append(notePlayers[i].getName() + "\t\t\t" + notePlayers[i].getChecked() + "\n");
+            if(notePlayers[i].getName().length()<8) {
+                textArea.append(notePlayers[i].getName() + "\t\t\t\t\t" + notePlayers[i].getChecked() + "\n");
+            }
+            else{
+                textArea.append(notePlayers[i].getName() + "\t\t\t\t" + notePlayers[i].getChecked() + "\n");
+            }
         }
         
         //create header for the suspect weapon cards
-        textArea.append("\nWeapon\t\t               Found\n\n");
+        textArea.append("\nWeapon\t\t\t\t\tFound\n\n");
         //add weapon and whether or not they hae been checked off on the notes
         for(int i=0; i<6; i++){
-            textArea.append(noteWeapons[i].getName() + "\t\t\t" + noteWeapons[i].getChecked() + "\n");
+            if(i==3) {
+                textArea.append(noteWeapons[i].getName() + "\t\t\t\t" + noteWeapons[i].getChecked() + "\n");
+            }
+            else{
+                textArea.append(noteWeapons[i].getName() + "\t\t\t\t\t" + noteWeapons[i].getChecked() + "\n");
+            }
         }
         
         //create header for the suspected room cards
-        textArea.append("\nRooms\t\t               Found\n\n");
+        textArea.append("\nRooms\t\t\t\t\tFound\n\n");
         //add rooms and whether or not they hae been checked off on the notes
         for(int i=0; i<9; i++) {
-            if (noteRooms[i].getName().length() < 16) {
-                textArea.append(noteRooms[i].name + "\t\t\t" + noteRooms[i].getChecked() + "\n");
-            } else if (noteRooms[i].getName().length() > 28) {
-                textArea.append(noteRooms[i].name + "\t" + noteRooms[i].getChecked() + "\n");
-            } else {
+            if (i==0) {
                 textArea.append(noteRooms[i].name + "\t\t" + noteRooms[i].getChecked() + "\n");
             }
+            
+            else if (i==1 || i==6){
+                textArea.append(noteRooms[i].name + "\t\t\t\t" + noteRooms[i].getChecked() + "\n");
+            }
+            
+            else if (i==3) {
+                textArea.append(noteRooms[i].name + "\t" + noteRooms[i].getChecked() + "\n");
+            }
+            
+            else {
+                
+                textArea.append(noteRooms[i].name + "\t\t\t" + noteRooms[i].getChecked() + "\n");
+            }
+            
         }
         
         //add the text area to the frame
