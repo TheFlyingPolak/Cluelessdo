@@ -56,6 +56,7 @@ public class Map {
 
         tile[11][18].setDoorDirection(Direction.DOWN); // The Geller Household Door
         tile[12][18].setDoorDirection(Direction.DOWN); // The Geller Household Door
+        tile[14][20].setDoorDirection(Direction.LEFT); // The Geller Household Door
 
         tile[18][4].setDoorDirection(Direction.UP); // Joey's Kitchen door
 
