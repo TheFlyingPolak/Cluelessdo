@@ -86,6 +86,7 @@ public class Cluelessdo {
             case "done": return CommandTypes.DONE;
             case "passage": case "pass": return CommandTypes.PASSAGE;
             case "notes" : return CommandTypes.NOTES;
+            case "cheat" : return CommandTypes.CHEAT;
             case "quit": case "exit":
                 ui.getInfo().addText("Are you sure you want to quit? (y/n)");
                 boolean loop = true;
@@ -307,15 +308,18 @@ public class Cluelessdo {
             command = doCommand();
             if (command == CommandTypes.ROLL){
                 numberOfMoves = dicePanel.rollDice();
+                ui.getInfo().addText("You rolled " + numberOfMoves);
                 if (currentPlayer.getPlayerToken().getCurrentTile().getRoomType() == RoomType.CORRIDOR) { // if the character of the player is in the corridor
-                    ui.getInfo().addText("You rolled " + numberOfMoves + ". Enter 'u', 'd', 'l' or 'r' to move up, down, left or right respectively, \"pass\" to move through the secret passage (if possible), \"notes\" to look at your notes, \"done\" when you are finished your turn");
+                    ui.getInfo().addText("Enter 'u', 'd', 'l' or 'r' to move up, down, left or right respectively, \"pass\" to move through the secret passage (if possible), \"notes\" to look at your notes, \"done\" when you are finished your turn");
                 }
             } else if (command == CommandTypes.NOTES) {
                 currentPlayer.getPlayerNotes().showNotes();
             } else if (command == CommandTypes.HELP) { // if the player enters help
                 ui.getInfo().addText("Enter \"roll\" to roll the dice or \"notes\" to display your notes");
+            } else if (command == CommandTypes.CHEAT){
+                ui.getInfo().addText(envelope.getMurderer().getName() + " in the " + envelope.getLocation().getName() + " with the " + envelope.getWeapon().getName());
             }
-            
+
         } while (command != CommandTypes.ROLL);
 
         /** Overall control over player action after the dice roll. Main loop repeats until numberOfMoves
@@ -326,7 +330,13 @@ public class Cluelessdo {
                 do{
                     if (command == CommandTypes.NOTES){
                         currentPlayer.getPlayerNotes().showNotes();
-                    } else { // if the player enters help or if the wrong input is entered (same message is displayed)
+                    }
+
+                    else if (command == CommandTypes.CHEAT){
+                        ui.getInfo().addText(envelope.getMurderer().getName() + " in the " + envelope.getLocation().getName() + " with the " + envelope.getWeapon().getName());
+                    }
+
+                    else { // if the player enters help or if the wrong input is entered (same message is displayed)
                         ui.getInfo().addText("You are out of moves! Type \"done\" to end your turn or enter \"notes\" to look at your notes.");
                     }
                     command = doCommand();
@@ -409,6 +419,9 @@ public class Cluelessdo {
                     case NOTES:
                         currentPlayer.getPlayerNotes().showNotes();
                         break;
+                    case CHEAT:
+                        ui.getInfo().addText(envelope.getMurderer().getName() + " in the " + envelope.getLocation().getName() + " with the " + envelope.getWeapon().getName());
+                        break;
                     case PASSAGE:
                         ui.getInfo().addText("Cannot use secret passage: you are not in a room");
                         break;
@@ -443,7 +456,7 @@ public class Cluelessdo {
 
     public static void main(String[] args) throws IOException {
         Cluelessdo game = new Cluelessdo();
-        //game.playMusic("Friends.wav"); turned off while testing
+        game.playMusic("Friends.wav");
         Player currentPlayer;
         game.tokenPanel.repaint();
         game.ui.setVisible(true);
