@@ -332,7 +332,7 @@ public class Cluelessdo {
             } else if (command == CommandTypes.CHEAT){
                 ui.getInfo().addText(envelope.getMurderer().getName() + " in the " + envelope.getLocation().getName() + " with the " + envelope.getWeapon().getName());
             }
-            
+
         } while (command != CommandTypes.ROLL);
 
         /** Overall control over player action after the dice roll. Main loop repeats until numberOfMoves
@@ -344,11 +344,9 @@ public class Cluelessdo {
                     if (command == CommandTypes.NOTES){
                         currentPlayer.getPlayerNotes().showNotes();
                     }
-                    
                     else if (command == CommandTypes.CHEAT){
                         ui.getInfo().addText(envelope.getMurderer().getName() + " in the " + envelope.getLocation().getName() + " with the " + envelope.getWeapon().getName());
                     }
-                    
                     else { // if the player enters help or if the wrong input is entered (same message is displayed)
                         ui.getInfo().addText("You are out of moves! Type \"done\" to end your turn or enter \"notes\" to look at your notes.");
                     }
