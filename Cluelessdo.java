@@ -320,7 +320,8 @@ public class Cluelessdo {
         do{
             command = doCommand();
             if (command == CommandTypes.ROLL){
-                numberOfMoves = dicePanel.rollDice();
+                dicePanel.start();
+                numberOfMoves = dicePanel.getTotalDiceNumber();
                 ui.getInfo().addText("You rolled " + numberOfMoves);
                 if (currentPlayer.getPlayerToken().getCurrentTile().getRoomType() == RoomType.CORRIDOR) { // if the character of the player is in the corridor
                     ui.getInfo().addText("Enter 'u', 'd', 'l' or 'r' to move up, down, left or right respectively, \"pass\" to move through the secret passage (if possible), \"notes\" to look at your notes, \"done\" when you are finished your turn");

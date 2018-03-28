@@ -77,7 +77,8 @@ public class PlayerOrder {
                 cmdInput = ui.getCmd().getCommand();
             }
 
-            int diceRollNum = dicePanel.rollDice(); // roll the dice
+            dicePanel.start(); // roll the dice
+            int diceRollNum = dicePanel.getTotalDiceNumber();
             ui.getInfo().addText(name + " rolled " + diceRollNum);
 
             diceRollPlayers[i].setDiceRoll(diceRollNum);

@@ -3,9 +3,10 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
 import javax.imageio.ImageIO;
-import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /*
  * 16310943 James Byrne
@@ -21,19 +22,21 @@ public class DicePanel extends JPanel implements Runnable{
      * Class Die stores position and toss result for an individual die.
      */
     private class Die{
-        public int xPosition, yPosition, number, lastRolledNumber;
+        private int xPosition, yPosition, number, lastRolledNumber;
+        private double theta;
+        private int movementDistance = 28 + (random.nextInt(9) - 4);
 
         public Die(){
         }
     }
 
     private BufferedImage[] diceImages = new BufferedImage[6];
-    private Thread t;
     private final int NUMBER_OF_DICE = 2;
     private Die[] dice;
-    private Random random = new Random();
+    private final Random random = new Random();
     private boolean rolling = false;        // Used by paintComponent method to draw dice if true
     private final String imagePath = "images/dice/dice";
+    private final ArrayList<Integer> totalDiceNumber = new ArrayList<>();
 
     public DicePanel(Board board) throws IOException{
         super();
@@ -47,12 +50,26 @@ public class DicePanel extends JPanel implements Runnable{
         for (int i = 0; i < 6; i++){
             diceImages[i] = ImageIO.read(getClass().getResource(imagePath + (i + 1) + ".png"));
         }
+        System.out.println("Dice panel size: " + getWidth() + ", " + getHeight());
     }
 
-    public int rollDice(){
+    public void rollDice(){
         rolling = true;
 
-        for (int i = 0; i < 12; i++){
+        /** Get the general starting position and direction which the dice should follow. Random deviations will be added */
+        Point startingPosition = getRandomStartingPosition();
+        double theta = getStartingDirection(startingPosition.x, startingPosition.y);
+
+        /** Set each individual die's position and randomly deviated angle */
+        dice[0].xPosition = startingPosition.x - (int)(45 * Math.cos(theta + (Math.PI/2)));
+        dice[0].yPosition = startingPosition.y - (int)(45 * Math.sin(theta + (Math.PI/2)));
+        dice[0].theta = theta - ThreadLocalRandom.current().nextDouble(0, Math.PI / 12);
+        dice[1].xPosition = startingPosition.x + (int)(45 * Math.cos(theta + (Math.PI/2)));
+        dice[1].yPosition = startingPosition.y + (int)(45 * Math.sin(theta + (Math.PI/2)));
+        dice[1].theta = theta + ThreadLocalRandom.current().nextDouble(0, Math.PI / 12);
+
+        /** Main dice roll loop */
+        for (int i = 0; i < 15; i++){
             /** Generate random dice numbers */
             for (int j = 0; j < NUMBER_OF_DICE; j++) {
                 dice[j].number = random.nextInt(6) + 1;
@@ -71,34 +88,85 @@ public class DicePanel extends JPanel implements Runnable{
                 dice[j].lastRolledNumber = dice[j].number;
             }
 
-            /** Set starting positions for dice on the board */
-            dice[0].xPosition = 100 + (18 * i);
-            dice[0].yPosition = 40 + (18 * i);
-
-            dice[1].xPosition = 40 + (18 * i);
-            dice[1].yPosition = 100 + (18 * i);
+            /** Set new positions for dice on the board */
+            dice[0].xPosition += (int) (dice[0].movementDistance * Math.cos(dice[0].theta));
+            dice[0].yPosition += (int) (dice[0].movementDistance * Math.sin(dice[0].theta));
+            dice[1].xPosition += (int) (dice[1].movementDistance * Math.cos(dice[1].theta));
+            dice[1].yPosition += (int) (dice[1].movementDistance * Math.sin(dice[1].theta));
 
             repaint();
             try{
-                Thread.sleep(100 + (i * 10));
-                if(i==11){
-                    Thread.sleep(1000);
-                }
+                Thread.sleep(30 + (i * 10));
             }
             catch (InterruptedException e){
                 e.printStackTrace();
             }
         }
+        int totalDice = 0;
+        for (int i = 0; i < NUMBER_OF_DICE; i++){
+            totalDice += dice[i].number;
+        }
+        synchronized (totalDiceNumber){
+            totalDiceNumber.add(totalDice);
+            totalDiceNumber.notify();
+        }
         rolling = false;
+        try{
+            Thread.sleep(4000);
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
         repaint();
-        return getTotalDiceNumber();
     }
 
-    private int getTotalDiceNumber(){
-        int totalNumber = 0;
-        for (int i = 0; i < NUMBER_OF_DICE; i++)
-            totalNumber += dice[i].number;
-        return totalNumber;
+    /**
+     * Generate a random point from which the dice will be thrown. The point will always
+     * lie on the circumference of a rectangle which is 70 pixels away from the edge of
+     * the board.
+     */
+    private Point getRandomStartingPosition(){
+        int x, y;
+        boolean xFirst = random.nextBoolean();  // Decide whether to generate the x coordinate first or second
+        if (xFirst){
+            x = random.nextInt(getWidth() - 140) + 70;
+            y = random.nextBoolean() ? 70 : getHeight() - 70;
+        }
+        else{
+            y = random.nextInt(getHeight() - 140) + 70;
+            x = random.nextBoolean() ? 70 : getWidth() - 70;
+        }
+        return new Point(x, y);
+    }
+
+    /**
+     * Generate an angle which will generate a line from a given point to the centre of
+     * the board, with a deviation of +/- 15 degrees
+     */
+    private double getStartingDirection(int x, int y){
+        int centreX = getWidth() / 2;
+        int centreY = getHeight() / 2;
+        double theta = Math.atan2(centreY - y, centreX - x);
+        if (random.nextBoolean())
+            theta += ThreadLocalRandom.current().nextDouble(0, Math.PI / 12);
+        else
+            theta -= ThreadLocalRandom.current().nextDouble(0, Math.PI / 12);
+        return theta;
+    }
+
+    public int getTotalDiceNumber(){
+        int totalDice;
+        synchronized (totalDiceNumber){
+            while (totalDiceNumber.isEmpty()) {
+                try {
+                    totalDiceNumber.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            totalDice = totalDiceNumber.remove(0);
+        }
+        return totalDice;
     }
 
     public void run(){
@@ -106,7 +174,7 @@ public class DicePanel extends JPanel implements Runnable{
     }
 
     public void start(){
-        t = new Thread(this, "Dice roll thread");
+        Thread t = new Thread(this, "Dice roll thread");
         t.start();
     }
 
