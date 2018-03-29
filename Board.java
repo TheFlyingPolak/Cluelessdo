@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 /*
 16310943 James Byrne
@@ -24,8 +25,9 @@ public class Board extends JComponent {
     // width of walls
     private int wallWidth = 6;
 
-    //jframe for testing will remove when inserting into project frame
-    //JFrame frame = new JFrame("Boardgame");
+    // stores references to doors which should be numbered on the board while a player is prompted to exit a room
+    private final ArrayList<Tile> doorsToNumber = new ArrayList<>();
+
 
     public Board() {
         map = new Map();
@@ -43,6 +45,10 @@ public class Board extends JComponent {
 
     public int getYBoard() {
         return Y_BORDER *2 + Y_SIDE_LENGTH *25;
+    }
+
+    public void addDoorToNumber(Tile door){
+        doorsToNumber.add(doorsToNumber.size(), door);
     }
 
     public void paintComponent(Graphics g) {
@@ -97,6 +103,19 @@ public class Board extends JComponent {
         g2.drawString("Joey's Living Room", (int) (X_BORDER + 18.5* X_SIDE_LENGTH), (int) (Y_BORDER + 10.5* Y_SIDE_LENGTH));
         g2.drawString("Phoebe's Apartment", X_BORDER + 18* X_SIDE_LENGTH, (int) (Y_BORDER + 17.2* Y_SIDE_LENGTH));
         g2.drawString("Allesandro's", X_BORDER + 19* X_SIDE_LENGTH, (int) (Y_BORDER + 23.8* Y_SIDE_LENGTH));
+
+        drawDoorNumbers(g2);
+    }
+
+    private void drawDoorNumbers(Graphics2D g2){
+        for (Tile door: doorsToNumber){
+            Integer doorNumber = doorsToNumber.indexOf(door) + 1;
+            g2.drawString(doorNumber.toString(), door.getXCoordinate(), door.getYCoordinate());
+        }
+    }
+
+    public void clearDoorsToNumber(){
+        doorsToNumber.clear();
     }
 
     private void drawWalls(Graphics2D g2) {

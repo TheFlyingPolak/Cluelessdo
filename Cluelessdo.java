@@ -15,8 +15,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 public class Cluelessdo {
-    private TokenController tokenPanel;
-    private DicePanel dicePanel;
+    private final TokenController tokenPanel;
+    private final DicePanel dicePanel;
     private UI ui;
     private CircularlyLinkedList<Player> players;
     private Iterator<Player> playerIterator;
@@ -320,6 +320,11 @@ public class Cluelessdo {
         do{
             command = doCommand();
             if (command == CommandTypes.ROLL){
+                if (dicePanel.isRunning()) {
+                    synchronized (dicePanel) {
+                        dicePanel.notify();
+                    }
+                }
                 dicePanel.start();
                 numberOfMoves = dicePanel.getTotalDiceNumber();
                 ui.getInfo().addText("You rolled " + numberOfMoves);
@@ -360,15 +365,17 @@ public class Cluelessdo {
             }
             /** If player is in a room, ask player to choose an exit or use a secret passage */
             else if (currentPlayer.getPlayerToken().getCurrentTile().getRoomType() != RoomType.CORRIDOR){
-                ui.getInfo().addText("Select the exit to take or use secret passage");
+                ui.getInfo().addText("Select an exit labelled on the screen or type \"pass(age)\" to use secret passage");
 
                 /** Collect information about the room the player is occupying */
                 int numberOfRoomExits = ui.getBoard().getMap().getRoomByType(currentPlayer.getPlayerToken().getCurrentTile().getRoomType()).getNumberOfDoors();
                 Tile[] doors = new Tile[numberOfRoomExits];
                 for (int i = 0; i < numberOfRoomExits; i++) {
                     doors[i] = ui.getBoard().getMap().getRoomByType(currentPlayer.getPlayerToken().getCurrentTile().getRoomType()).getDoor(i);
-                    ui.getInfo().addText("Door " + (i + 1) + ": " + doors[i].getTileX() + "," + doors[i].getTileY());
+                    ui.getInfo().addText("Door " + (i + 1));
+                    ui.getBoard().addDoorToNumber(doors[i]);
                 }
+                ui.getBoard().repaint();
 
                 /** Prompt user to select exit or secret passage */
                 boolean loop = true;
@@ -407,6 +414,8 @@ public class Cluelessdo {
                         }
                     }
                 } while (loop);
+                ui.getBoard().clearDoorsToNumber();
+                ui.getBoard().repaint();
             }
             /** If player is not in a room, continue normal progression of movement */
             else{
@@ -449,6 +458,11 @@ public class Cluelessdo {
                 if (currentPlayer.getPlayerToken().getCurrentTile().getRoomType() != RoomType.CORRIDOR) {
                     numberOfMoves = 0;
                     currentPlayer.getPlayerToken().setRoomLastOccupied(currentPlayer.getPlayerToken().getCurrentTile().getRoomType());
+                }
+            }
+            if (dicePanel.isRunning()){
+                synchronized (dicePanel){
+                    dicePanel.notify();
                 }
             }
         } while (command != CommandTypes.DONE);

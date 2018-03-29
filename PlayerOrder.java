@@ -77,6 +77,11 @@ public class PlayerOrder {
                 cmdInput = ui.getCmd().getCommand();
             }
 
+            if (dicePanel.isRunning()){
+                synchronized (dicePanel) {
+                    dicePanel.notify();
+                }
+            }
             dicePanel.start(); // roll the dice
             int diceRollNum = dicePanel.getTotalDiceNumber();
             ui.getInfo().addText(name + " rolled " + diceRollNum);

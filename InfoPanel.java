@@ -29,6 +29,7 @@ public class InfoPanel extends JPanel {
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
         setLayout(new BorderLayout());
+        setBorder(new JTextField().getBorder());
         add(scrollPane, BorderLayout.CENTER);
     }
 

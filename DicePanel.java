@@ -24,6 +24,7 @@ public class DicePanel extends JPanel implements Runnable{
     private class Die{
         private int xPosition, yPosition, number, lastRolledNumber;
         private double theta;
+        private double rotationAngle;
         private int movementDistance = 28 + (random.nextInt(9) - 4);
 
         public Die(){
@@ -33,8 +34,11 @@ public class DicePanel extends JPanel implements Runnable{
     private BufferedImage[] diceImages = new BufferedImage[6];
     private final int NUMBER_OF_DICE = 2;
     private Die[] dice;
+    private Thread t;
     private final Random random = new Random();
     private boolean rolling = false;        // Used by paintComponent method to draw dice if true
+    private boolean waiting = false;
+    private boolean running = false;
     private final String imagePath = "images/dice/dice";
     private final ArrayList<Integer> totalDiceNumber = new ArrayList<>();
 
@@ -55,6 +59,7 @@ public class DicePanel extends JPanel implements Runnable{
 
     public void rollDice(){
         rolling = true;
+        waiting = false;
 
         /** Get the general starting position and direction which the dice should follow. Random deviations will be added */
         Point startingPosition = getRandomStartingPosition();
@@ -110,14 +115,18 @@ public class DicePanel extends JPanel implements Runnable{
             totalDiceNumber.add(totalDice);
             totalDiceNumber.notify();
         }
+        waiting = true;
+        synchronized (this) {
+            try {
+                wait(4000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         rolling = false;
-        try{
-            Thread.sleep(4000);
-        }
-        catch (InterruptedException e){
-            e.printStackTrace();
-        }
+        revalidate();
         repaint();
+        waiting = false;
     }
 
     /**
@@ -170,25 +179,32 @@ public class DicePanel extends JPanel implements Runnable{
     }
 
     public void run(){
+        running = true;
         rollDice();
+        running = false;
     }
 
     public void start(){
-        Thread t = new Thread(this, "Dice roll thread");
+        t = new Thread(this, "Dice roll thread");
         t.start();
+    }
+
+    public boolean isRunning(){
+        return running;
     }
 
     @Override
     public void paintComponent(Graphics g){
-        super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
         if (rolling) {
             BufferedImage[] diceToDraw = new BufferedImage[NUMBER_OF_DICE];
             for (int i = 0; i < NUMBER_OF_DICE; i++) {
                 diceToDraw[i] = diceImages[dice[i].number - 1];
-                double rotationAngle = Math.PI * 2 * random.nextDouble();
-                AffineTransform transform = AffineTransform.getRotateInstance(rotationAngle, dice[i].xPosition, dice[i].yPosition);
+                if (!waiting) {
+                    dice[i].rotationAngle = Math.PI * 2 * random.nextDouble();
+                }
+                AffineTransform transform = AffineTransform.getRotateInstance(dice[i].rotationAngle, dice[i].xPosition, dice[i].yPosition);
                 g2.setTransform(transform);
                 g2.drawImage(diceToDraw[i], dice[i].xPosition - (diceToDraw[i].getWidth() / 2), dice[i].yPosition - (diceToDraw[i].getHeight() / 2), this);
             }
