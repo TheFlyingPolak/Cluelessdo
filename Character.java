@@ -24,7 +24,7 @@ public class Character extends Token{
         checks to see if the move is valid, if valid moves the player
         @return 0: move valid, 1: wall in the way, 2: player in the way, 3: attempt to return to same room in same turn
      */
-    int moveToken(Direction dir, Map map) throws NullPointerException{
+    int movePlayer(Direction dir, Map map) throws NullPointerException{
         Tile currTile = getCurrentTile();
         int x = currTile.getTileX(); // player X position on board
         int y = currTile.getTileY(); // player Y position on board
@@ -112,7 +112,7 @@ public class Character extends Token{
             }
         }
         if (nextTile != null) { // if nextTile has not been set
-            super.moveToken(nextTile);
+            moveToken(nextTile);
             return 0; // move successful
         } else {
             throw new NullPointerException("Attempt to move to a tile which has not been initialised");
@@ -123,7 +123,7 @@ public class Character extends Token{
         if (nextTile.isOccupied()) {
             return false;
         }
-        super.moveToken(nextTile);
+        moveToken(nextTile);
         return true;
     }
 

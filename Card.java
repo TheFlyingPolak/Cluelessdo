@@ -27,12 +27,12 @@ public class Card {
             case "CHANDLER" : return "Chandler";
             case "MC_KITCHEN" : return "Monica + Chandlers Kitchen";
             case "MC_LIVINGROOM" : return "Monica + Chandlers Living Room";
-            case "R_OFFICE" : return "Rachel's Office";
+            case "R_OFFICE" : return "Rachels Office";
             case "CENTRALPERK" : return "Central Perk";
             case "GELLERHOUSE" : return "Geller Household";
-            case "J_KITCHEN" : return "Joey's Kitchen";
-            case "J_LIVINGROOM" : return "Joey's Living Room";
-            case "P_APARTMENT" : return "Phoebe's Apartment";
+            case "J_KITCHEN" : return "Joeys Kitchen";
+            case "J_LIVINGROOM" : return "Joeys Living Room";
+            case "P_APARTMENT" : return "Phoebes Apartment";
             case "ALLESANDROS" : return "Allesandros";
             case "ROPE" : return "Rope";
             case "DAGGER" : return "Dagger";

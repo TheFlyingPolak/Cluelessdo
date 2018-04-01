@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 /*
@@ -254,9 +255,16 @@ public class Board extends JComponent {
         g2.fill(new Rectangle(X_BORDER + 17* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 2* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
         g2.fill(new Rectangle(X_BORDER + 15* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + Y_SIDE_LENGTH - wallWidth/2, 2* X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
         g2.fill(new Rectangle(X_BORDER + 14* X_SIDE_LENGTH - wallWidth/2, Y_BORDER - wallWidth/2, X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
-
-
     }
 
-
+    public void drawSecretPassages(Graphics2D g2) {
+        Point2D.Double[] points = {new Point2D.Double(5, 1), new Point2D.Double(22, 5), new Point2D.Double(0, 19), new Point2D.Double(22, 21)};
+        for (int i = 0; i < points.length; i++) {
+            Rectangle rectangle = new Rectangle((int) (X_BORDER + points[i].getX()*X_SIDE_LENGTH), (int) (Y_BORDER + points[i].getX()*Y_SIDE_LENGTH), WIDTH, WIDTH);
+            g2.setColor(Color.BLACK);
+            g2.draw(rectangle);
+            g2.setColor(Color.GRAY);
+            g2.draw(rectangle);
+        }
+    }
 }

@@ -103,4 +103,25 @@ public class Notes {
         }
         return null;
     }
+
+    public void setPlayerChecked(String enumName) {
+        for (int i = 0; i < notePlayers.length; i++) {
+            if (notePlayers[i].getEnumName().equals(enumName))
+                notePlayers[i].setSeen();
+        }
+    }
+
+    public void setRoomChecked(String enumName) {
+        for (int i = 0; i < noteRooms.length; i++) {
+            if (noteRooms[i].getEnumName().equals(enumName))
+                noteRooms[i].setSeen();
+        }
+    }
+
+    public void setWeaponChecked(String enumName) {
+        for (int i = 0; i < noteWeapons.length; i++){
+            if (noteWeapons[i].getEnumName().equals(enumName))
+                noteWeapons[i].setSeen();
+        }
+    }
 }

@@ -81,9 +81,10 @@ public class TokenController extends JPanel {
      * Methods to find and return a Character or Weapon object by its type enum.
      */
     public Character getPlayerToken(CharacterNames name) {
-        for (Character tmp: playerTokens){
-            if (tmp.getName() == name)
-                return tmp;
+        for (Character character: playerTokens){
+            if (character.getName().equals(name)) {
+                return character;
+            }
         }
         return null;
     }
