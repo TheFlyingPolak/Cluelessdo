@@ -520,7 +520,7 @@ public class Cluelessdo {
                 ui.getInfo().addText("confirm that " + player.getPlayerName() + " is playing now by entering y/n"); // prompt
 
                 String userInput = ui.getCmd().getCommand(); // read input
-                while (userInput.toLowerCase().equals("n") || userInput.toLowerCase().equals("no")) {  // ensure that the right player is playing at that moment, if not loop
+                while (!(userInput.toLowerCase().equals("y") || userInput.toLowerCase().equals("yes"))) {  // ensure that the right player is playing at that moment, if not loop
                     ui.getInfo().addText("Cannot continue until " + player.getPlayerName() + " is playing now enter y/n"); // prompt
                     userInput = ui.getCmd().getCommand(); // read input
                 }
@@ -566,7 +566,7 @@ public class Cluelessdo {
         ui.getInfo().clear(); // clear the info panel
         ui.getInfo().addText("confirm that " + currentPlayer.getPlayerName() + " is playing now by entering y/n"); // prompt
         String input = ui.getCmd().getCommand(); // read input
-        while (input.equals("no") || input.equals("n")) {  // ensure that the right player is playing at that moment, if not loop
+        while (!(input.toLowerCase().equals("y") || input.toLowerCase().equals("yes"))) {  // ensure that the right player is playing at that moment, if not loop
             ui.getInfo().addText("you cannot continue until " + currentPlayer.getPlayerName() + " is playing now by entering y/n"); // prompt
             input = ui.getCmd().getCommand(); // read input
         }
