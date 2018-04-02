@@ -557,6 +557,10 @@ public class Cluelessdo {
                     }
                 } while (!canContinue); // while the player has not entered the tokens that they have out of the list or entered done
             }
+
+            if (!questioningResult.equals("")) {
+                break;
+            }
         }
 
         if (questioningResult.equals("")) { // if nobody has any of the tokens
