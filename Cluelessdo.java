@@ -25,6 +25,9 @@ public class Cluelessdo {
     private ArrayList<Card> publicCards = new ArrayList<>();    // List of cards visible to all players. Initially contains all cards
     private final Envelope envelope = new Envelope();
 
+    private final CharacterNames[] CHARACTER_NAMES = {CharacterNames.JOEY, CharacterNames.MONICA, CharacterNames.CHANDLER, CharacterNames.PHOEBE, CharacterNames.RACHEL, CharacterNames.ROSS};
+
+
     Cluelessdo() throws IOException {
         ui = new UI();
         tokenPanel = new TokenController(ui.getBoard().getMap(),ui.getBoard());     // Token drawing panel
@@ -200,10 +203,9 @@ public class Cluelessdo {
 
             /** Select playable character */
             ui.getInfo().addText("Who would you like to play as, " + name + "? Available characters:");
-            final CharacterNames[] allCharacterNames = {CharacterNames.JOEY, CharacterNames.MONICA, CharacterNames.CHANDLER, CharacterNames.PHOEBE, CharacterNames.RACHEL, CharacterNames.ROSS};
             for (int j = 0; j < 6; j++){
-                if (!Arrays.asList(characterNames).contains(allCharacterNames[j]))
-                    ui.getInfo().addText(allCharacterNames[j].toString());
+                if (!Arrays.asList(characterNames).contains(CHARACTER_NAMES[j]))
+                    ui.getInfo().addText(CHARACTER_NAMES[j].toString());
             }
             boolean loop = true;
             do{
@@ -541,17 +543,29 @@ public class Cluelessdo {
                     } else if (input.equals("help")) {
                         ui.getInfo().addText("Enter \"done\" if you dont have either the character, room or weapon, the name of the character, room or weapon that you have (pick one if you've more than one), \"notes\" to view youre notes");
                     } else if (murderer == CharacterNames.getValue(input)) { // player has the potential murderer
-                        currentPlayer.getPlayerNotes().setPlayerChecked(question.getMurderer().getEnumName());
-                        canContinue = true; // boolean to exit loop
-                        questioningResult = player.getPlayerName() + " has " + question.getMurderer().getName() + "."; // create response to current player questioning
+                        if (currentPlayer.getPlayerNotes().getNoteItem(murderer.toString()).getChecked() == 'X') { // if the player has that token
+                            currentPlayer.getPlayerNotes().setPlayerChecked(question.getMurderer().getEnumName());
+                            canContinue = true; // boolean to exit loop
+                            questioningResult = player.getPlayerName() + " has " + question.getMurderer().getName() + "."; // create response to current player questioning
+                        } else {
+                            ui.getInfo().addText("You don't have that character! please enter either the room or weapon if you have one of them, if not just enter \"done\"");
+                        }
                     } else if (murderLocation == RoomType.getValue(input)) { // player has the potential murder location
-                        currentPlayer.getPlayerNotes().setRoomChecked(question.getLocation().getEnumName());
-                        canContinue = true; // boolean to exit loop
-                        questioningResult = player.getPlayerName() + " has " + question.getLocation().getName() + "."; // create response to current player questioning
+                        if (currentPlayer.getPlayerNotes().getNoteItem(murderLocation.toString()).getChecked() == 'X') { // if the player has that token
+                            currentPlayer.getPlayerNotes().setRoomChecked(question.getLocation().getEnumName());
+                            canContinue = true; // boolean to exit loop
+                            questioningResult = player.getPlayerName() + " has " + question.getLocation().getName() + "."; // create response to current player questioning
+                        } else {
+                            ui.getInfo().addText("You don't have that room! please enter either the character or weapon if you have one of them, if not just enter \"done\"");
+                        }
                     } else if (murderWeapon == WeaponTypes.getValue(input)) { // player has the potential murder weapon
-                        currentPlayer.getPlayerNotes().setWeaponChecked(question.getWeapon().getEnumName());
-                        canContinue = true; // boolean to exit loop
-                        questioningResult = player.getPlayerName() + " has " + question.getWeapon().getName() + "."; // create response to current player questioning
+                        if (currentPlayer.getPlayerNotes().getNoteItem(murderWeapon.toString()).getChecked() == 'X') { // if the player has that token
+                            currentPlayer.getPlayerNotes().setWeaponChecked(question.getWeapon().getEnumName());
+                            canContinue = true; // boolean to exit loop
+                            questioningResult = player.getPlayerName() + " has " + question.getWeapon().getName() + "."; // create response to current player questioning
+                        } else {
+                            ui.getInfo().addText("You don't have that weapon! please enter either the character or room if you have one of them, if not just enter \"done\"");
+                        }
                     } else {
                         ui.getInfo().addText("That's not a valid entry, try again!"); // inform user of invalid input
                     }
