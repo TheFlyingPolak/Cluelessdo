@@ -452,8 +452,9 @@ public class Cluelessdo {
                     } else if (command == CommandTypes.QUESTION && currentPlayer.getPlayerToken().getCurrentTile().getRoomType() != RoomType.CORRIDOR) {
                         questionAsked = true;
                         question(currentPlayer);
+                        numberOfMoves = 0;
                     } else if (command == CommandTypes.QUESTION) {
-                        ui.getInfo().addText("You have already questioned! Enter \"done\' to end yout turn or \"notes\" to look at your notes.");
+                        ui.getInfo().addText("You have already questioned! Enter \"done\' to end your turn or \"notes\" to look at your notes.");
                     } else if (commandString.equals("help")) { // if the user enters help
                         ui.getInfo().addText("Enter \"pass\" or \"passage\" to use the secret passage (if possible) or enter the door number you want to exit the room by");
                     }
