@@ -45,6 +45,10 @@ public class CircularlyLinkedList<E> implements Iterable<E> {
         return tail.getElement();
     }
 
+    public void reduceSize(){
+        size--;
+    }
+
     //add a player to the start of the list
     public void addFirst(Player p){
         Node n = new Node(p, null);
@@ -75,6 +79,45 @@ public class CircularlyLinkedList<E> implements Iterable<E> {
             tail = n;
         }
         size++;
+    }
+
+    /** function for removal of nodes*/
+    public void remove(Player p) {
+        Node<E> temp = head;
+        Node<E> prev = tail;
+        Node<E> prevOfPrev = new Node<>(null,null);
+
+        if(this.isEmpty()){
+            throw new Error("Circularly linked List is already empty");
+        }
+        else {
+            while (true) {
+                if (temp.element.equals(p)) {
+                    prev.setNext(temp.getNext());
+                    temp.setNext(null);
+
+                    if (temp.equals(head)) {
+                        head = prev.next;
+                        size--;
+                        return;
+                    }
+
+                    else if (temp.equals(tail)) {
+                        tail = prevOfPrev;
+                        size--;
+                        return;
+                    }
+
+                    else {
+                        size--;
+                        return;
+                    }
+                }
+                prevOfPrev = prev;
+                prev=temp;
+                temp = temp.getNext();
+            }
+        }
     }
 
     @Override
@@ -125,29 +168,29 @@ public class CircularlyLinkedList<E> implements Iterable<E> {
             return res;
         }
     }
-    
+
     //Circle through the players in the list
     /*public void playerTurns(UI ui,TokenController tokenPanel) {
         //A node to walk through each player
         Node walk = tail.getNext();
-        
+
         //do while loop loops through list of players while all the players are still playing
         do {
             ui.getInfo().addText(walk.getElement().getPlayerName() + " it's your turn! Type roll, to roll the dice");
             String command = ui.getCmd().getCommand().toLowerCase();
-            
+
             if(command.contentEquals("roll")){
                 //generate random number between 1-6
                 Random rn = new Random();
                 int roll = rn.nextInt(6) + 1;
                 ui.getInfo().addText("You rolled a " + roll);
                 ui.getInfo().addText("You can move " + roll + " places on the board\nEnter up,down,left or right to control your token");
-                
+
                 //loop allows the player to move the number of times there dice roll has given them
                 while(roll>0){
-                    
+
                     String direction = ui.getCmd().getCommand().toLowerCase();
-                    
+
                     if(direction.contentEquals("up")){
                         walk.getPlayer().getPlayerToken().moveToken(Direction.UP,ui.getBoard());
                         ui.getInfo().addText("up");
@@ -172,7 +215,7 @@ public class CircularlyLinkedList<E> implements Iterable<E> {
                 }
             }
             walk = walk.getNext();
-            
+
         } while (!isEmpty());
     }*/
 

@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /*
  * Class that represents the player questions, where they select the murderer and the murder weapon
  */
@@ -5,9 +8,6 @@ public class Question {
     private Card weapon;
     private Card murderer;
     private Card location;
-
-    private final static WeaponTypes[] WEAPON_NAMES = {WeaponTypes.ROPE, WeaponTypes.DAGGER, WeaponTypes.WRENCH, WeaponTypes.PISTOL, WeaponTypes.CANDLESTICK, WeaponTypes.PIPE};
-    private final static CharacterNames[] CHARACTER_NAMES = {CharacterNames.JOEY, CharacterNames.MONICA, CharacterNames.CHANDLER, CharacterNames.PHOEBE, CharacterNames.RACHEL, CharacterNames.ROSS}; // list of players
 
     // constructor for class
     public Question(RoomType room){
@@ -27,19 +27,19 @@ public class Question {
 
     // ask retrieve and validate who the player thinks the murderer is
     private Card murdererName(UI ui, Player currentPlayer) {
+        final CharacterNames[] allCharacterNames = {CharacterNames.JOEY, CharacterNames.MONICA, CharacterNames.CHANDLER, CharacterNames.PHOEBE, CharacterNames.RACHEL, CharacterNames.ROSS}; // list of players
 
         ui.getInfo().addText("Enter the name of the character you want to question from the list below"); // prompt
 
         // display all the characters to the player that they can select
-        for (int i = 0; i < CHARACTER_NAMES.length; i++) {
-            ui.getInfo().addText(CHARACTER_NAMES[i].toString());
+        for (int i = 0; i < allCharacterNames.length; i++) {
+            ui.getInfo().addText(allCharacterNames[i].toString());
         }
 
         CharacterNames murderer = null;
-        String murderersName;
+        String murderersName = ui.getCmd().getCommand().toLowerCase();
         // check the input from the user whether it is a character name, help command, notes command or the wrong input
         do {
-            murderersName = ui.getCmd().getCommand();
             switch (murderersName) {
                 case "mustard":
                 case "joey":
@@ -84,19 +84,20 @@ public class Question {
 
     // ask retrieve and validate what the player thinks the murder weapon was
     private Card murderWeapon(UI ui, Player currentPlayer) {
+        final WeaponTypes[] allWeaponNames = {WeaponTypes.ROPE, WeaponTypes.DAGGER, WeaponTypes.WRENCH, WeaponTypes.PISTOL, WeaponTypes.CANDLESTICK, WeaponTypes.PIPE};
+
         ui.getInfo().addText("Enter the weapon you think " + murderer.getName() + " killed Gunther in " + location.getName() + ". Listed Below"); // prompt
 
         // display all the characters to the player that they can select
-        for (int i = 0; i < WEAPON_NAMES.length; i++) {
-            ui.getInfo().addText(WEAPON_NAMES[i].toString());
+        for (int i = 0; i < allWeaponNames.length; i++) {
+            ui.getInfo().addText(allWeaponNames[i].toString());
         }
 
         WeaponTypes murderWeapon = null;
-        String weapon;
+        String weapon = ui.getCmd().getCommand().toLowerCase();
 
         // check the input from the user whether it is a weapon, help command, notes command or the wrong input
         do {
-            weapon = ui.getCmd().getCommand().toLowerCase();
             switch (weapon) {
                 case "rope":
                     murderWeapon = WeaponTypes.ROPE;
