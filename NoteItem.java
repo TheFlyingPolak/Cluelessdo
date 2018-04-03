@@ -40,8 +40,15 @@ public class NoteItem {
         setChecked('X');
     }
 
-    //if a player has seen a specific card this card is marked with an A
-    public void setSeen(){
+    //cards made seen to all
+    public void setShared(){
         setChecked('A');
     }
+
+    //if a player has seen a specific card this card is marked with an V
+    public void setSeen(){
+        setChecked('V');
+    }
+
+
 }

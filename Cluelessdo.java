@@ -13,6 +13,7 @@ import java.util.function.Predicate;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.swing.*;
 
 public class Cluelessdo {
     private final TokenController tokenPanel;
@@ -147,7 +148,7 @@ public class Cluelessdo {
         for (Card tmp: publicCards){
             for (int i = 0; i < players.getSize(); i++){
                 Player player = playerIterator.next();
-                player.getPlayerNotes().getNoteItem(tmp.getEnumName()).setSeen();
+                player.getPlayerNotes().getNoteItem(tmp.getEnumName()).setShared();
             }
         }
     }
@@ -385,7 +386,7 @@ public class Cluelessdo {
 
                         if((suspect.toLowerCase().equals(envelope.getMurderer().getName().toLowerCase())) && (weapon.toLowerCase().equals(envelope.getWeapon().getName().toLowerCase())) && (room.toLowerCase().equals(envelope.getLocation().getName().toLowerCase()))){
                             ui.getInfo().addText("Congratulations you have won");
-                            //do something to show the game has been won
+                            //something cool
                         }
 
                         else{
@@ -514,6 +515,9 @@ public class Cluelessdo {
                         break;
                     case PASSAGE:
                         ui.getInfo().addText("Cannot use secret passage: you are not in a room");
+                        break;
+                    case ACCUSE:
+                        ui.getInfo().addText("You cannot accuse right now, you must be in the cellar! Try another command");
                         break;
                     case HELP:
                         ui.getInfo().addText("Enter \"u\" to move up, \"d\" to move down, \"l\" to move left, \"r\" to move right,\n\"passage\" to move through the secret passage,\n\"notes\" to display your notes,\n\"done\" When you are finished your turn");

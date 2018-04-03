@@ -1,9 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.net.URL;
 import java.util.ArrayList;
 
-/*
+/*z
 16310943 James Byrne
 16314763 Jakub Gajewski
 16305706 Mark Hartnett
@@ -12,7 +13,6 @@ import java.util.ArrayList;
 public class Board extends JComponent {
     //construct a logical board
     private Map map;
-
 
     //sideLength = length of tile side
     public static final int X_SIDE_LENGTH = 23;
@@ -28,7 +28,6 @@ public class Board extends JComponent {
 
     // stores references to doors which should be numbered on the board while a player is prompted to exit a room
     private final ArrayList<Tile> doorsToNumber = new ArrayList<>();
-
 
     public Board() {
         map = new Map();
