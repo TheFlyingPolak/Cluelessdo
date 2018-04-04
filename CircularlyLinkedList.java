@@ -91,7 +91,7 @@ public class CircularlyLinkedList<E> implements Iterable<E> {
                 if (temp.element.equals(p)) {
                     prev.setNext(temp.getNext());
                     temp.setNext(null);
-
+                    p=null;
                     if (temp.equals(head)) {
                         head = prev.next;
                         size--;
@@ -123,10 +123,10 @@ public class CircularlyLinkedList<E> implements Iterable<E> {
 
     private static class Node<E>{
         private E element;  //element of the position in the linked list
-        private Node next;      //reference to next node in the list
+        private Node<E> next;      //reference to next node in the list
 
         //creates a given element before a certain node
-        public Node(E e, Node n){
+        public Node(E e, Node<E> n){
             element = e;
             next = n;
         }
@@ -135,11 +135,11 @@ public class CircularlyLinkedList<E> implements Iterable<E> {
             return element;
         }
 
-        public Node getNext() {
+        public Node<E> getNext() {
             return next;
         }
 
-        public void setNext(Node n) {
+        public void setNext(Node<E> n) {
             next = n;
         }
     }

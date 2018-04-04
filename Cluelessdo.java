@@ -398,7 +398,7 @@ public class Cluelessdo {
                         else{
                             players.remove(currentPlayer);
                             ui.getInfo().addText(" Sorry that is incorrect, you are eliminated");
-                            break;
+                            return;
                         }
                     }
 
@@ -421,13 +421,15 @@ public class Cluelessdo {
                     }
                     command = doCommand();
                 } while (command != CommandTypes.DONE);
+
                 if (currentPlayer.getPlayerToken().getCurrentTile().getRoomType() != RoomType.CORRIDOR)
                     currentPlayer.getPlayerToken().setRoomLastOccupied(currentPlayer.getPlayerToken().getCurrentTile().getRoomType());
                 else
                     currentPlayer.getPlayerToken().setRoomLastOccupied(null);
             }
+
             /** If player is in a room, ask player to choose an exit or use a secret passage */
-            else if (currentPlayer.getPlayerToken().getCurrentTile().getRoomType() != RoomType.CORRIDOR){
+            else if (currentPlayer.getPlayerToken().getCurrentTile().getRoomType() != RoomType.CORRIDOR && currentPlayer.getPlayerToken().getCurrentTile().getRoomType() != RoomType.CELLAR){
                 ui.getInfo().addText("Select an exit labelled on the screen or type \"pass\" or \"passage\" to use secret passage");
 
                 /** Collect information about the room the player is occupying */
@@ -455,9 +457,10 @@ public class Cluelessdo {
                         }
                         else
                             ui.getInfo().addText("This room does not have a secret passage!");
-                    } else if (command == CommandTypes.QUESTION && currentPlayer.getPlayerToken().getCurrentTile().getRoomType() != RoomType.CORRIDOR) {
+                    } else if (command == CommandTypes.QUESTION && currentPlayer.getPlayerToken().getCurrentTile().getRoomType() != RoomType.CORRIDOR && currentPlayer.getPlayerToken().getCurrentTile().getRoomType() != RoomType.CELLAR) {
                         questionAsked = true;
                         question(currentPlayer);
+                        numberOfMoves = 0;
                     } else if (command == CommandTypes.QUESTION) {
                         ui.getInfo().addText("You have already questioned! Enter \"done\' to end yout turn or \"notes\" to look at your notes.");
                     } else if (commandString.equals("help")) { // if the user enters help
@@ -487,6 +490,7 @@ public class Cluelessdo {
                 ui.getBoard().clearDoorsToNumber();
                 ui.getBoard().repaint();
             }
+
             /** If player is not in a room, continue normal progression of movement */
             else{
                 command = doCommand();
