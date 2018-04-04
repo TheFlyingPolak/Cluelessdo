@@ -13,7 +13,6 @@ import java.util.function.Predicate;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.swing.*;
 
 public class Cluelessdo {
     private final TokenController tokenPanel;
@@ -25,6 +24,9 @@ public class Cluelessdo {
     private boolean running;
     private ArrayList<Card> publicCards = new ArrayList<>();    // List of cards visible to all players. Initially contains all cards
     private final Envelope envelope = new Envelope();
+
+    private final CharacterNames[] CHARACTER_NAMES = {CharacterNames.JOEY, CharacterNames.MONICA, CharacterNames.CHANDLER, CharacterNames.PHOEBE, CharacterNames.RACHEL, CharacterNames.ROSS};
+
 
     Cluelessdo() throws IOException {
         ui = new UI();
@@ -133,7 +135,7 @@ public class Cluelessdo {
         /** Remove cards already present in the envelope */
         Predicate<Card> predicate = (Card c) -> c.getEnumName().equals(envelope.getLocation().getEnumName()) || c.getEnumName().equals(envelope.getMurderer().getEnumName()) || c.getEnumName().equals(envelope.getWeapon().getEnumName());
         publicCards.removeIf(predicate);
-
+        
         /** Distribute public cards among players */
         int cardCount = 0;
         while (cardCount + numberOfPlayers <= publicCards.size()){
@@ -202,9 +204,9 @@ public class Cluelessdo {
 
             /** Select playable character */
             ui.getInfo().addText("Who would you like to play as, " + name + "? Available characters:");
-            final String[] names = {"Joey", "Monica", "Chandler", "Phoebe", "Rachel", "Ross"};
             for (int j = 0; j < 6; j++){
-                ui.getInfo().addText(names[j]);
+                if (!Arrays.asList(characterNames).contains(CHARACTER_NAMES[j]))
+                    ui.getInfo().addText(CHARACTER_NAMES[j].toString());
             }
             boolean loop = true;
             do{
@@ -309,6 +311,10 @@ public class Cluelessdo {
         playerIterator = players.iterator();
     }
 
+    /**
+     * Method to control the progression of a single turn, i.e. dice roll, all movement and number of moves remaining
+     * @param currentPlayer the player to take the turn
+     */
     public void playTurn(Player currentPlayer){
         CommandTypes command;
         int numberOfMoves = 0;
@@ -354,41 +360,41 @@ public class Cluelessdo {
                             ui.getInfo().addText("You are about to make an accusation, to check your notes one more time enter \"notes\" otherwise enter \"accuse\"");
                             command = doCommand();
                         }while (command != CommandTypes.ACCUSE && command != CommandTypes.NOTES && command != CommandTypes.CHEAT);
-
+                        
                         if (command == CommandTypes.NOTES){
                             currentPlayer.getPlayerNotes().showNotes();
                         }
                         else if (command == CommandTypes.CHEAT){
                             ui.getInfo().addText(envelope.getMurderer().getName() + " in the " + envelope.getLocation().getName() + " with the " + envelope.getWeapon().getName());
                         }
-
+                        
                         ui.getInfo().addText("Firstly enter the name of the character you believe to be the murderer, your options are:");
                         final String[] names = {"Joey", "Monica", "Chandler", "Phoebe", "Rachel", "Ross"};
                         for (int j = 0; j < 6; j++){
                             ui.getInfo().addText(names[j]);
                         }
                         String suspect = ui.getCmd().getCommand();
-
+                        
                         ui.getInfo().addText("Now please enter the weapon you believe " + suspect + " used, your options are:");
                         final String[] weapons = {"Rope", "Dagger", "Wrench", "Pistol", "Candlestick", "Pipe"};
                         for (int j = 0; j < 6; j++){
                             ui.getInfo().addText(weapons[j]);
                         }
                         String weapon = ui.getCmd().getCommand();
-
+                        
                         ui.getInfo().addText("Enter the room you think the murder occurred in");
                         final String[] rooms = {"Monica + Chandlers Kitchen", "Monica + Chandlers Living Room", "Rachels Office",
-                                "Central Perk", "Geller Household", "Joeys Kitchen", "Joeys Living Room", "Phoebes Apartment", "Allesandros"};
+                            "Central Perk", "Geller Household", "Joeys Kitchen", "Joeys Living Room", "Phoebes Apartment", "Allesandros"};
                         for (int j = 0; j < 9; j++){
                             ui.getInfo().addText(rooms[j]);
                         }
                         String room = ui.getCmd().getCommand();
-
+                        
                         if((suspect.toLowerCase().equals(envelope.getMurderer().getName().toLowerCase())) && (weapon.toLowerCase().equals(envelope.getWeapon().getName().toLowerCase())) && (room.toLowerCase().equals(envelope.getLocation().getName().toLowerCase()))){
                             ui.getInfo().addText("Congratulations you have won");
                             //something cool
                         }
-
+                        
                         else{
                             players.remove(currentPlayer);
                             ui.getInfo().addText(" Sorry that is incorrect, you are eliminated");
@@ -420,7 +426,6 @@ public class Cluelessdo {
                 else
                     currentPlayer.getPlayerToken().setRoomLastOccupied(null);
             }
-
             /** If player is in a room, ask player to choose an exit or use a secret passage */
             else if (currentPlayer.getPlayerToken().getCurrentTile().getRoomType() != RoomType.CORRIDOR){
                 ui.getInfo().addText("Select an exit labelled on the screen or type \"pass\" or \"passage\" to use secret passage");
@@ -453,9 +458,8 @@ public class Cluelessdo {
                     } else if (command == CommandTypes.QUESTION && currentPlayer.getPlayerToken().getCurrentTile().getRoomType() != RoomType.CORRIDOR) {
                         questionAsked = true;
                         question(currentPlayer);
-                        numberOfMoves = 0;
                     } else if (command == CommandTypes.QUESTION) {
-                        ui.getInfo().addText("You have already questioned! Enter \"done\' to end your turn or \"notes\" to look at your notes.");
+                        ui.getInfo().addText("You have already questioned! Enter \"done\' to end yout turn or \"notes\" to look at your notes.");
                     } else if (commandString.equals("help")) { // if the user enters help
                         ui.getInfo().addText("Enter \"pass\" or \"passage\" to use the secret passage (if possible) or enter the door number you want to exit the room by");
                     }
@@ -483,7 +487,6 @@ public class Cluelessdo {
                 ui.getBoard().clearDoorsToNumber();
                 ui.getBoard().repaint();
             }
-
             /** If player is not in a room, continue normal progression of movement */
             else{
                 command = doCommand();
@@ -513,11 +516,11 @@ public class Cluelessdo {
                     case QUESTION:
                         ui.getInfo().addText("You cannot question right now, you must be in a room! Try another command");
                         break;
-                    case PASSAGE:
-                        ui.getInfo().addText("Cannot use secret passage: you are not in a room");
-                        break;
                     case ACCUSE:
                         ui.getInfo().addText("You cannot accuse right now, you must be in the cellar! Try another command");
+                        break;
+                    case PASSAGE:
+                        ui.getInfo().addText("Cannot use secret passage: you are not in a room");
                         break;
                     case HELP:
                         ui.getInfo().addText("Enter \"u\" to move up, \"d\" to move down, \"l\" to move left, \"r\" to move right,\n\"passage\" to move through the secret passage,\n\"notes\" to display your notes,\n\"done\" When you are finished your turn");
@@ -541,7 +544,6 @@ public class Cluelessdo {
             }
         } while (command != CommandTypes.DONE);
     }
-
 
     public void question(Player currentPlayer) {
         Question question = new Question(currentPlayer.getPlayerToken().getCurrentTile().getRoomType()); // player question
@@ -572,7 +574,7 @@ public class Cluelessdo {
                 ui.getInfo().addText("confirm that " + player.getPlayerName() + " is playing now by entering y/n"); // prompt
 
                 String userInput = ui.getCmd().getCommand(); // read input
-                while (userInput.toLowerCase().equals("n") || userInput.toLowerCase().equals("no")) {  // ensure that the right player is playing at that moment, if not loop
+                while (!(userInput.toLowerCase().equals("y") || userInput.toLowerCase().equals("yes"))) {  // ensure that the right player is playing at that moment, if not loop
                     ui.getInfo().addText("Cannot continue until " + player.getPlayerName() + " is playing now enter y/n"); // prompt
                     userInput = ui.getCmd().getCommand(); // read input
                 }
@@ -593,21 +595,37 @@ public class Cluelessdo {
                     } else if (input.equals("help")) {
                         ui.getInfo().addText("Enter \"done\" if you dont have either the character, room or weapon, the name of the character, room or weapon that you have (pick one if you've more than one), \"notes\" to view youre notes");
                     } else if (murderer == CharacterNames.getValue(input)) { // player has the potential murderer
-                        currentPlayer.getPlayerNotes().setPlayerChecked(question.getMurderer().getEnumName());
-                        canContinue = true; // boolean to exit loop
-                        questioningResult = player.getPlayerName() + " has " + question.getMurderer().getName() + "."; // create response to current player questioning
+                        if (currentPlayer.getPlayerNotes().getNoteItem(murderer.toString()).getChecked() == 'X') { // if the player has that token
+                            currentPlayer.getPlayerNotes().setPlayerChecked(question.getMurderer().getEnumName());
+                            canContinue = true; // boolean to exit loop
+                            questioningResult = player.getPlayerName() + " has " + question.getMurderer().getName() + "."; // create response to current player questioning
+                        } else {
+                            ui.getInfo().addText("You don't have that character! please enter either the room or weapon if you have one of them, if not just enter \"done\"");
+                        }
                     } else if (murderLocation == RoomType.getValue(input)) { // player has the potential murder location
-                        currentPlayer.getPlayerNotes().setRoomChecked(question.getLocation().getEnumName());
-                        canContinue = true; // boolean to exit loop
-                        questioningResult = player.getPlayerName() + " has " + question.getLocation().getName() + "."; // create response to current player questioning
+                        if (currentPlayer.getPlayerNotes().getNoteItem(murderLocation.toString()).getChecked() == 'X') { // if the player has that token
+                            currentPlayer.getPlayerNotes().setRoomChecked(question.getLocation().getEnumName());
+                            canContinue = true; // boolean to exit loop
+                            questioningResult = player.getPlayerName() + " has " + question.getLocation().getName() + "."; // create response to current player questioning
+                        } else {
+                            ui.getInfo().addText("You don't have that room! please enter either the character or weapon if you have one of them, if not just enter \"done\"");
+                        }
                     } else if (murderWeapon == WeaponTypes.getValue(input)) { // player has the potential murder weapon
-                        currentPlayer.getPlayerNotes().setWeaponChecked(question.getWeapon().getEnumName());
-                        canContinue = true; // boolean to exit loop
-                        questioningResult = player.getPlayerName() + " has " + question.getWeapon().getName() + "."; // create response to current player questioning
+                        if (currentPlayer.getPlayerNotes().getNoteItem(murderWeapon.toString()).getChecked() == 'X') { // if the player has that token
+                            currentPlayer.getPlayerNotes().setWeaponChecked(question.getWeapon().getEnumName());
+                            canContinue = true; // boolean to exit loop
+                            questioningResult = player.getPlayerName() + " has " + question.getWeapon().getName() + "."; // create response to current player questioning
+                        } else {
+                            ui.getInfo().addText("You don't have that weapon! please enter either the character or room if you have one of them, if not just enter \"done\"");
+                        }
                     } else {
                         ui.getInfo().addText("That's not a valid entry, try again!"); // inform user of invalid input
                     }
                 } while (!canContinue); // while the player has not entered the tokens that they have out of the list or entered done
+            }
+
+            if (!questioningResult.equals("")) {
+                break;
             }
         }
 
@@ -618,7 +636,7 @@ public class Cluelessdo {
         ui.getInfo().clear(); // clear the info panel
         ui.getInfo().addText("confirm that " + currentPlayer.getPlayerName() + " is playing now by entering y/n"); // prompt
         String input = ui.getCmd().getCommand(); // read input
-        while (input.equals("no") || input.equals("n")) {  // ensure that the right player is playing at that moment, if not loop
+        while (!(input.toLowerCase().equals("y") || input.toLowerCase().equals("yes"))) {  // ensure that the right player is playing at that moment, if not loop
             ui.getInfo().addText("you cannot continue until " + currentPlayer.getPlayerName() + " is playing now by entering y/n"); // prompt
             input = ui.getCmd().getCommand(); // read input
         }
