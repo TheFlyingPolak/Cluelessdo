@@ -268,27 +268,11 @@ public class Cluelessdo {
                             ui.getInfo().addText(envelope.getMurderer().getName() + " in the " + envelope.getLocation().getName() + " with the " + envelope.getWeapon().getName());
                         }
 
-                        ui.getInfo().addText("Firstly enter the name of the character you believe to be the murderer, your options are:");
-                        for (int j = 0; j < 6; j++){
-                            ui.getInfo().addText(CHARACTER_NAMES[j].toString().substring(0,1) + CHARACTER_NAMES[j].toString().substring(1).toLowerCase());
-                        }
-                        String suspect = ui.getCmd().getCommand();
+                        Accusation accuse = new Accusation();
 
-                        ui.getInfo().addText("Now please enter the weapon you believe " + suspect + " used, your options are:");
-                        for (int j = 0; j < 6; j++){
-                            ui.getInfo().addText(WEAPON_NAMES[j].toString().substring(0,1) + WEAPON_NAMES[j].toString().substring(1).toLowerCase());
-                        }
-                        String weapon = ui.getCmd().getCommand();
+                        accuse.ask(ui, CHARACTER_NAMES, WEAPON_NAMES);
 
-                        ui.getInfo().addText("Enter the room you think the murder occurred in");
-                        final String[] rooms = {"Monica + Chandlers Kitchen", "Monica + Chandlers Living Room", "Rachels Office",
-                                "Central Perk", "Geller Household", "Joeys Kitchen", "Joeys Living Room", "Phoebes Apartment", "Allesandros"};
-                        for (int j = 0; j < 9; j++){
-                            ui.getInfo().addText(rooms[j]);
-                        }
-                        String room = ui.getCmd().getCommand();
-
-                        if((suspect.toLowerCase().equals(envelope.getMurderer().getName().toLowerCase())) && (weapon.toLowerCase().equals(envelope.getWeapon().getName().toLowerCase())) && (room.toLowerCase().equals(envelope.getLocation().getName().toLowerCase()))){
+                        if(accuse.isCorrect(envelope)){
                             ui.getInfo().addText("Congratulations you have won");
                             //do something cool
                             return;
@@ -604,6 +588,7 @@ public class Cluelessdo {
             currentPlayer = game.playerIterator.next();
             if (currentPlayer.isPlaying())
                 game.playTurn(currentPlayer);
+                game.ui.getInfo().clear();
             if (game.numberOfPlayersPlaying == 1) {
                 game.ui.getInfo().addText("Congratulations " + currentPlayer.getPlayerName() + ", you are the champion!!!");
                 game.running = false;
