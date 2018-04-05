@@ -25,6 +25,7 @@ public class Cluelessdo {
     private boolean running;
     private ArrayList<Card> publicCards = new ArrayList<>();    // List of cards visible to all players. Initially contains all cards
     private final Envelope envelope = new Envelope();
+    private final Log log = new Log();
 
     private final CharacterNames[] CHARACTER_NAMES = {CharacterNames.JOEY, CharacterNames.MONICA, CharacterNames.CHANDLER, CharacterNames.PHOEBE, CharacterNames.RACHEL, CharacterNames.ROSS};
     private final WeaponTypes[] WEAPON_NAMES = {WeaponTypes.CANDLESTICK, WeaponTypes.DAGGER, WeaponTypes.ROPE, WeaponTypes.PIPE, WeaponTypes.PISTOL, WeaponTypes.WRENCH};
@@ -106,6 +107,7 @@ public class Cluelessdo {
             case "cheat": return CommandTypes.CHEAT;
             case "question": return CommandTypes.QUESTION;
             case "accuse" : return CommandTypes.ACCUSE;
+            case "log" : return CommandTypes.LOG;
             case "quit": case "exit":
                 ui.getInfo().addText("Are you sure you want to quit? (y/n)");
                 boolean loop = true;
@@ -339,6 +341,8 @@ public class Cluelessdo {
                 }
             } else if (command == CommandTypes.NOTES) {
                 currentPlayer.getPlayerNotes().showNotes();
+            } else if (command == CommandTypes.LOG){
+                log.showLog(currentPlayer);
             } else if (command == CommandTypes.HELP) { // if the player enters help
                 ui.getInfo().addText("Enter \"roll\" to roll the dice or \"notes\" to display your notes");
             } else if (command == CommandTypes.CHEAT){
@@ -364,6 +368,9 @@ public class Cluelessdo {
                         
                         if (command == CommandTypes.NOTES){
                             currentPlayer.getPlayerNotes().showNotes();
+                        }
+                        else if (command == CommandTypes.LOG){
+                            log.showLog(currentPlayer);
                         }
                         else if (command == CommandTypes.CHEAT){
                             ui.getInfo().addText(envelope.getMurderer().getName() + " in the " + envelope.getLocation().getName() + " with the " + envelope.getWeapon().getName());
@@ -413,6 +420,9 @@ public class Cluelessdo {
 
                     if (command == CommandTypes.NOTES) {
                         currentPlayer.getPlayerNotes().showNotes();
+                    }
+                    if (command == CommandTypes.LOG){
+                        log.showLog(currentPlayer);
                     }
                     else if (command == CommandTypes.CHEAT){
                         ui.getInfo().addText(envelope.getMurderer().getName() + " in the " + envelope.getLocation().getName() + " with the " + envelope.getWeapon().getName());
@@ -537,6 +547,9 @@ public class Cluelessdo {
                         break;
                     case HELP:
                         ui.getInfo().addText("Enter \"u\" to move up, \"d\" to move down, \"l\" to move left, \"r\" to move right,\n\"passage\" to move through the secret passage,\n\"notes\" to display your notes,\n\"done\" When you are finished your turn");
+                        break;
+                    case LOG:
+                        log.showLog(currentPlayer);
                         break;
                     case DONE:
                         ui.getInfo().addText("You have ended your turn!");
