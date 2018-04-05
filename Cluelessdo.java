@@ -13,7 +13,6 @@ import java.util.function.Predicate;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.swing.*;
 
 public class Cluelessdo {
     private final TokenController tokenPanel;
@@ -21,7 +20,7 @@ public class Cluelessdo {
     private UI ui;
     private CircularlyLinkedList<Player> players;
     private Iterator<Player> playerIterator;
-    private int numberOfPlayers = 0;
+    private int numberOfPlayersPlaying = 0;
     private boolean running;
     private ArrayList<Card> publicCards = new ArrayList<>();    // List of cards visible to all players. Initially contains all cards
     private final Envelope envelope = new Envelope();
@@ -141,7 +140,7 @@ public class Cluelessdo {
         
         /** Distribute public cards among players */
         int cardCount = 0;
-        while (cardCount + numberOfPlayers <= publicCards.size()){
+        while (cardCount + numberOfPlayersPlaying <= publicCards.size()){
             for (int i = 0; i < players.getSize(); i++){
                 Player player = playerIterator.next();
                 Card card = publicCards.get(0);
@@ -171,27 +170,27 @@ public class Cluelessdo {
                 ui.getInfo().addText("Enter the number of players, there must be at least 2 players and at most 6");
             } else {
                 try {
-                    numberOfPlayers = Integer.parseInt(commandLineInput);
+                    numberOfPlayersPlaying = Integer.parseInt(commandLineInput);
                 } catch (NumberFormatException e) {
                     ui.getInfo().addText("Your input, \"" + commandLineInput + "\" is not a number");
                     continue;
                 }
-                if (numberOfPlayers < 0)
+                if (numberOfPlayersPlaying < 0)
                     ui.getInfo().addText("It's not possible to play with less than 1 players! Try a different number.");
-                else if (numberOfPlayers == 1)
+                else if (numberOfPlayersPlaying == 1)
                     ui.getInfo().addText("Playing by yourself is quite pointless isn't it? Bring some friends and try again!");
-                else if (numberOfPlayers > 6)
-                    ui.getInfo().addText("Whoa! We can't fit " + numberOfPlayers + " players on the board! Try 6 or less!");
+                else if (numberOfPlayersPlaying > 6)
+                    ui.getInfo().addText("Whoa! We can't fit " + numberOfPlayersPlaying + " players on the board! Try 6 or less!");
                 else
-                    ui.getInfo().addText(numberOfPlayers + " players playing! Let's get to know them!");
+                    ui.getInfo().addText(numberOfPlayersPlaying + " players playing! Let's get to know them!");
             }
-        } while (numberOfPlayers < 2 || numberOfPlayers > 6);
+        } while (numberOfPlayersPlaying < 2 || numberOfPlayersPlaying > 6);
 
         // Temporary array used to check whether a player has already chosen a character
-        CharacterNames[] characterNames = new CharacterNames[numberOfPlayers];
+        CharacterNames[] characterNames = new CharacterNames[numberOfPlayersPlaying];
 
         /* Ask all players to input their name and select the character they wish to play as */
-        for (int i = 0; i < numberOfPlayers; i++){
+        for (int i = 0; i < numberOfPlayersPlaying; i++){
             /* Enter player name */
             String name;
             String character;
@@ -403,7 +402,7 @@ public class Cluelessdo {
                         }
                         
                         else{
-                            players.remove(currentPlayer);
+                            currentPlayer.setPlaying(false);
                             ui.getInfo().addText(" Sorry that is incorrect, you are eliminated");
                             try{
                                 AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("removed.wav"));
@@ -414,6 +413,8 @@ public class Cluelessdo {
                             catch(Exception exception)
                             {
                             }
+                            ui.getInfo().addText("Press ENTER to continue");
+                            command = doCommand();
                             return;
                         }
                     }
@@ -722,11 +723,11 @@ public class Cluelessdo {
 
         while (game.isRunning()){
             currentPlayer = game.playerIterator.next();
-            if (game.players.getSize()==1) {
-                game.ui.getInfo().addText("Congratulations " + currentPlayer.getPlayerName() + ", you are the champion!!!");
-                break;
-            }
             game.playTurn(currentPlayer);
+            if (game.numberOfPlayersPlaying == 1) {
+                game.ui.getInfo().addText("Congratulations " + currentPlayer.getPlayerName() + ", you are the champion!!!");
+                game.running = false;
+            }
         }
     }
 }

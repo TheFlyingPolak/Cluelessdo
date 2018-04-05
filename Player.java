@@ -13,6 +13,8 @@ public class Player {
     //name of the human playing the game
     private String playerName;
 
+    private boolean playing = true;
+
     private final ArrayList<Card> cards = new ArrayList<>();
 
     //the character token that the player has chosen to move around the room
@@ -45,6 +47,14 @@ public class Player {
     //access the playerNotes
     public Notes getPlayerNotes() {
         return playerNotes;
+    }
+
+    public void setPlaying(boolean play){
+        playing = play;
+    }
+
+    public boolean isPlaying() {
+        return playing;
     }
 
     public Collection<Card> getCards(){
