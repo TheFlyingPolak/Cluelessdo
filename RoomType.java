@@ -7,7 +7,7 @@
 
 // enum for the type of room a tile is of
 public enum RoomType {
-    MC_KITCHEN, MC_LIVINGROOM, R_OFFICE, CENTRALPERK, CELLAR, GELLERHOUSE, J_KITCHEN, J_LIVINGROOM, P_APARTMENT, ALLESANDROS, CORRIDOR, NO_ROOM;
+    MC_KITCHEN, MC_LIVINGROOM, R_OFFICE, CENTRALPERK, CELLAR, GELLERHOUSE, J_KITCHEN, J_LIVINGROOM, P_APARTMENT, ALESANDROS, CORRIDOR, NO_ROOM;
 
     public static RoomType getValue(String str) {
         switch (str.trim().toLowerCase()) {
@@ -26,6 +26,7 @@ public enum RoomType {
             case "r_office":
                 return RoomType.R_OFFICE;
             case "central perk":
+            case "centralperk":
                 return RoomType.CENTRALPERK;
             case "the geller household":
             case "geller household":
@@ -44,7 +45,8 @@ public enum RoomType {
             case "p_apartment":
                 return RoomType.P_APARTMENT;
             case "allesandros":
-                return RoomType.ALLESANDROS;
+            case "alesandros":
+                return RoomType.ALESANDROS;
             default:
                 return null;
         }

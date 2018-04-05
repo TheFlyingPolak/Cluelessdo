@@ -1,6 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 
 /*
 16310943 James Byrne
@@ -8,22 +12,28 @@ import java.io.IOException;
 16305706 Mark Hartnett
  */
 
-public class UI extends JFrame {
-    private JPanel boardPanel;
+public class UI extends JFrame implements MouseListener {
+    private final JPanel boardPanel;
     private JLayeredPane layers;
     private Board board;
     private InfoPanel info;
     private CmdPanel cmd;
+    private KeyboardListener listener;
 
     // UI constructor
-    UI() throws IOException {
+    UI() {
         super("Cluelessdo"); // constructor of super class, parameter is the title of the frame
 
         boardPanel = new JPanel(new BorderLayout());  // Panel which contains the JLayeredPane
         layers = new JLayeredPane();    // Layered container for board and token drawing panel
         board = new Board(); // board component
-        info = new InfoPanel("Welcome to Cluelessdo! At any stage of the game enter \"help\" for help or \"exit\" to en the game!\nHow many players will be playing? (2-6)"); // info panel
+        info = new InfoPanel("Welcome to Cluelessdo! Can you solve the mystery of the murder of Gunther?"); // info panel
         cmd = new CmdPanel(); // command pannel
+        listener = new KeyboardListener(cmd);
+        boardPanel.setFocusable(true);
+        boardPanel.addMouseListener(this);
+        boardPanel.addKeyListener(listener);
+
 
         info.setPreferredSize(new Dimension(400, 100)); // set the preferred size of the info panel
 
@@ -33,7 +43,7 @@ public class UI extends JFrame {
 
         layers.add(board, Integer.valueOf(1));
 
-        setSize(board.getXBoard() + 400, board.getYBoard() + 60); // set size of the UI
+        setSize(board.getXBoard() + 410, board.getYBoard() + 60); // set size of the UI
 
         setResizable(false); // make frame non resizeable
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // set the close operation to exit
@@ -58,5 +68,25 @@ public class UI extends JFrame {
 
     public CmdPanel getCmd() {
         return cmd;
+    }
+
+    public void mouseClicked(MouseEvent e){
+        boardPanel.requestFocus();
+    }
+
+    public void mouseExited(MouseEvent e){
+        /** Do nothing */
+    }
+
+    public void mouseReleased(MouseEvent e){
+        /** Do nothing */
+    }
+
+    public void mousePressed(MouseEvent e){
+        /** Do nothing */
+    }
+
+    public void mouseEntered(MouseEvent e){
+        /** Do nothing */
     }
 }

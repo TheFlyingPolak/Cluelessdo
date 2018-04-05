@@ -33,7 +33,7 @@ public class Notes {
         noteRooms[3]=new NoteItem("Monica & Chandler's Living Room", "MC_LIVINGROOM", ' ');
         noteRooms[4]=new NoteItem("Rachel's Office", "R_OFFICE", ' ');
         noteRooms[5]=new NoteItem("Geller Household", "GELLERHOUSE", ' ');
-        noteRooms[6]=new NoteItem("Allesandro's", "ALLESANDROS", ' ');
+        noteRooms[6]=new NoteItem("Allesandro's", "ALESANDROS", ' ');
         noteRooms[7]=new NoteItem("Phoebe's Apartment", "P_APARTMENT", ' ');
         noteRooms[8]=new NoteItem("Joey's Living Room", "J_LIVINGROOM", ' ');
     }

@@ -25,7 +25,7 @@ public class PlayerOrder {
 
     private DiceRollPlayer[] diceRollPlayers;
     private UI ui;
-    private DicePanel dicePanel;
+    private final DicePanel dicePanel;
 
     PlayerOrder(CircularlyLinkedList<Player> players, UI ui, DicePanel dicePanel) {
         diceRollPlayers = new DiceRollPlayer[players.getSize()];
@@ -77,11 +77,7 @@ public class PlayerOrder {
                 cmdInput = ui.getCmd().getCommand();
             }
 
-            if (dicePanel.isRunning()){
-                synchronized (dicePanel) {
-                    dicePanel.notify();
-                }
-            }
+            dicePanel.waitToFinish();
             dicePanel.start(); // roll the dice
             int diceRollNum = dicePanel.getTotalDiceNumber();
             ui.getInfo().addText(name + " rolled " + diceRollNum);

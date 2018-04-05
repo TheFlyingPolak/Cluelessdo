@@ -1,6 +1,8 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ import java.util.ArrayList;
  * Images are stored in an instance of the TokenController class, though this may change in the future.
  */
 
-public class TokenController extends JPanel {
+public class TokenController extends JPanel implements ActionListener {
     /** ArrayLists used to store Character and Weapon objects */
     private ArrayList<Character> playerTokens;
     private ArrayList<Weapon> weaponTokens;
@@ -27,6 +29,15 @@ public class TokenController extends JPanel {
     /** BufferedImage objects used to store images of weapons in the game */
     private BufferedImage pistol, wrench, pipe, rope, dagger, candlestick,
             chandler, ross, joey, monica, phoebe, rachel;
+
+    /** Variables used for animation */
+    private Timer timer;
+    private boolean timerRunning = false;
+    private Token movingToken;
+    private Tile sourceTile;
+
+    private double dx, dy;
+    private double stepX, stepY;
 
     /**
      * Constructor of the class TokenController. Initialises the token ArrayLists and attempts to load images.
@@ -81,10 +92,9 @@ public class TokenController extends JPanel {
      * Methods to find and return a Character or Weapon object by its type enum.
      */
     public Character getPlayerToken(CharacterNames name) {
-        for (Character character: playerTokens){
-            if (character.getName().equals(name)) {
-                return character;
-            }
+        for (Character tmp: playerTokens){
+            if (tmp.getName() == name)
+                return tmp;
         }
         return null;
     }
@@ -120,6 +130,39 @@ public class TokenController extends JPanel {
         dagger = ImageIO.read(getClass().getResource(("images/dagger.png")));
     }
 
+    public void animateMovement(Token token, Tile source){
+        movingToken = token;
+        sourceTile = source;
+
+        dx = movingToken.getCurrentTile().getXCoordinate() - sourceTile.getXCoordinate();
+        dy = movingToken.getCurrentTile().getYCoordinate() - sourceTile.getYCoordinate();
+        stepX = dx / (double)10;
+        stepY = dy / (double)10;
+
+        timer = new Timer(20, this);
+        timer.setInitialDelay(0);
+        timerRunning = true;
+        timer.start();
+        do{
+
+        }while (timer.isRunning());
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e){
+        dx -= stepX;
+        dy -= stepY;
+        movingToken.setPosition(new Point(movingToken.getCurrentTile().getXCoordinate() - (int)dx, movingToken.getCurrentTile().getYCoordinate() - (int)dy));
+        repaint();
+
+        if (Math.abs(dx) <= Math.abs(stepX) && Math.abs(dy) <= Math.abs(stepY)){
+            movingToken.setPosition(new Point(movingToken.getCurrentTile().getXCoordinate(), movingToken.getCurrentTile().getYCoordinate()));
+            repaint();
+            timerRunning = false;
+            timer.stop();
+        }
+    }
+
     /**
      * Draws all character and weapon tokens using loaded images or predetermined shapes.
      */
@@ -130,51 +173,39 @@ public class TokenController extends JPanel {
 
         /** Set drawing colour according to character name */
         for (Character tmp: playerTokens){
-            Dimension dimension = tmp.getPosition();
+            Point point = tmp.getPosition();
             switch (tmp.getName()){
                 case PHOEBE:
-                    //g2.setColor(Color.RED); break;
-                    g2.drawImage(phoebe, dimension.width - (phoebe.getWidth() / 2), dimension.height - (phoebe.getHeight() / 2), this); break;
+                    g2.drawImage(phoebe, point.x - (phoebe.getWidth() / 2), point.y - (phoebe.getHeight() / 2), this); break;
                 case JOEY:
-                    //g2.setColor(Color.ORANGE); break;
-                    g2.drawImage(joey, dimension.width - (joey.getWidth() / 2), dimension.height - (joey.getHeight() / 2), this); break;
+                    g2.drawImage(joey, point.x - (joey.getWidth() / 2), point.y - (joey.getHeight() / 2), this); break;
                 case RACHEL:
-                    //g2.setColor(Color.BLUE); break;
-                    g2.drawImage(rachel, dimension.width - (rachel.getWidth() / 2), dimension.height - (rachel.getHeight() / 2), this); break;
+                    g2.drawImage(rachel, point.x - (rachel.getWidth() / 2), point.y - (rachel.getHeight() / 2), this); break;
                 case MONICA:
-                    //g2.setColor(Color.WHITE); break;
-                    g2.drawImage(monica, dimension.width - (monica.getWidth() / 2), dimension.height - (monica.getHeight() / 2), this); break;
+                    g2.drawImage(monica, point.x - (monica.getWidth() / 2), point.y - (monica.getHeight() / 2), this); break;
                 case CHANDLER:
-                    //g2.setColor(Color.GREEN); break;
-                    g2.drawImage(chandler, dimension.width - (chandler.getWidth() / 2), dimension.height - (chandler.getHeight() / 2), this); break;
+                    g2.drawImage(chandler, point.x - (chandler.getWidth() / 2), point.y - (chandler.getHeight() / 2), this); break;
                 case ROSS:
-                    //g2.setColor(Color.MAGENTA); break;
-                    g2.drawImage(ross, dimension.width - (ross.getWidth() / 2), dimension.height - (chandler.getHeight() / 2), this); break;
+                    g2.drawImage(ross, point.x - (ross.getWidth() / 2), point.y - (chandler.getHeight() / 2), this); break;
             }
         }
 
         /** Draw specified image on the game board according to weapon type */
         for (Weapon tmp: weaponTokens){
-            Dimension dimension = tmp.getPosition();
+            Point point = tmp.getPosition();
             switch (tmp.getType()){
                 case PISTOL:
-                    g2.drawImage(pistol, dimension.width - (pistol.getWidth() / 2), dimension.height - (pistol.getHeight() / 2), this);
-                    break;
+                    g2.drawImage(pistol, point.x - (pistol.getWidth() / 2), point.y - (pistol.getHeight() / 2), this); break;
                 case WRENCH:
-                    g2.drawImage(wrench, dimension.width - (wrench.getWidth() / 2), dimension.height - (wrench.getHeight() / 2), this);
-                    break;
+                    g2.drawImage(wrench, point.x - (wrench.getWidth() / 2), point.y - (wrench.getHeight() / 2), this); break;
                 case PIPE:
-                    g2.drawImage(pipe, dimension.width - (pipe.getWidth() / 2), dimension.height - (pipe.getHeight() / 2), this);
-                    break;
+                    g2.drawImage(pipe, point.x - (pipe.getWidth() / 2), point.y - (pipe.getHeight() / 2), this); break;
                 case DAGGER:
-                    g2.drawImage(dagger, dimension.width - (dagger.getWidth() / 2), dimension.height - (dagger.getHeight() / 2), this);
-                    break;
+                    g2.drawImage(dagger, point.x - (dagger.getWidth() / 2), point.y - (dagger.getHeight() / 2), this); break;
                 case CANDLESTICK:
-                    g2.drawImage(candlestick, dimension.width - (candlestick.getWidth() / 2), dimension.height - (candlestick.getHeight() / 2), this);
-                    break;
+                    g2.drawImage(candlestick, point.x - (candlestick.getWidth() / 2), point.y - (candlestick.getHeight() / 2), this); break;
                 case ROPE:
-                    g2.drawImage(rope, dimension.width - (rope.getWidth() / 2), dimension.height - (rope.getHeight() / 2), this);
-                    break;
+                    g2.drawImage(rope, point.x - (rope.getWidth() / 2), point.y - (rope.getHeight() / 2), this); break;
             }
         }
     }

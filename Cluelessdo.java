@@ -5,20 +5,21 @@
 16305706 Mark Hartnett
  */
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.function.Predicate;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 
 public class Cluelessdo {
     private final TokenController tokenPanel;
     private final DicePanel dicePanel;
+    private final IntroScreen introScreen;
     private UI ui;
-    private CircularlyLinkedList<Player> players;
+    private CircularlyLinkedList<Player> players = new CircularlyLinkedList<>();
     private Iterator<Player> playerIterator;
     private int numberOfPlayersPlaying = 0;
     private boolean running;
@@ -33,10 +34,27 @@ public class Cluelessdo {
         ui = new UI();
         tokenPanel = new TokenController(ui.getBoard().getMap(),ui.getBoard());     // Token drawing panel
         dicePanel = new DicePanel(ui.getBoard());
+        introScreen = new IntroScreen(ui.getBoard(), tokenPanel, players);
         ui.getLayers().add(tokenPanel, Integer.valueOf(2));
         ui.getLayers().add(dicePanel, Integer.valueOf(3));
-        players = new CircularlyLinkedList<>();
+        ui.getLayers().add(introScreen, Integer.valueOf(9));
         running = true;
+    }
+
+    public void waitForPlayersInput(){
+        Audio intro = new Audio(Sounds.INTRO);
+        synchronized (players){
+            try{
+                players.wait();
+            }
+            catch (InterruptedException e){
+                e.printStackTrace();
+            }
+        }
+        numberOfPlayersPlaying = players.getSize();
+        ui.getLayers().remove(introScreen);
+        ui.repaint();
+        intro.stop();
     }
 
     /**
@@ -44,7 +62,8 @@ public class Cluelessdo {
      * @return returns false if move is illegal, true if move has been made successfully
      */
     public boolean moveCharacter(Character playerToken, Direction dir, String playerName) {
-        int returnCode = playerToken.movePlayer(dir, ui.getBoard().getMap());
+        Tile sourceTile = playerToken.getCurrentTile();
+        int returnCode = playerToken.moveToken(dir, ui.getBoard().getMap());
         if (returnCode != 0) {
             playerName = playerName.substring(0, 1) + playerName.substring(1).toLowerCase(); // capitalise the first letter and set the rest to lower case
             String errorMessage = playerName + " cannot move " + dir.toString().toLowerCase() + ": "; // make error message
@@ -59,11 +78,10 @@ public class Cluelessdo {
                     errorMessage += "Cannot return to the room which you left in the same turn.";
                     break;
             }
-
             ui.getInfo().addText(errorMessage); // add error message to info panel
             return false; // move not successful
         }
-        tokenPanel.repaint();
+        tokenPanel.animateMovement(playerToken, sourceTile);
         return true; // move successful
     }
 
@@ -72,11 +90,12 @@ public class Cluelessdo {
      * @return false if move is illegal
      */
     public boolean moveSecretPassage(Character playerToken) {
+        Tile sourceTile = playerToken.getCurrentTile();
         Room currRoom = ui.getBoard().getMap().getRoom(playerToken.getCurrentTile().getRoomType().ordinal()); // get the room that the player is currently in
         if (currRoom.hasSecretPasssage()) {
             Room nextRoom = currRoom.getSecretPassage(); // get the room that the secret passage brings players to
             playerToken.moveToken(nextRoom.addToken()); // move the player to the token in the room that the secret passage is connected to
-            tokenPanel.repaint();
+            tokenPanel.animateMovement(playerToken, sourceTile);
             return true; // successful
         } else {
             return false; // cannot move player
@@ -137,7 +156,7 @@ public class Cluelessdo {
         /** Remove cards already present in the envelope */
         Predicate<Card> predicate = (Card c) -> c.getEnumName().equals(envelope.getLocation().getEnumName()) || c.getEnumName().equals(envelope.getMurderer().getEnumName()) || c.getEnumName().equals(envelope.getWeapon().getEnumName());
         publicCards.removeIf(predicate);
-        
+
         /** Distribute public cards among players */
         int cardCount = 0;
         while (cardCount + numberOfPlayersPlaying <= publicCards.size()){
@@ -158,131 +177,9 @@ public class Cluelessdo {
     }
 
     /**
-     * Method to be executed at the start of the game to initialise the list of human players who will play.
+     * Prompts each player to roll the dice to determine the order in which they will be sorted
      */
-    private void enterPlayers(){
-        String commandLineInput;
-
-        /* Ask for the number of players until the user enters a valid number */
-        do{
-            commandLineInput = ui.getCmd().getCommand();
-            if (commandLineInput.equals("help")) { // if the player entered help
-                ui.getInfo().addText("Enter the number of players, there must be at least 2 players and at most 6");
-            } else {
-                try {
-                    numberOfPlayersPlaying = Integer.parseInt(commandLineInput);
-                } catch (NumberFormatException e) {
-                    ui.getInfo().addText("Your input, \"" + commandLineInput + "\" is not a number");
-                    continue;
-                }
-                if (numberOfPlayersPlaying < 0)
-                    ui.getInfo().addText("It's not possible to play with less than 1 players! Try a different number.");
-                else if (numberOfPlayersPlaying == 1)
-                    ui.getInfo().addText("Playing by yourself is quite pointless isn't it? Bring some friends and try again!");
-                else if (numberOfPlayersPlaying > 6)
-                    ui.getInfo().addText("Whoa! We can't fit " + numberOfPlayersPlaying + " players on the board! Try 6 or less!");
-                else
-                    ui.getInfo().addText(numberOfPlayersPlaying + " players playing! Let's get to know them!");
-            }
-        } while (numberOfPlayersPlaying < 2 || numberOfPlayersPlaying > 6);
-
-        // Temporary array used to check whether a player has already chosen a character
-        CharacterNames[] characterNames = new CharacterNames[numberOfPlayersPlaying];
-
-        /* Ask all players to input their name and select the character they wish to play as */
-        for (int i = 0; i < numberOfPlayersPlaying; i++){
-            /* Enter player name */
-            String name;
-            String character;
-            ui.getInfo().addText("Player " + (i + 1) + ", what's your name?");
-            commandLineInput = ui.getCmd().getCommand();
-
-            while (commandLineInput.equals("help")) { // if the user enters help (ensure that if the user enters help again that the message displays)
-                ui.getInfo().addText("Enter the name you want to give Player " + (i+1));
-                commandLineInput = ui.getCmd().getCommand();
-            }
-
-            name = commandLineInput;
-
-            /** Select playable character */
-            ui.getInfo().addText("Who would you like to play as, " + name + "? Available characters:");
-            for (int j = 0; j < 6; j++){
-                if (!Arrays.asList(characterNames).contains(CHARACTER_NAMES[j]))
-                    ui.getInfo().addText(CHARACTER_NAMES[j].toString().substring(0,1) + CHARACTER_NAMES[j].toString().substring(1).toLowerCase());
-            }
-            boolean loop = true;
-            do{
-                character = ui.getCmd().getCommand().toLowerCase();
-                switch (character){
-                    case "mustard":
-                    case "joey":
-                        if (Arrays.asList(characterNames).contains(CharacterNames.JOEY)) {
-                            ui.getInfo().addText("Someone has already chosen Joey. Try again.");
-                            break;
-                        }
-                        characterNames[i] = CharacterNames.JOEY;
-                        players.addLast(new Player(name, tokenPanel.getPlayerToken(CharacterNames.JOEY)));
-                        loop = false;
-                        break;
-                    case "scarlet":
-                    case "phoebe":
-                        if (Arrays.asList(characterNames).contains(CharacterNames.PHOEBE)){
-                            ui.getInfo().addText("Someone has already chosen Phoebe. Try again.");
-                            break;
-                        }
-                        characterNames[i] = CharacterNames.PHOEBE;
-                        players.addLast(new Player(name, tokenPanel.getPlayerToken(CharacterNames.PHOEBE)));
-                        loop = false;
-                        break;
-                    case "white":
-                    case "monica":
-                        if (Arrays.asList(characterNames).contains(CharacterNames.MONICA)){
-                            ui.getInfo().addText("Someone has already chosen Monica. Try again.");
-                            break;
-                        }
-                        characterNames[i] = CharacterNames.MONICA;
-                        players.addLast(new Player(name, tokenPanel.getPlayerToken(CharacterNames.MONICA)));
-                        loop = false;
-                        break;
-                    case "green":
-                    case "chandler":
-                        if (Arrays.asList(characterNames).contains(CharacterNames.CHANDLER)){
-                            ui.getInfo().addText("Someone has already chosen Chandler. Try again.");
-                            break;
-                        }
-                        characterNames[i] = CharacterNames.CHANDLER;
-                        players.addLast(new Player(name, tokenPanel.getPlayerToken(CharacterNames.CHANDLER)));
-                        loop = false;
-                        break;
-                    case "plum":
-                    case "ross":
-                        if (Arrays.asList(characterNames).contains(CharacterNames.ROSS)){
-                            ui.getInfo().addText("Someone has already chosen Ross. Try again.");
-                            break;
-                        }
-                        characterNames[i] = CharacterNames.ROSS;
-                        players.addLast(new Player(name, tokenPanel.getPlayerToken(CharacterNames.ROSS)));
-                        loop = false;
-                        break;
-                    case "peacock":
-                    case "rachel":
-                        if (Arrays.asList(characterNames).contains(CharacterNames.RACHEL)){
-                            ui.getInfo().addText("Someone has already chosen Rachel. Try again.");
-                            break;
-                        }
-                        characterNames[i] = CharacterNames.RACHEL;
-                        players.addLast(new Player(name, tokenPanel.getPlayerToken(CharacterNames.RACHEL)));
-                        loop = false;
-                        break;
-                    case "help":
-                        ui.getInfo().addText("Pick one of the characters listed above by entering their name");
-                        break;
-                    default:
-                        ui.getInfo().addText(character + " is not a valid character in this game");
-                }
-            } while (loop);
-        }
-
+    public void sortPlayers(){
         // get the players to roll the dice and then order them in that order for them to play
         PlayerOrder playerOrder = new PlayerOrder(players, ui, dicePanel);
         players = playerOrder.playerStartOrder(players);
@@ -321,17 +218,13 @@ public class Cluelessdo {
         CommandTypes command;
         int numberOfMoves = 0;
         boolean questionAsked = false;
-        ui.getInfo().addText(currentPlayer.getPlayerName() + ", it's your turn! Type \"roll\" to roll the dice.");
+        ui.getInfo().addText(currentPlayer.getPlayerName() + " (" + currentPlayer.getPlayerToken().toString() + "), it's your turn! Type \"roll\" to roll the dice.");
 
         /** Execute dice roll and record the number on the dice */
         do{
             command = doCommand();
             if (command == CommandTypes.ROLL){
-                if (dicePanel.isRunning()) {
-                    synchronized (dicePanel) {
-                        dicePanel.notify();
-                    }
-                }
+                dicePanel.waitToFinish();
                 dicePanel.start();
                 numberOfMoves = dicePanel.getTotalDiceNumber();
                 ui.getInfo().addText("You rolled " + numberOfMoves);
@@ -364,7 +257,7 @@ public class Cluelessdo {
                             ui.getInfo().addText("You are about to make an accusation, to check your notes one more time enter \"notes\" otherwise enter \"accuse\"");
                             command = doCommand();
                         }while (command != CommandTypes.ACCUSE && command != CommandTypes.NOTES && command != CommandTypes.CHEAT);
-                        
+
                         if (command == CommandTypes.NOTES){
                             currentPlayer.getPlayerNotes().showNotes(currentPlayer);
                         }
@@ -374,45 +267,38 @@ public class Cluelessdo {
                         else if (command == CommandTypes.CHEAT){
                             ui.getInfo().addText(envelope.getMurderer().getName() + " in the " + envelope.getLocation().getName() + " with the " + envelope.getWeapon().getName());
                         }
-                        
+
                         ui.getInfo().addText("Firstly enter the name of the character you believe to be the murderer, your options are:");
                         for (int j = 0; j < 6; j++){
-                                ui.getInfo().addText(CHARACTER_NAMES[j].toString().substring(0,1) + CHARACTER_NAMES[j].toString().substring(1).toLowerCase());
+                            ui.getInfo().addText(CHARACTER_NAMES[j].toString().substring(0,1) + CHARACTER_NAMES[j].toString().substring(1).toLowerCase());
                         }
                         String suspect = ui.getCmd().getCommand();
-                        
+
                         ui.getInfo().addText("Now please enter the weapon you believe " + suspect + " used, your options are:");
                         for (int j = 0; j < 6; j++){
                             ui.getInfo().addText(WEAPON_NAMES[j].toString().substring(0,1) + WEAPON_NAMES[j].toString().substring(1).toLowerCase());
                         }
                         String weapon = ui.getCmd().getCommand();
-                        
+
                         ui.getInfo().addText("Enter the room you think the murder occurred in");
                         final String[] rooms = {"Monica + Chandlers Kitchen", "Monica + Chandlers Living Room", "Rachels Office",
-                            "Central Perk", "Geller Household", "Joeys Kitchen", "Joeys Living Room", "Phoebes Apartment", "Allesandros"};
+                                "Central Perk", "Geller Household", "Joeys Kitchen", "Joeys Living Room", "Phoebes Apartment", "Allesandros"};
                         for (int j = 0; j < 9; j++){
                             ui.getInfo().addText(rooms[j]);
                         }
                         String room = ui.getCmd().getCommand();
-                        
+
                         if((suspect.toLowerCase().equals(envelope.getMurderer().getName().toLowerCase())) && (weapon.toLowerCase().equals(envelope.getWeapon().getName().toLowerCase())) && (room.toLowerCase().equals(envelope.getLocation().getName().toLowerCase()))){
                             ui.getInfo().addText("Congratulations you have won");
                             //do something cool
                             return;
                         }
-                        
+
                         else{
                             currentPlayer.setPlaying(false);
+                            numberOfPlayersPlaying--;
                             ui.getInfo().addText(" Sorry that is incorrect, you are eliminated");
-                            try{
-                                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("removed.wav"));
-                                Clip clip = AudioSystem.getClip();
-                                clip.open(audioInputStream);
-                                clip.start();
-                            }
-                            catch(Exception exception)
-                            {
-                            }
+                            Audio fail = new Audio(Sounds.FAIL);
                             ui.getInfo().addText("Press ENTER to continue");
                             command = doCommand();
                             return;
@@ -493,10 +379,11 @@ public class Cluelessdo {
                             if (doorSelection < 1 || doorSelection > numberOfRoomExits)
                                 ui.getInfo().addText("Please choose a number between 1 and " + numberOfRoomExits);
                             else{
+                                Tile sourceTile = currentPlayer.getPlayerToken().getCurrentTile();
                                 if (!currentPlayer.getPlayerToken().moveOutOfRoom(doors[doorSelection - 1]))
                                     ui.getInfo().addText("This door seems to be blocked. Choose a different one.");
                                 else {
-                                    tokenPanel.repaint();
+                                    tokenPanel.animateMovement(currentPlayer.getPlayerToken(), sourceTile);
                                     numberOfMoves--;
                                     loop = false;
                                 }
@@ -586,9 +473,12 @@ public class Cluelessdo {
         Tile movePlayerTile = room.addToken(); // get the tile in the room that the potential murderer will be placed
         Tile moveWeaponTile = room.addToken(); // get the tile in the room that the potential murder weapon will be placed
 
+        Tile sourceTile = tokenPanel.getPlayerToken(murderer).getCurrentTile();
         tokenPanel.getPlayerToken(murderer).moveToken(movePlayerTile); // move the potential murderer to their assigned tile in the room
+        tokenPanel.animateMovement(tokenPanel.getPlayerToken(murderer), sourceTile);
+        sourceTile = tokenPanel.getWeaponToken(murderWeapon).getCurrentTile();
         tokenPanel.getWeaponToken(murderWeapon).moveToken(moveWeaponTile); // move the potential murder weapon to its assigned tile in the room
-        tokenPanel.repaint();
+        tokenPanel.animateMovement(tokenPanel.getWeaponToken(murderWeapon), sourceTile);
 
         String questioningResult = "";
 
@@ -682,26 +572,15 @@ public class Cluelessdo {
         ui.getInfo().addText(questioningResult + "\nEnter \"done\" to end yout turn or \"notes\" to look at your notes."); // give current player results from questioning and possible actions
     }
 
-    public void playMusic(String path){
-        try{
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource(path));
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.start();
-        }
-        catch(Exception exception)
-        {
-        }
-    }
-
     public static void main(String[] args) throws IOException {
         Cluelessdo game = new Cluelessdo();
-        //game.playMusic("Friends.wav");
         Player currentPlayer;
         game.tokenPanel.repaint();
         game.ui.setVisible(true);
 
-        game.enterPlayers();
+        //game.enterPlayers();
+        game.waitForPlayersInput();
+        game.sortPlayers();
         CardGenerator.generate(game.publicCards);
         game.dealCards();
 
@@ -723,7 +602,8 @@ public class Cluelessdo {
 
         while (game.isRunning()){
             currentPlayer = game.playerIterator.next();
-            game.playTurn(currentPlayer);
+            if (currentPlayer.isPlaying())
+                game.playTurn(currentPlayer);
             if (game.numberOfPlayersPlaying == 1) {
                 game.ui.getInfo().addText("Congratulations " + currentPlayer.getPlayerName() + ", you are the champion!!!");
                 game.running = false;

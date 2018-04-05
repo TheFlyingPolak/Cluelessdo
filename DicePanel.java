@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
 import javax.imageio.ImageIO;
@@ -17,7 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * random numbers.
  */
 
-public class DicePanel extends JPanel implements Runnable{
+public class DicePanel extends JPanel implements Runnable, ActionListener {
     /*
      * Class Die stores position and toss result for an individual die.
      */
@@ -34,11 +36,13 @@ public class DicePanel extends JPanel implements Runnable{
     private BufferedImage[] diceImages = new BufferedImage[6];
     private final int NUMBER_OF_DICE = 2;
     private Die[] dice;
-    private Thread t;
+    private Thread thread;
+    private Timer timer;
     private final Random random = new Random();
-    private boolean rolling = false;        // Used by paintComponent method to draw dice if true
-    private boolean waiting = false;
-    private boolean running = false;
+    private boolean rolling = false;    // If true, dice should be drawn
+    private boolean waiting = false;    // If true, dice are idle and waiting for timeout or user action
+    private boolean running = false;    // If true, a thread in this class is running
+    private int movementIncrement;      // Used to increment movement step when moving dice off the screen
     private final String imagePath = "images/dice/dice";
     private final ArrayList<Integer> totalDiceNumber = new ArrayList<>();
 
@@ -54,7 +58,6 @@ public class DicePanel extends JPanel implements Runnable{
         for (int i = 0; i < 6; i++){
             diceImages[i] = ImageIO.read(getClass().getResource(imagePath + (i + 1) + ".png"));
         }
-        System.out.println("Dice panel size: " + getWidth() + ", " + getHeight());
     }
 
     public void rollDice(){
@@ -123,10 +126,13 @@ public class DicePanel extends JPanel implements Runnable{
                 e.printStackTrace();
             }
         }
-        rolling = false;
-        revalidate();
-        repaint();
-        waiting = false;
+        moveDiceOffScreen();
+        do{
+
+        } while (timer.isRunning());
+        synchronized (this){
+            notify();
+        }
     }
 
     /**
@@ -178,6 +184,14 @@ public class DicePanel extends JPanel implements Runnable{
         return totalDice;
     }
 
+    private void moveDiceOffScreen(){
+        movementIncrement = 1;
+        timer = new Timer(20, this);
+        timer.setInitialDelay(0);
+        timer.start();
+    }
+
+    @Override
     public void run(){
         running = true;
         rollDice();
@@ -185,12 +199,26 @@ public class DicePanel extends JPanel implements Runnable{
     }
 
     public void start(){
-        t = new Thread(this, "Dice roll thread");
-        t.start();
+        thread = new Thread(this, "Dice roll thread");
+        thread.start();
     }
 
     public boolean isRunning(){
         return running;
+    }
+
+    public void waitToFinish(){
+        if (isRunning()){
+            synchronized (this) {
+                notify();
+                try{
+                    wait();
+                }
+                catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     @Override
@@ -208,6 +236,20 @@ public class DicePanel extends JPanel implements Runnable{
                 g2.setTransform(transform);
                 g2.drawImage(diceToDraw[i], dice[i].xPosition - (diceToDraw[i].getWidth() / 2), dice[i].yPosition - (diceToDraw[i].getHeight() / 2), this);
             }
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e){
+        for (int i = 0; i < NUMBER_OF_DICE; i++){
+            dice[i].xPosition += 13 * (movementIncrement / 2);
+        }
+        movementIncrement++;
+        repaint();
+        if (dice[0].xPosition > getWidth() + 100 && dice[1].xPosition > getWidth() + 100) {
+            timer.stop();
+            waiting = false;
+            rolling = false;
         }
     }
 }

@@ -1,5 +1,4 @@
-import java.awt.Dimension;
-
+import java.awt.Point;
 
 /*
 16310943 James Byrne
@@ -13,13 +12,14 @@ import java.awt.Dimension;
  */
 
 public class Token{
-    //The Tile at which the token is on
     private Tile currentTile;
+    private Point position;
 
     //constructor
     public Token(Tile currentTile){
         this.currentTile = currentTile;
         currentTile.setOccupied(true);
+        position = new Point(currentTile.getXCoordinate(), currentTile.getYCoordinate());
     }
 
     /**
@@ -39,8 +39,12 @@ public class Token{
         return currentTile;
     }
 
-    public Dimension getPosition() {
-        return new Dimension(getCurrentTile().getXCoordinate(), getCurrentTile().getYCoordinate());
+    public Point getPosition() {
+        return position;
+    }
+
+    public void setPosition(Point position) {
+        this.position = position;
     }
 }
 

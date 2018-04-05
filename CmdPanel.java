@@ -50,4 +50,10 @@ public class CmdPanel extends JPanel  {
         return command;
     }
 
+    public void addCommand(String command){
+        synchronized (commandBuffer){
+            commandBuffer.add(command);
+            commandBuffer.notify();
+        }
+    }
 }
