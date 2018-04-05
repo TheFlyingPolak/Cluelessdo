@@ -68,7 +68,7 @@ public class Question {
                     murderer = CharacterNames.RACHEL;
                     break;
                 case "notes":
-                    currentPlayer.getPlayerNotes().showNotes();
+                    currentPlayer.getPlayerNotes().showNotes(currentPlayer);
                     break;
                 case "help":
                     ui.getInfo().addText("Enter the player from the list above to question!");
@@ -117,7 +117,7 @@ public class Question {
                     murderWeapon = WeaponTypes.PIPE;
                     break;
                 case "notes":
-                    currentPlayer.getPlayerNotes().showNotes();
+                    currentPlayer.getPlayerNotes().showNotes(currentPlayer);
                     break;
                 case "help":
                     ui.getInfo().addText("Select a weapon from the list above for the questioning!");

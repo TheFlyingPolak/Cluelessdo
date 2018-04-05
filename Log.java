@@ -76,7 +76,7 @@ public class Log {
      * Creates a string representation of all entries in the log.
      * If the requesting player did not ask some question or did not show a card, the card
      * shown will be replaced with "***".
-     * 
+     *
      * @param playerRequesting the player who requested the log to be shown
      */
     private String getLog(Player playerRequesting){

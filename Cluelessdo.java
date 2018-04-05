@@ -340,7 +340,7 @@ public class Cluelessdo {
                     ui.getInfo().addText("Enter 'u', 'd', 'l' or 'r' to move up, down, left or right respectively, \"pass\" to move through the secret passage (if possible), \"notes\" to look at your notes, \"done\" when you are finished your turn");
                 }
             } else if (command == CommandTypes.NOTES) {
-                currentPlayer.getPlayerNotes().showNotes();
+                currentPlayer.getPlayerNotes().showNotes(currentPlayer);
             } else if (command == CommandTypes.LOG){
                 log.showLog(currentPlayer);
             } else if (command == CommandTypes.HELP) { // if the player enters help
@@ -367,7 +367,7 @@ public class Cluelessdo {
                         }while (command != CommandTypes.ACCUSE && command != CommandTypes.NOTES && command != CommandTypes.CHEAT);
                         
                         if (command == CommandTypes.NOTES){
-                            currentPlayer.getPlayerNotes().showNotes();
+                            currentPlayer.getPlayerNotes().showNotes(currentPlayer);
                         }
                         else if (command == CommandTypes.LOG){
                             log.showLog(currentPlayer);
@@ -419,7 +419,7 @@ public class Cluelessdo {
                     }
 
                     if (command == CommandTypes.NOTES) {
-                        currentPlayer.getPlayerNotes().showNotes();
+                        currentPlayer.getPlayerNotes().showNotes(currentPlayer);
                     }
                     if (command == CommandTypes.LOG){
                         log.showLog(currentPlayer);
@@ -531,7 +531,7 @@ public class Cluelessdo {
                             numberOfMoves--;
                         break;
                     case NOTES:
-                        currentPlayer.getPlayerNotes().showNotes();
+                        currentPlayer.getPlayerNotes().showNotes(currentPlayer);
                         break;
                     case CHEAT:
                         ui.getInfo().addText(envelope.getMurderer().getName() + " in the " + envelope.getLocation().getName() + " with the " + envelope.getWeapon().getName());
@@ -617,7 +617,7 @@ public class Cluelessdo {
                         ui.getInfo().addText("Ok!"); // text to user
                         canContinue = true; // boolean to exit loop
                     } else if (input.equals("notes")) {
-                        player.getPlayerNotes().showNotes(); // display players notes
+                        player.getPlayerNotes().showNotes(player); // display players notes
                     } else if (input.equals("help")) {
                         ui.getInfo().addText("Enter \"done\" if you dont have either the character, room or weapon, the name of the character, room or weapon that you have (pick one if you've more than one), \"notes\" to view youre notes");
                     } else if (murderer == CharacterNames.getValue(input)) { // player has the potential murderer
