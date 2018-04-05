@@ -2,7 +2,19 @@ import java.awt.*;
 import java.util.LinkedList;
 import javax.swing.*;
 
+/*
+ * The class Log stores all questions and responses during the game.
+ *
+ * 16310943 James Byrne
+ * 16314763 Jakub Gajewski
+ * 16305706 Mark Hartnett
+ */
+
 public class Log {
+    /*
+     * The class LogElement represents a single entry in the log, specifying the player asking the question, the card
+     * shown to them and the player showing the card.
+     */
     private class LogElement{
         private Player playerAsking;
         private String cardShown;
