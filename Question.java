@@ -32,14 +32,14 @@ public class Question {
 
         // display all the characters to the player that they can select
         for (int i = 0; i < CHARACTER_NAMES.length; i++) {
-            ui.getInfo().addText(CHARACTER_NAMES[i].toString());
+            ui.getInfo().addText(CHARACTER_NAMES[i].toString().substring(0,1) + CHARACTER_NAMES[i].toString().substring(1).toLowerCase());
         }
 
         CharacterNames murderer = null;
         String murderersName;
         // check the input from the user whether it is a character name, help command, notes command or the wrong input
         do {
-            murderersName = ui.getCmd().getCommand();
+            murderersName = ui.getCmd().getCommand().toLowerCase();
             switch (murderersName) {
                 case "mustard":
                 case "joey":
@@ -88,7 +88,7 @@ public class Question {
 
         // display all the characters to the player that they can select
         for (int i = 0; i < WEAPON_NAMES.length; i++) {
-            ui.getInfo().addText(WEAPON_NAMES[i].toString());
+            ui.getInfo().addText(WEAPON_NAMES[i].toString().substring(0,1) + WEAPON_NAMES[i].toString().substring(1).toLowerCase());
         }
 
         WeaponTypes murderWeapon = null;
