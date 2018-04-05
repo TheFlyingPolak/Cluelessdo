@@ -614,8 +614,15 @@ public class Cluelessdo {
                     System.out.println("AGHH: " + input + " " + CharacterNames.getValue(input) + ", " + RoomType.getValue(input) + ", " + WeaponTypes.getValue(input));
 
                     if (input.equals("done")) {
-                        ui.getInfo().addText("Ok!"); // text to user
-                        canContinue = true; // boolean to exit loop
+                        /* check if the user really has no valid cards and is allowed to type "done" */
+                        canContinue = true;
+                        for (Card card: player.getCards()){
+                            if (card.toString().equals(question.getLocation().toString()) || card.toString().equals(question.getMurderer().toString()) || card.toString().equals(question.getWeapon().toString())){
+                                canContinue = false;
+                            }
+                        }
+                        if (!canContinue)
+                            ui.getInfo().addText("You have at least one card in question. You must show one.");
                     } else if (input.equals("notes")) {
                         player.getPlayerNotes().showNotes(player); // display players notes
                     } else if (input.equals("help")) {
