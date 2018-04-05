@@ -39,9 +39,9 @@ public class Notes {
     }
     
     //creates a jframe to display the notes
-    public void showNotes(){
+    public void showNotes(Player playerRequesting){
         //initialize jframe and set dimensions etc
-        notes = new JFrame("Notes");
+        notes = new JFrame("Notes of " + playerRequesting.getPlayerName());
         notes.setSize(400, 500);
         notes.setLocation(1000,0);
         notes.setResizable(false);

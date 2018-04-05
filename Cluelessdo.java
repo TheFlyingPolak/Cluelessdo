@@ -624,7 +624,7 @@ public class Cluelessdo {
                         if (player.getPlayerNotes().getNoteItem(murderer.toString()).getChecked() == 'X') { // if the player has that token
                             currentPlayer.getPlayerNotes().setPlayerChecked(question.getMurderer().getEnumName());
                             canContinue = true; // boolean to exit loop
-                            log.addEntryWithReply(currentPlayer, murderer.toString(), player);
+                            log.addEntryWithReply(currentPlayer, question, murderer.toString(), player);
                             questioningResult = player.getPlayerName() + " has " + question.getMurderer().getName() + "."; // create response to current player questioning
                         } else {
                             ui.getInfo().addText("You don't have that character! please enter either the room or weapon if you have one of them, if not just enter \"done\"");
@@ -633,7 +633,7 @@ public class Cluelessdo {
                         if (player.getPlayerNotes().getNoteItem(murderLocation.toString()).getChecked() == 'X') { // if the player has that token
                             currentPlayer.getPlayerNotes().setRoomChecked(question.getLocation().getEnumName());
                             canContinue = true; // boolean to exit loop
-                            log.addEntryWithReply(currentPlayer, murderLocation.toString(), player);
+                            log.addEntryWithReply(currentPlayer, question, murderLocation.toString(), player);
                             questioningResult = player.getPlayerName() + " has " + question.getLocation().getName() + "."; // create response to current player questioning
                         } else {
                             ui.getInfo().addText("You don't have that room! please enter either the character or weapon if you have one of them, if not just enter \"done\"");
@@ -642,7 +642,7 @@ public class Cluelessdo {
                         if (player.getPlayerNotes().getNoteItem(murderWeapon.toString()).getChecked() == 'X') { // if the player has that token
                             currentPlayer.getPlayerNotes().setWeaponChecked(question.getWeapon().getEnumName());
                             canContinue = true; // boolean to exit loop
-                            log.addEntryWithReply(currentPlayer, murderWeapon.toString(), player);
+                            log.addEntryWithReply(currentPlayer, question, murderWeapon.toString(), player);
                             questioningResult = player.getPlayerName() + " has " + question.getWeapon().getName() + "."; // create response to current player questioning
                         } else {
                             ui.getInfo().addText("You don't have that weapon! please enter either the character or room if you have one of them, if not just enter \"done\"");
@@ -660,7 +660,7 @@ public class Cluelessdo {
 
         if (questioningResult.equals("")) { // if nobody has any of the tokens
             questioningResult = "Nobody had the character, weapon or the room!"; // create response to current player questioning
-            log.addEntryWithoutReply(currentPlayer);
+            log.addEntryWithoutReply(currentPlayer, question);
         }
 
         ui.getInfo().clear(); // clear the info panel
