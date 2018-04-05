@@ -577,9 +577,9 @@ public class Cluelessdo {
 
         question.ask(ui, currentPlayer); // get the murderer and the murder weapon that the player thinks killed gunther
 
-        CharacterNames murderer = CharacterNames.getValue(question.getMurderer().getName()); // convert the card murderer string to CharacterNames
-        WeaponTypes murderWeapon = WeaponTypes.getValue(question.getWeapon().getName()); // convert the card murderer string to WeaponTypes
-        RoomType murderLocation = RoomType.getValue(question.getLocation().getName()); // convert the card murderer string to RoomType
+        CharacterNames murderer = CharacterNames.getValue(question.getMurderer().getEnumName()); // convert the card murderer string to CharacterNames
+        WeaponTypes murderWeapon = WeaponTypes.getValue(question.getWeapon().getEnumName()); // convert the card murderer string to WeaponTypes
+        RoomType murderLocation = RoomType.getValue(question.getLocation().getEnumName()); // convert the card murderer string to RoomType
 
         Room room = ui.getBoard().getMap().getRoom(murderLocation.ordinal()); // get the room that the current player is in/player thinks the murder happened
 
