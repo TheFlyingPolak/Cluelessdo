@@ -3,10 +3,6 @@ public class Accusation {
     String suspect;
     String weapon;
     String room;
-    UI ui;
-    Player currentPlayer;
-    CharacterNames[] CHARACTER_NAMES;
-    WeaponTypes[] WEAPON_NAMES;
 
     public Accusation(){
         suspect = "";
