@@ -38,7 +38,7 @@ public class Card {
             case "DAGGER" : return "Dagger";
             case "WRENCH" : return "Wrench";
             case "PISTOL" : return "Pistol";
-            case "CANDLESTICK" : return "Candlestick";
+            case "CANDLESTICK" : return "Candle Stick";
             case "PIPE" : return "Pipe";
             default: return enumName;
         }
