@@ -1,7 +1,5 @@
-import javafx.scene.web.HTMLEditorSkin;
-
 import java.awt.event.*;
-import java.util.LinkedList;
+
 
 /*
  * The class KeyboardListener allows the user to issue game commands by pressing keys on the keyboard
