@@ -264,7 +264,12 @@ public class Cluelessdo {
                             ui.getInfo().addText(envelope.getMurderer().getName() + " in the " + envelope.getLocation().getName() + " with the " + envelope.getWeapon().getName());
                         }
                         Accusation accuse = new Accusation();
+<<<<<<< HEAD
                         accuse.ask(ui, CHARACTER_NAMES, WEAPON_NAMES);
+=======
+
+                        accuse.ask(ui, CHARACTER_NAMES, WEAPON_NAMES,currentPlayer,envelope);
+>>>>>>> origin/master
 
                         EnvelopePanel envelopePanel = new EnvelopePanel(ui.getBoard(), envelope, accuse);
                         ui.getLayers().add(envelopePanel, Integer.valueOf(11));
@@ -594,12 +599,17 @@ public class Cluelessdo {
                 if (game.numberOfPlayersPlaying == 1) {
                     game.ui.getInfo().addText("Congratulations " + currentPlayer.getPlayerName() + ", you are the champion!!!");
                     game.running = false;
+<<<<<<< HEAD
                 }
                 else {
+=======
+                } else {
+>>>>>>> origin/master
                     game.playTurn(currentPlayer);
                     game.ui.getInfo().clear();
                 }
             }
         }
+
     }
 }
