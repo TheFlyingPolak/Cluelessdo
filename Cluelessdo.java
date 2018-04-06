@@ -270,7 +270,7 @@ public class Cluelessdo {
 
                         Accusation accuse = new Accusation();
 
-                        accuse.ask(ui, CHARACTER_NAMES, WEAPON_NAMES);
+                        accuse.ask(ui, CHARACTER_NAMES, WEAPON_NAMES,currentPlayer,envelope);
 
                         if(accuse.isCorrect(envelope)){
                             ui.getInfo().addText("Congratulations you have won");
@@ -586,13 +586,16 @@ public class Cluelessdo {
 
         while (game.isRunning()){
             currentPlayer = game.playerIterator.next();
-            if (currentPlayer.isPlaying())
-                game.playTurn(currentPlayer);
-                game.ui.getInfo().clear();
-            if (game.numberOfPlayersPlaying == 1) {
-                game.ui.getInfo().addText("Congratulations " + currentPlayer.getPlayerName() + ", you are the champion!!!");
-                game.running = false;
+            if (currentPlayer.isPlaying()) {
+                if (game.numberOfPlayersPlaying == 1) {
+                    game.ui.getInfo().addText("Congratulations " + currentPlayer.getPlayerName() + ", you are the champion!!!");
+                    game.running = false;
+                } else {
+                    game.playTurn(currentPlayer);
+                    game.ui.getInfo().clear();
+                }
             }
         }
+
     }
 }
