@@ -1,4 +1,4 @@
-//import javafx.scene.web.HTMLEditorSkin;
+import javafx.scene.web.HTMLEditorSkin;
 
 import java.awt.event.*;
 import java.util.LinkedList;

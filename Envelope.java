@@ -1,6 +1,6 @@
 import java.util.Random;
 
-public class Envelope {
+public class Envelope{
     private Card weapon;
     private Card murderer;
     private Card location;
@@ -29,8 +29,6 @@ public class Envelope {
         }
         return room;
     }
-
-
 
     public Card getMurderer() {
         return murderer;

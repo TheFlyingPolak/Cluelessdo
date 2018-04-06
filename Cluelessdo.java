@@ -5,12 +5,8 @@
 16305706 Mark Hartnett
  */
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.function.Predicate;
 
@@ -267,10 +263,12 @@ public class Cluelessdo {
                         else if (command == CommandTypes.CHEAT){
                             ui.getInfo().addText(envelope.getMurderer().getName() + " in the " + envelope.getLocation().getName() + " with the " + envelope.getWeapon().getName());
                         }
-
                         Accusation accuse = new Accusation();
-
                         accuse.ask(ui, CHARACTER_NAMES, WEAPON_NAMES);
+
+                        EnvelopePanel envelopePanel = new EnvelopePanel(ui.getBoard(), envelope, accuse);
+                        ui.getLayers().add(envelopePanel, Integer.valueOf(11));
+                        envelopePanel.displayEnvelope();
 
                         if(accuse.isCorrect(envelope)){
                             ui.getInfo().addText("Congratulations you have won");
@@ -285,6 +283,8 @@ public class Cluelessdo {
                             Audio fail = new Audio(Sounds.FAIL);
                             ui.getInfo().addText("Press ENTER to continue");
                             command = doCommand();
+                            envelopePanel.removeEnvelope();
+                            ui.getLayers().remove(envelopePanel);
                             return;
                         }
                     }
@@ -468,6 +468,8 @@ public class Cluelessdo {
 
         boolean tokenMatch = false; // boolean of whether the user inputs either done (i.e. doesnt have any of the tokens) or one of the token names that they have
 
+        CardPanel cardPanel = new CardPanel(ui.getBoard(), ui.getCmd(), question);
+        ui.getLayers().add(cardPanel, Integer.valueOf(6));
         //loop through the other players asking whether they have one of the tokens or not
         for (Player player : players) {
             if (!currentPlayer.getPlayerName().equals(player.getPlayerName())) { // if not the current player
@@ -479,6 +481,7 @@ public class Cluelessdo {
                     ui.getInfo().addText("Cannot continue until " + player.getPlayerName() + " is playing now enter y/n"); // prompt
                     userInput = ui.getCmd().getCommand(); // read input
                 }
+                cardPanel.showPanel();
 
                 // prompt
                 ui.getInfo().addText("if you have the character, weapon and/or the room below:\n" + question.getMurderer().getName() + "\n" + question.getLocation().getName() + "\n" + question.getWeapon().getName() + "\nenter the name of the one that you have. Enter \"done\" if you don't have any of them. If you have more than one just enter one of them.");
@@ -533,13 +536,14 @@ public class Cluelessdo {
                         ui.getInfo().addText("That's not a valid entry, try again!"); // inform user of invalid input
                     }
                 } while (!canContinue); // while the player has not entered the tokens that they have out of the list or entered done
+                cardPanel.removePanel();
             }
 
             if (!questioningResult.equals("")) {
                 break;
             }
         }
-
+        ui.getLayers().remove(cardPanel);
         if (questioningResult.equals("")) { // if nobody has any of the tokens
             questioningResult = "Nobody had the character, weapon or the room!"; // create response to current player questioning
             log.addEntryWithoutReply(currentPlayer, question);
@@ -586,12 +590,15 @@ public class Cluelessdo {
 
         while (game.isRunning()){
             currentPlayer = game.playerIterator.next();
-            if (currentPlayer.isPlaying())
-                game.playTurn(currentPlayer);
-                game.ui.getInfo().clear();
-            if (game.numberOfPlayersPlaying == 1) {
-                game.ui.getInfo().addText("Congratulations " + currentPlayer.getPlayerName() + ", you are the champion!!!");
-                game.running = false;
+            if (currentPlayer.isPlaying()) {
+                if (game.numberOfPlayersPlaying == 1) {
+                    game.ui.getInfo().addText("Congratulations " + currentPlayer.getPlayerName() + ", you are the champion!!!");
+                    game.running = false;
+                }
+                else {
+                    game.playTurn(currentPlayer);
+                    game.ui.getInfo().clear();
+                }
             }
         }
     }

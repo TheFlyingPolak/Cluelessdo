@@ -13,4 +13,15 @@ public final class Easing {
         if ((t/=d/2) < 1) return c/2*t*t + b;
         return -c/2 * ((--t)*(t-2) - 1) + b;
     }
+
+    public static double easeInCube(double t, double b, double c, double d){
+        t /= d;
+        return c*t*t*t + b;
+    }
+
+    public static double easeOutCube(double t, double b, double c, double d){
+        t /= d;
+        t--;
+        return c*(t*t*t + 1) + b;
+    }
 }

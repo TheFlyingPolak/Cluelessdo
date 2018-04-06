@@ -81,7 +81,7 @@ public class IntroScreen extends JPanel {
                 logo.position.y = (int) Easing.easeInOutQuad(movementIncrement, 201, -70, 35);
             }
             if (movementIncrement >= 25){
-                window.setLocation(window.getX(), (int) Easing.easeOutQuad(movementIncrement, 615, -(window.windowImage.getHeight() + 30), 60));
+                window.setLocation(window.getX(), (int) Easing.easeOutQuad(movementIncrement - 25, 615, -(window.windowImage.getHeight() + 30), 35));
             }
             movementIncrement++;
             repaint();
@@ -148,7 +148,6 @@ public class IntroScreen extends JPanel {
             characterNames.addAll(Arrays.asList(CharacterNames.values()));
             cardDisplayingImage = characterImages.get(cardDisplayingName);
 
-            setLayout(null);
             setBounds((592 / 2) - (windowImage.getWidth() / 2), 615, windowImage.getWidth(), windowImage.getHeight());
             title.setBounds((getWidth() / 3) - 70, 20, 140, 30);
             title.setHorizontalAlignment(SwingConstants.CENTER);

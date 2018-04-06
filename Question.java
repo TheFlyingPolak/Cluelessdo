@@ -22,12 +22,14 @@ public class Question {
         ui.getInfo().addText("You chose " + murderer.getName() + " as the murderer"); // inform user of data received from them
         weapon = murderWeapon(ui, currentPlayer); // ask retrieve and validate what the player thinks the murder weapon was
         ui.getInfo().addText("You chose " + weapon.getName() + " as the murder weapon"); // inform user of data received from them
-        ui.getInfo().addText(murderer.getName() + " killed Gunther with a " + weapon.getName() + " in the " + weapon.getName()); // display the overall information
+        ui.getInfo().addText(murderer.getName() + " killed Gunther with a " + weapon.getName() + " in the " + currentPlayer.getPlayerToken().getCurrentTile().getRoomType()); // display the overall information
     }
 
     // ask retrieve and validate who the player thinks the murderer is
     private Card murdererName(UI ui, Player currentPlayer) {
-
+        CardPanel cardPanel = new CardPanel(ui.getBoard(), ui.getCmd(), "characters");
+        ui.getLayers().add(cardPanel, Integer.valueOf(6));
+        cardPanel.showPanel();
         ui.getInfo().addText("Enter the name of the character you want to question from the list below"); // prompt
 
         // display all the characters to the player that they can select
@@ -79,11 +81,16 @@ public class Question {
             }
         } while (murderer == null); // while the player input was not a character
 
+        cardPanel.removePanel();
+        ui.getLayers().remove(cardPanel);
         return new Card(murderer.toString()); // return a card with the murderer selected by the user
     }
 
     // ask retrieve and validate what the player thinks the murder weapon was
     private Card murderWeapon(UI ui, Player currentPlayer) {
+        CardPanel cardPanel = new CardPanel(ui.getBoard(), ui.getCmd(), "weapons");
+        ui.getLayers().add(cardPanel, Integer.valueOf(6));
+        cardPanel.showPanel();
         ui.getInfo().addText("Enter the weapon you think " + murderer.getName() + " killed Gunther in " + location.getName() + ". Listed Below"); // prompt
 
         // display all the characters to the player that they can select
@@ -128,6 +135,8 @@ public class Question {
             }
         } while (murderWeapon == null); // while the player input was not a weapon
 
+        cardPanel.removePanel();
+        ui.getLayers().remove(cardPanel);
         return new Card(murderWeapon.toString()); // return a card with the murder weapon selected by the user
     }
 

@@ -36,8 +36,8 @@ public class TokenController extends JPanel implements ActionListener {
     private Token movingToken;
     private Tile sourceTile;
 
+    private int animationCounter;
     private double dx, dy;
-    private double stepX, stepY;
 
     /**
      * Constructor of the class TokenController. Initialises the token ArrayLists and attempts to load images.
@@ -136,12 +136,11 @@ public class TokenController extends JPanel implements ActionListener {
 
         dx = movingToken.getCurrentTile().getXCoordinate() - sourceTile.getXCoordinate();
         dy = movingToken.getCurrentTile().getYCoordinate() - sourceTile.getYCoordinate();
-        stepX = dx / (double)10;
-        stepY = dy / (double)10;
 
         timer = new Timer(20, this);
         timer.setInitialDelay(0);
         timerRunning = true;
+        animationCounter = 1;
         timer.start();
         do{
 
@@ -150,16 +149,15 @@ public class TokenController extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e){
-        dx -= stepX;
-        dy -= stepY;
-        movingToken.setPosition(new Point(movingToken.getCurrentTile().getXCoordinate() - (int)dx, movingToken.getCurrentTile().getYCoordinate() - (int)dy));
+        movingToken.setPosition(new Point(
+                (int)Easing.easeInOutQuad(animationCounter, sourceTile.getXCoordinate(), dx, 10),
+                (int)Easing.easeInOutQuad(animationCounter, sourceTile.getYCoordinate(), dy, 10)
+        ));
+        animationCounter++;
         repaint();
-
-        if (Math.abs(dx) <= Math.abs(stepX) && Math.abs(dy) <= Math.abs(stepY)){
-            movingToken.setPosition(new Point(movingToken.getCurrentTile().getXCoordinate(), movingToken.getCurrentTile().getYCoordinate()));
-            repaint();
-            timerRunning = false;
+        if (animationCounter > 10) {
             timer.stop();
+            timerRunning = false;
         }
     }
 

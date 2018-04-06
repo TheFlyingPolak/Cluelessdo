@@ -5,12 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class Button extends JComponent implements MouseListener {
-    private BufferedImage image;
+    private Image image;
     private boolean mouseOver = false;
     private final ArrayList<ActionListener> listeners = new ArrayList<>();
 
@@ -21,20 +20,28 @@ public class Button extends JComponent implements MouseListener {
         catch (IOException e){
             e.printStackTrace();
         }
-        setBounds(position.x - (image.getWidth() / 2) - 5, position.y - (image.getHeight() / 2) - 5, image.getWidth() + 10, image.getHeight() + 10);
+        setBounds(position.x - (image.getWidth(this) / 2) - 5, position.y - (image.getHeight(this) / 2) - 5, image.getWidth(this) + 10, image.getHeight(this) + 10);
+        enableInputMethods(true);
+        addMouseListener(this);
+        setVisible(true);
+    }
+
+    public Button(Point position, Image image){
+        this.image = image;
+        setBounds(position.x - (image.getWidth(this) / 2) - 5, position.y - (image.getHeight(this) / 2) - 5, image.getWidth(this) + 10, image.getHeight(this) + 10);
         enableInputMethods(true);
         addMouseListener(this);
         setVisible(true);
     }
 
     public Dimension getPreferredSize(){
-        return new Dimension(image.getWidth(), image.getHeight());
+        return new Dimension(image.getWidth(this), image.getHeight(this));
     }
     public Dimension getMinimumSize(){
-        return new Dimension(image.getWidth(), image.getHeight());
+        return new Dimension(image.getWidth(this), image.getHeight(this));
     }
     public Dimension getMaximumSize(){
-        return new Dimension(image.getWidth() + 10, image.getHeight() + 10);
+        return new Dimension(image.getWidth(this) + 10, image.getHeight(this) + 10);
     }
 
     public void mouseEntered(MouseEvent e){
@@ -78,6 +85,6 @@ public class Button extends JComponent implements MouseListener {
         if (!mouseOver)
             g2.drawImage(image, 5, 5, this);
         else
-            g2.drawImage(image.getScaledInstance(image.getWidth() + 10, image.getHeight() + 10, Image.SCALE_DEFAULT), 0, 0, this);
+            g2.drawImage(image.getScaledInstance(image.getWidth(this) + 10, image.getHeight(this) + 10, Image.SCALE_DEFAULT), 0, 0, this);
     }
 }
