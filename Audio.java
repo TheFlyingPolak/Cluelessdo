@@ -30,6 +30,12 @@ public class Audio {
                 case FAIL:
                     path += "removed.wav";
                     break;
+                case PARTY:
+                    path += "winner.wav";
+                    break;
+                case WIN:
+                    path += "CSIMIAMI-Intro.wav";
+                    break;
             }
             /** Open and start audio clip */
             try {

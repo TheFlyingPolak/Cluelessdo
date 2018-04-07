@@ -1,3 +1,3 @@
 public enum Sounds {
-    INTRO, FAIL
+    INTRO, FAIL, WIN, PARTY
 }

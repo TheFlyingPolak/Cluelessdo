@@ -138,7 +138,7 @@ public class Accusation {
                 case "mc kitchen":
                 case "mc_kitchen":
                     room = "monica + chandlers kitchen";
-                    return;
+                    break;
                 case "monica & chandlers living room":
                 case "monica + chandlers living room":
                 case "monica and chandlers living room":
@@ -154,28 +154,28 @@ public class Accusation {
                 case "mc livingroom":
                 case "mc_livingroom":
                     room = "monica + chandlers living room";
-                    return;
+                    break;
                 case "rachel's office":
                 case "rachels office":
                 case "r office":
                 case "r_office":
                     room = "rachel's office";
-                    return;
+                    break;
                 case "central perk":
                 case "centralperk":
                     room = "central perk";
-                    return;
+                    break;
                 case "the geller household":
                 case "geller household":
                 case "gellerhouse":
                     room = "geller household";
-                    return;
+                    break;
                 case "joey's kitchen":
                 case "joeys kitchen":
                 case "j kitchen":
                 case "j_kitchen":
                     room = "joey's kitchen";
-                    return;
+                    break;
                 case "joey's living room":
                 case "joeys living room":
                 case "joey's livingroom":
@@ -183,19 +183,19 @@ public class Accusation {
                 case "j livingroom":
                 case "j_livingroom":
                     room = "joey's living room";
-                    return;
+                    break;
                 case "phoebe's apartment":
                 case "phoebes apartment":
                 case "p apartment":
                 case "p_apartment":
                     room = "phoebe's apartment";
-                    return;
+                    break;
                 case "allesandros":
                 case "alesandros":
                 case "allesandro's":
                 case "alesandro's":
                     room = "allesandros";
-                    return;
+                    break;
                 case "notes":
                     currentPlayer.getPlayerNotes().showNotes(currentPlayer);
                     room = null;
@@ -216,7 +216,6 @@ public class Accusation {
             }
 
         }while (room == null);
-
 
         cardPanel.removePanel();
         ui.getLayers().remove(cardPanel);

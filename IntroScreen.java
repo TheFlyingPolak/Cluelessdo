@@ -149,17 +149,26 @@ public class IntroScreen extends JPanel {
             cardDisplayingImage = characterImages.get(cardDisplayingName);
 
             setBounds((592 / 2) - (windowImage.getWidth() / 2), 615, windowImage.getWidth(), windowImage.getHeight());
-            title.setBounds((getWidth() / 3) - 70, 20, 140, 30);
+            title.setBounds((getWidth() / 3) - 90, 15, 180, 30);
+            title.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 20));
             title.setHorizontalAlignment(SwingConstants.CENTER);
             title.setVerticalAlignment(SwingConstants.CENTER);
             add(title);
 
             players.setBounds((getWidth() / 3) * 2, 20, 140, getHeight() - 40);
+            players.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 14));
             players.setVerticalAlignment(SwingConstants.TOP);
             add(players);
 
             playerNameField.setBounds((getWidth() / 3) - 100, getHeight() - 40, 200, 20);
             add(playerNameField);
+            playerNameField.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    nextButtonAction();
+                    repaint();
+                }
+            });
 
             leftButton = new Button(new Point((getWidth() / 3) - 110, getHeight() / 2), "images/intro/left button.png");
             rightButton = new Button(new Point((getWidth() / 3) + 110, getHeight() / 2), "images/intro/right button.png");
@@ -266,7 +275,7 @@ public class IntroScreen extends JPanel {
             g2.drawImage(windowImage, 0, 0, this);
             g2.drawImage(cardDisplayingImage.getScaledInstance(140, 196, Image.SCALE_DEFAULT), (getWidth() / 3) - (140 / 2), (getHeight() / 2) - (196 / 2), this);
 
-            g2.setFont(new Font("Serif", Font.PLAIN, 24));
+
         }
     }
 }

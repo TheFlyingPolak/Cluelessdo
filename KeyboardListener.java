@@ -1,6 +1,5 @@
 import java.awt.event.*;
 
-
 /*
  * The class KeyboardListener allows the user to issue game commands by pressing keys on the keyboard
  */
@@ -15,7 +14,7 @@ public class KeyboardListener implements KeyListener{
     public void keyPressed(KeyEvent e){
         int key = e.getKeyCode();
         System.out.println("key pressed: " + key);
-        String command;
+        String command = null;
             switch (key) {
                 case KeyEvent.VK_UP:
                     command = "u";
@@ -41,6 +40,15 @@ public class KeyboardListener implements KeyListener{
                 case KeyEvent.VK_N:
                     command = "notes";
                     break;
+                case KeyEvent.VK_L:
+                    command = "log";
+                    break;
+                case KeyEvent.VK_Q:
+                    command = "question";
+                    break;
+                case KeyEvent.VK_A:
+                    command = "accuse";
+                    break;
                 case KeyEvent.VK_1:
                     command = "1";
                     break;
@@ -53,10 +61,13 @@ public class KeyboardListener implements KeyListener{
                 case KeyEvent.VK_4:
                     command = "4";
                     break;
-                default:
+                case KeyEvent.VK_ENTER:
                     command = "";
+                    break;
+                default:
         }
-        cmdPanel.addCommand(command);
+        if (command != null)
+            cmdPanel.addCommand(command);
     }
 
     public void keyReleased(KeyEvent e){

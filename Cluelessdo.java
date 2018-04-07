@@ -192,15 +192,9 @@ public class Cluelessdo {
             playerNum++;
         }
 
-        ui.getInfo().addText("The player order is " + names + "\nType \"play\" to begin!");
+        ui.getInfo().addText("The player order is " + names + "\nPress ENTER to start game!");
 
-        String command;
-        do {
-            command = ui.getCmd().getCommand();
-            if (command.equals("help")) { // if the player enters help
-                ui.getInfo().addText("You just need to enter \"play\" to start the game!");
-            }
-        } while (!command.equals("play"));
+        String command = ui.getCmd().getCommand();
 
         ui.getInfo().clear();
         playerIterator = players.iterator();
@@ -264,22 +258,26 @@ public class Cluelessdo {
                             ui.getInfo().addText(envelope.getMurderer().getName() + " in the " + envelope.getLocation().getName() + " with the " + envelope.getWeapon().getName());
                         }
                         Accusation accuse = new Accusation();
-                        accuse.ask(ui, CHARACTER_NAMES, WEAPON_NAMES,currentPlayer,envelope);
+                        accuse.ask(ui, CHARACTER_NAMES, WEAPON_NAMES, currentPlayer, envelope);
 
                         EnvelopePanel envelopePanel = new EnvelopePanel(ui.getBoard(), envelope, accuse);
                         ui.getLayers().add(envelopePanel, Integer.valueOf(11));
                         envelopePanel.displayEnvelope();
 
                         if(accuse.isCorrect(envelope)){
-                            ui.getInfo().addText("Congratulations you have won");
-                            //do something cool
+                            ui.getInfo().addText("Congratulations, you have won!");
+                            VictoryPanel victoryPanel = new VictoryPanel(ui.getBoard(), currentPlayer);
+                            ui.getLayers().add(victoryPanel, Integer.valueOf(15));
+                            ui.getInfo().addText("Press ENTER to exit game");
+                            command = doCommand();
+                            System.exit(0);
                             return;
                         }
 
                         else{
                             currentPlayer.setPlaying(false);
                             numberOfPlayersPlaying--;
-                            ui.getInfo().addText(" Sorry that is incorrect, you are eliminated");
+                            ui.getInfo().addText("Sorry that is incorrect, you are eliminated");
                             Audio fail = new Audio(Sounds.FAIL);
                             ui.getInfo().addText("Press ENTER to continue");
                             command = doCommand();
@@ -474,17 +472,13 @@ public class Cluelessdo {
         for (Player player : players) {
             if (!currentPlayer.getPlayerName().equals(player.getPlayerName())) { // if not the current player
                 ui.getInfo().clear(); // clear the info panel
-                ui.getInfo().addText("confirm that " + player.getPlayerName() + " is playing now by entering y/n"); // prompt
+                ui.getInfo().addText("Pass the game to " + player.getPlayerName() + " and press ENTER to continue"); // prompt
 
                 String userInput = ui.getCmd().getCommand(); // read input
-                while (!(userInput.toLowerCase().equals("y") || userInput.toLowerCase().equals("yes"))) {  // ensure that the right player is playing at that moment, if not loop
-                    ui.getInfo().addText("Cannot continue until " + player.getPlayerName() + " is playing now enter y/n"); // prompt
-                    userInput = ui.getCmd().getCommand(); // read input
-                }
                 cardPanel.showPanel();
 
                 // prompt
-                ui.getInfo().addText("if you have the character, weapon and/or the room below:\n" + question.getMurderer().getName() + "\n" + question.getLocation().getName() + "\n" + question.getWeapon().getName() + "\nenter the name of the one that you have. Enter \"done\" if you don't have any of them. If you have more than one just enter one of them.");
+                ui.getInfo().addText("If you have the character, weapon and/or the room below:\n" + question.getMurderer().getName() + "\n" + question.getLocation().getName() + "\n" + question.getWeapon().getName() + "\nenter the name of the one that you have. Enter \"done\" if you don't have any of them. If you have more than one just enter one of them.");
 
                 boolean canContinue = false; //
                 do {
@@ -504,7 +498,7 @@ public class Cluelessdo {
                     } else if (input.equals("notes")) {
                         player.getPlayerNotes().showNotes(player); // display players notes
                     } else if (input.equals("help")) {
-                        ui.getInfo().addText("Enter \"done\" if you dont have either the character, room or weapon, the name of the character, room or weapon that you have (pick one if you've more than one), \"notes\" to view youre notes");
+                        ui.getInfo().addText("Enter \"done\" if you don't have either the character, room or weapon, the name of the character, room or weapon that you have (pick one if you've more than one), \"notes\" to view youre notes");
                     } else if (murderer == CharacterNames.getValue(input)) { // player has the potential murderer
                         if (player.getPlayerNotes().getNoteItem(murderer.toString()).getChecked() == 'X') { // if the player has that token
                             currentPlayer.getPlayerNotes().setPlayerChecked(question.getMurderer().getEnumName());
@@ -550,14 +544,10 @@ public class Cluelessdo {
         }
 
         ui.getInfo().clear(); // clear the info panel
-        ui.getInfo().addText("confirm that " + currentPlayer.getPlayerName() + " is playing now by entering y/n"); // prompt
+        ui.getInfo().addText("Pass the game to " + currentPlayer.getPlayerName() + " and press ENTER to continue"); // prompt
         String input = ui.getCmd().getCommand(); // read input
-        while (!(input.toLowerCase().equals("y") || input.toLowerCase().equals("yes"))) {  // ensure that the right player is playing at that moment, if not loop
-            ui.getInfo().addText("you cannot continue until " + currentPlayer.getPlayerName() + " is playing now by entering y/n"); // prompt
-            input = ui.getCmd().getCommand(); // read input
-        }
 
-        ui.getInfo().addText(questioningResult + "\nEnter \"done\" to end yout turn or \"notes\" to look at your notes."); // give current player results from questioning and possible actions
+        ui.getInfo().addText(questioningResult + "\nEnter \"done\" to end your turn or \"notes\" to look at your notes."); // give current player results from questioning and possible actions
     }
 
     public static void main(String[] args) throws IOException {
@@ -592,8 +582,12 @@ public class Cluelessdo {
             currentPlayer = game.playerIterator.next();
             if (currentPlayer.isPlaying()) {
                 if (game.numberOfPlayersPlaying == 1) {
-                    game.ui.getInfo().addText("Congratulations " + currentPlayer.getPlayerName() + ", you are the champion!!!");
-                    game.running = false;
+                    game.ui.getInfo().addText("Congratulations " + currentPlayer.getPlayerName() + ", you have won!");
+                    VictoryPanel victoryPanel = new VictoryPanel(game.ui.getBoard(), currentPlayer);
+                    game.ui.getLayers().add(victoryPanel, Integer.valueOf(15));
+                    game.ui.getInfo().addText("Press ENTER to exit game");
+                    String command = game.ui.getCmd().getCommand();
+                    System.exit(0);
                 } else {
                     game.playTurn(currentPlayer);
                     game.ui.getInfo().clear();
