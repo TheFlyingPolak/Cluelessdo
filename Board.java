@@ -262,10 +262,23 @@ public class Board extends JComponent {
     }
 
     public void drawSecretPassages(Graphics2D g2) {
+        Font font = g2.getFont();
+        g2.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 8));
+
+        g2.drawString("Secret Passage to Allesandros", X_BORDER + 10, Y_BORDER + Y_SIDE_LENGTH  + 15);
+        g2.drawString("Secret Passage to Rachel's Office", X_BORDER + 18*X_SIDE_LENGTH + 10, Y_BORDER + Y_SIDE_LENGTH  + 15);
+        g2.drawString("Secret Passage to Joey's Kitchen", X_BORDER + 10, Y_BORDER + 19*Y_SIDE_LENGTH  + 15);
+        g2.drawString("Secret Passage to M&C's Kitchen", X_BORDER + 18*X_SIDE_LENGTH + 10, Y_BORDER + 21*Y_SIDE_LENGTH  + 15);
+
+        g2.setFont(font);
+
+
+
+/*
         Rectangle[] rectangles = {new Rectangle(X_BORDER + 5*X_SIDE_LENGTH, Y_BORDER + 1*Y_SIDE_LENGTH, X_SIDE_LENGTH, Y_SIDE_LENGTH), new Rectangle(X_BORDER + 22*X_SIDE_LENGTH, Y_BORDER + 5*Y_SIDE_LENGTH, X_SIDE_LENGTH, Y_SIDE_LENGTH), new Rectangle(X_BORDER + 0*X_SIDE_LENGTH, Y_BORDER + 19*Y_SIDE_LENGTH, X_SIDE_LENGTH, Y_SIDE_LENGTH), new Rectangle(X_BORDER + 23*X_SIDE_LENGTH, Y_BORDER + 21*Y_SIDE_LENGTH, X_SIDE_LENGTH, Y_SIDE_LENGTH)};
         for (int i = 0; i < rectangles.length; i++) {
             g2.setColor(Color.BLACK);
             g2.fill(rectangles[i]);
-        }
+        }*/
     }
 }
