@@ -18,6 +18,7 @@ public class UI extends JFrame implements MouseListener {
     private Board board;
     private InfoPanel info;
     private CmdPanel cmd;
+    private HotkeysPanel hotkeysPanel;
     private KeyboardListener listener;
 
     // UI constructor
@@ -27,13 +28,16 @@ public class UI extends JFrame implements MouseListener {
         boardPanel = new JPanel(new BorderLayout());  // Panel which contains the JLayeredPane
         layers = new JLayeredPane();    // Layered container for board and token drawing panel
         board = new Board(); // board component
-        info = new InfoPanel("Welcome to Cluelessdo! Can you solve the mystery of the murder of Gunther?"); // info panel
+        info = new InfoPanel("Welcome to Cluelessdo! Can you solve the mystery of the murder of Gunther?\n\n" +
+                "At any time during the game, click on the board window to use key commands or click on the command line below to type commands.\n" +
+                "Once the game starts, see the hotkeys dropdown box for all hotkeys."); // info panel
         cmd = new CmdPanel(); // command pannel
+        hotkeysPanel = new HotkeysPanel(board);
         listener = new KeyboardListener(cmd);
         boardPanel.setFocusable(true);
         boardPanel.addMouseListener(this);
         boardPanel.addKeyListener(listener);
-
+        board.add(hotkeysPanel);
 
         info.setPreferredSize(new Dimension(400, 100)); // set the preferred size of the info panel
 

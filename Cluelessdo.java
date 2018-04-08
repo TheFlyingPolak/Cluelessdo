@@ -432,7 +432,6 @@ public class Cluelessdo {
                     currentPlayer.getPlayerToken().setRoomLastOccupied(currentPlayer.getPlayerToken().getCurrentTile().getRoomType());
                 }
             }
-
             if (dicePanel.isRunning()){
                 synchronized (dicePanel){
                     dicePanel.notify();

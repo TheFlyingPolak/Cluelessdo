@@ -148,7 +148,7 @@ public class CardPanel extends JComponent implements ActionListener{
             listOfCards.put(new Button(new Point(getWidth() / 4, getHeight() / 2), weaponImage), weapon);
             listOfCards.put(new Button(new Point(getWidth() / 2, getHeight() / 2), locationImage), location);
             listOfCards.put(new Button(new Point(getWidth() - (getWidth() / 4), getHeight() / 2), murdererImage), murderer);
-            listOfCards.put(new Button(new Point(getWidth() / 2, getHeight() - (getHeight() / 4)), "images/intro/done button.png"), "done");
+            listOfCards.put(new Button(new Point(getWidth() / 2, getHeight() - (getHeight() / 4)), "images/buttons/none of the above button.png"), "done");
         }
         catch (IOException e){
             e.printStackTrace();

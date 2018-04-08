@@ -93,6 +93,7 @@ public class Board extends JComponent {
         g2.setColor(Color.BLACK); // set the color to black
 
         // display the names of each of the rooms on the JPanel
+        g2.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, g2.getFont().getSize()));
         g2.drawString("Monica + Chandler's", (int) (X_BORDER + .2* X_SIDE_LENGTH), (int) (Y_BORDER + 4.2* Y_SIDE_LENGTH));
         g2.drawString("Kitchen", (int) (X_BORDER + 1.7*X_SIDE_LENGTH) , (int) (Y_BORDER + 4.8* Y_SIDE_LENGTH));
         g2.drawString("Monica + Chandler's", (int) (X_BORDER + 1.2* X_SIDE_LENGTH), (int) (Y_BORDER + 13.5* Y_SIDE_LENGTH));
@@ -107,6 +108,8 @@ public class Board extends JComponent {
         g2.drawString("Allesandro's", X_BORDER + 19* X_SIDE_LENGTH, (int) (Y_BORDER + 23.8* Y_SIDE_LENGTH));
 
         drawDoorNumbers(g2);
+
+        drawSecretPassages(g2);
     }
 
     private void drawDoorNumbers(Graphics2D g2){
@@ -256,17 +259,5 @@ public class Board extends JComponent {
         g2.fill(new Rectangle(X_BORDER + 17* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + 2* Y_SIDE_LENGTH - wallWidth/2, X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
         g2.fill(new Rectangle(X_BORDER + 15* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + Y_SIDE_LENGTH - wallWidth/2, 2* X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
         g2.fill(new Rectangle(X_BORDER + 14* X_SIDE_LENGTH - wallWidth/2, Y_BORDER - wallWidth/2, X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
-    }
-
-    public void drawSecretPassages(Graphics2D g2) {
-        Rectangle[] rectangles = {new Rectangle(X_BORDER + 5*X_SIDE_LENGTH, Y_BORDER + 1*Y_SIDE_LENGTH, X_SIDE_LENGTH, Y_SIDE_LENGTH),
-                                    new Rectangle(X_BORDER + 22*X_SIDE_LENGTH, Y_BORDER + 5*Y_SIDE_LENGTH, X_SIDE_LENGTH, Y_SIDE_LENGTH),
-                                    new Rectangle(X_BORDER + 0*X_SIDE_LENGTH, Y_BORDER + 19*Y_SIDE_LENGTH, X_SIDE_LENGTH, Y_SIDE_LENGTH),
-                                    new Rectangle(X_BORDER + 23*X_SIDE_LENGTH, Y_BORDER + 21*Y_SIDE_LENGTH, X_SIDE_LENGTH, Y_SIDE_LENGTH)};
-        for (int i = 0; i < rectangles.length; i++) {
-            System.out.println("fasdf " + i);
-            g2.setColor(Color.BLACK);
-            g2.fill(rectangles[i]);
-        }
     }
 }

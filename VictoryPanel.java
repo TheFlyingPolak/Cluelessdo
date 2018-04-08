@@ -1,10 +1,7 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 
 public class VictoryPanel extends JComponent {
@@ -17,7 +14,7 @@ public class VictoryPanel extends JComponent {
 
     public VictoryPanel(Board board, Player player){
         setBounds(board.getBounds());
-        exitButton = new Button(new Point(getWidth() / 2, getHeight() - (getHeight() / 4)), "images/intro/done button.png");
+        exitButton = new Button(new Point(getWidth() / 2, getHeight() - (getHeight() / 4)), "images/buttons/exit button.png");
         confetti = new ImageIcon(getClass().getResource("images/confetti.gif"));
         confettiLabel = new JLabel(confetti);
         confettiLabel.setBounds(
@@ -51,6 +48,6 @@ public class VictoryPanel extends JComponent {
         setVisible(true);
 
         Audio party = new Audio(Sounds.PARTY);
-        Audio win = new Audio((Sounds.WIN));
+        Audio win = new Audio((Sounds.INTRO));
     }
 }
