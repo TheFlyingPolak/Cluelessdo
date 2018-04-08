@@ -27,9 +27,9 @@ public class EnvelopePanel extends JComponent{
         weaponImage = new ImageData("images/cards/" + weapon + "_card.png", new Point(getWidth() / 2, getHeight() / 2));
         locationImage = new ImageData("images/cards/" + location + "_card.png", new Point(getWidth() / 2, getHeight() / 2));
         murdererImage = new ImageData("images/cards/" + murderer + "_card.png", new Point(getWidth() / 2, getHeight() / 2));
-        this.weaponGuess = new ImageData("images/cards/" + WeaponTypes.getValue(accusation.weapon) + "_card.png", new Point(getWidth() / 2, getHeight() / 2));
-        this.murdererGuess = new ImageData("images/cards/" + CharacterNames.getValue(accusation.suspect) + "_card.png", new Point(getWidth() / 2, getHeight() / 2));
-        this.locationGuess = new ImageData("images/cards/" + RoomType.getValue(accusation.room) + "_card.png", new Point(getWidth() / 2, getHeight() / 2));
+        this.weaponGuess = new ImageData("images/cards/" + WeaponTypes.getValue(accusation.weapon).toString().toLowerCase() + "_card.png", new Point(getWidth() / 2, getHeight() / 2));
+        this.murdererGuess = new ImageData("images/cards/" + CharacterNames.getValue(accusation.suspect).toString().toLowerCase() + "_card.png", new Point(getWidth() / 2, getHeight() / 2));
+        this.locationGuess = new ImageData("images/cards/" + RoomType.getValue(accusation.room).toString().toLowerCase() + "_card.png", new Point(getWidth() / 2, getHeight() / 2));
 
         envelopeImage.image = envelopeImage.image.getScaledInstance(
                 (int)(envelopeImage.image.getWidth(this) * 0.75), (int)(envelopeImage.image.getHeight(this) * 0.75), Image.SCALE_DEFAULT);

@@ -10,7 +10,6 @@ public class VictoryPanel extends JComponent {
     private Button exitButton;
     private JLabel nameLabel;
     private JLabel titleLabel;
-    private int animationCounter = 0;
 
     public VictoryPanel(Board board, Player player){
         setBounds(board.getBounds());

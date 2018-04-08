@@ -13,7 +13,6 @@ public class KeyboardListener implements KeyListener{
 
     public void keyPressed(KeyEvent e){
         int key = e.getKeyCode();
-        System.out.println("key pressed: " + key);
         String command = null;
             switch (key) {
                 case KeyEvent.VK_UP:
