@@ -11,8 +11,6 @@ import javax.sound.sampled.Clip;
  */
 
 public class Audio {
-    public static boolean muted = false;
-
     private Clip clip;
 
     /**
@@ -20,7 +18,6 @@ public class Audio {
      * @param sound the sound specified by the enum Sounds
      */
     public Audio(Sounds sound) {
-        if (!isMuted()) {
             String path = "audio/";
             /** Select audio file path based on specified enum */
             switch (sound) {
@@ -33,9 +30,6 @@ public class Audio {
                 case PARTY:
                     path += "winner.wav";
                     break;
-                case WIN:
-                    path += "CSIMIAMI-Intro.wav";
-                    break;
             }
             /** Open and start audio clip */
             try {
@@ -46,7 +40,6 @@ public class Audio {
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
-        }
     }
 
     /**
@@ -55,13 +48,5 @@ public class Audio {
     public void stop(){
         if (clip.isRunning())
             clip.stop();
-    }
-
-    public static boolean isMuted(){
-        return muted;
-    }
-
-    public static void setMuted(boolean mute){
-        muted = mute;
     }
 }

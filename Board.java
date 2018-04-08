@@ -91,6 +91,7 @@ public class Board extends JComponent {
         g2.setColor(Color.BLACK); // set the color to black
 
         // display the names of each of the rooms on the JPanel
+        g2.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, g2.getFont().getSize()));
         g2.drawString("Monica + Chandler's", (int) (X_BORDER + .2* X_SIDE_LENGTH), (int) (Y_BORDER + 4.2* Y_SIDE_LENGTH));
         g2.drawString("Kitchen", (int) (X_BORDER + 1.7*X_SIDE_LENGTH) , (int) (Y_BORDER + 4.8* Y_SIDE_LENGTH));
         g2.drawString("Monica + Chandler's", (int) (X_BORDER + 1.2* X_SIDE_LENGTH), (int) (Y_BORDER + 13.5* Y_SIDE_LENGTH));
@@ -105,6 +106,8 @@ public class Board extends JComponent {
         g2.drawString("Allesandro's", X_BORDER + 19* X_SIDE_LENGTH, (int) (Y_BORDER + 23.8* Y_SIDE_LENGTH));
 
         drawDoorNumbers(g2);
+
+        drawSecretPassages(g2);
     }
 
     private void drawDoorNumbers(Graphics2D g2){
@@ -256,7 +259,7 @@ public class Board extends JComponent {
         g2.fill(new Rectangle(X_BORDER + 14* X_SIDE_LENGTH - wallWidth/2, Y_BORDER - wallWidth/2, X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
     }
 
-    public void drawSecretPassages(Graphics2D g2) {
+    private void drawSecretPassages(Graphics2D g2) {
         Point2D.Double[] points = {new Point2D.Double(5, 1), new Point2D.Double(22, 5), new Point2D.Double(0, 19), new Point2D.Double(22, 21)};
         for (int i = 0; i < points.length; i++) {
             Rectangle rectangle = new Rectangle((int) (X_BORDER + points[i].getX()*X_SIDE_LENGTH), (int) (Y_BORDER + points[i].getX()*Y_SIDE_LENGTH), WIDTH, WIDTH);

@@ -28,7 +28,7 @@ public class IntroScreen extends JPanel {
         whoKilledGunther = new ImageData("images/intro/who killed gunther.PNG", new Point(301, 321));
         window = new PlayerSelectionWindow();
 
-        playButton = new Button(new Point(getWidth() / 2, 490), "images/intro/play button.png");
+        playButton = new Button(new Point(getWidth() / 2, 490), "images/buttons/play button.png");
         playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -128,8 +128,8 @@ public class IntroScreen extends JPanel {
         private JLabel players = new JLabel(playersString);
         private JTextField playerNameField = new JTextField();
         private CharacterNames cardDisplayingName = CharacterNames.CHANDLER;
-        private BufferedImage cardDisplayingImage;
-        private Button nextButton, doneButton, leftButton, rightButton;
+        private BufferedImage cardDisplayingImage, cardBackImage;
+        private Button playButton, addButton, leftButton, rightButton;
         private ArrayList<CharacterNames> characterNames = new ArrayList<>();
 
         public PlayerSelectionWindow(){
@@ -141,6 +141,7 @@ public class IntroScreen extends JPanel {
                 characterImages.put(CharacterNames.PHOEBE, ImageIO.read(getClass().getResource("images/cards/phoebe_card.png")));
                 characterImages.put(CharacterNames.JOEY, ImageIO.read(getClass().getResource("images/cards/joey_card.png")));
                 characterImages.put(CharacterNames.RACHEL, ImageIO.read(getClass().getResource("images/cards/rachel_card.png")));
+                cardBackImage = ImageIO.read(getClass().getResource("images/cards/card_back.png"));
             }
             catch (IOException e){
                 e.printStackTrace();
@@ -165,15 +166,15 @@ public class IntroScreen extends JPanel {
             playerNameField.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    nextButtonAction();
+                    addButtonAction();
                     repaint();
                 }
             });
 
-            leftButton = new Button(new Point((getWidth() / 3) - 110, getHeight() / 2), "images/intro/left button.png");
-            rightButton = new Button(new Point((getWidth() / 3) + 110, getHeight() / 2), "images/intro/right button.png");
-            nextButton = new Button(new Point(getWidth() - 50, getHeight() - 35), "images/intro/next button.png");
-            doneButton = new Button(new Point(getWidth() - nextButton.getWidth() - 80, getHeight() - 35), "images/intro/done button.png");
+            leftButton = new Button(new Point((getWidth() / 3) - 110, getHeight() / 2), "images/buttons/left button.png");
+            rightButton = new Button(new Point((getWidth() / 3) + 110, getHeight() / 2), "images/buttons/right button.png");
+            playButton = new Button(new Point(getWidth() - (getWidth() / 5), getHeight() - 35), "images/buttons/add player button.png");
+            addButton = new Button(new Point(getWidth() - (getWidth() / 5), getHeight() - 85), "images/buttons/play button.png");
 
             leftButton.addActionListener(new ActionListener() {
                 @Override
@@ -189,23 +190,23 @@ public class IntroScreen extends JPanel {
                     repaint();
                 }
             });
-            nextButton.addActionListener(new ActionListener() {
+            playButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    nextButtonAction();
+                    addButtonAction();
                     repaint();
                 }
             });
-            doneButton.addActionListener(new ActionListener() {
+            addButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    doneButtonAction();
+                    playButtonAction();
                 }
             });
 
             add(leftButton);
             add(rightButton);
-            add(nextButton);
+            add(playButton);
 
             setVisible(true);
         }
@@ -236,7 +237,7 @@ public class IntroScreen extends JPanel {
             cardDisplayingImage = characterImages.get(cardDisplayingName);
         }
 
-        private void nextButtonAction(){
+        private void addButtonAction(){
             playerList.addLast(new Player(playerNameField.getText(), tokenPanel.getPlayerToken(cardDisplayingName)));
             playerNameField.setText("");
             playersString = playersString.substring(0, playersString.length() - 7);
@@ -245,22 +246,24 @@ public class IntroScreen extends JPanel {
 
             rightButtonAction();
             characterNames.remove(playerList.getLast().getPlayerToken().getName());
-            title.setText("Select player " + (playerList.getSize() + 1));
+            if (playerList.getSize() < 6)
+                title.setText("Select player " + (playerList.getSize() + 1));
+            else {
+                title.setText("Player list full");
+                cardDisplayingImage = cardBackImage;
+                remove(leftButton);
+                remove(rightButton);
+            }
 
-            if (playerList.getSize() >= 1)
-                add(doneButton);
-            if (playerList.getSize() >= 5)
-                remove(nextButton);
+            if (playerList.getSize() >= 2)
+                add(addButton);
+            if (playerList.getSize() >= 6)
+                remove(playButton);
         }
 
-        private void doneButtonAction(){
-            nextButtonAction();
-            try{
-                cardDisplayingImage = ImageIO.read(getClass().getResource("images/cards/card_back.png"));
-            }
-            catch (IOException e){
-                e.printStackTrace();
-            }
+        private void playButtonAction(){
+            cardDisplayingImage = cardBackImage;
+
             title.setText("Let's play!");
             removeScreen();
         }
