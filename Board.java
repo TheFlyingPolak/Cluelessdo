@@ -260,4 +260,12 @@ public class Board extends JComponent {
         g2.fill(new Rectangle(X_BORDER + 15* X_SIDE_LENGTH - wallWidth/2, Y_BORDER + Y_SIDE_LENGTH - wallWidth/2, 2* X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
         g2.fill(new Rectangle(X_BORDER + 14* X_SIDE_LENGTH - wallWidth/2, Y_BORDER - wallWidth/2, X_SIDE_LENGTH + wallWidth, wallWidth)); //horizontal
     }
+
+    public void drawSecretPassages(Graphics2D g2) {
+        Rectangle[] rectangles = {new Rectangle(X_BORDER + 5*X_SIDE_LENGTH, Y_BORDER + 1*Y_SIDE_LENGTH, X_SIDE_LENGTH, Y_SIDE_LENGTH), new Rectangle(X_BORDER + 22*X_SIDE_LENGTH, Y_BORDER + 5*Y_SIDE_LENGTH, X_SIDE_LENGTH, Y_SIDE_LENGTH), new Rectangle(X_BORDER + 0*X_SIDE_LENGTH, Y_BORDER + 19*Y_SIDE_LENGTH, X_SIDE_LENGTH, Y_SIDE_LENGTH), new Rectangle(X_BORDER + 23*X_SIDE_LENGTH, Y_BORDER + 21*Y_SIDE_LENGTH, X_SIDE_LENGTH, Y_SIDE_LENGTH)};
+        for (int i = 0; i < rectangles.length; i++) {
+            g2.setColor(Color.BLACK);
+            g2.fill(rectangles[i]);
+        }
+    }
 }
