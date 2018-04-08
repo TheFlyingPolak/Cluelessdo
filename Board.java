@@ -83,6 +83,8 @@ public class Board extends JComponent {
         g2.fill(new Rectangle(0, 0, X_BORDER, getYBoard()));
         g2.fill(new Rectangle(getXBoard()- X_BORDER, 0, X_BORDER, getYBoard()));
         g2.fill(new Rectangle(0, getYBoard()- Y_BORDER, getXBoard(), Y_BORDER));
+        
+        drawSecretPassages(g2);
 
         g2.setColor(new Color(109, 31, 36));
 
@@ -257,13 +259,14 @@ public class Board extends JComponent {
     }
 
     public void drawSecretPassages(Graphics2D g2) {
-        Point2D.Double[] points = {new Point2D.Double(5, 1), new Point2D.Double(22, 5), new Point2D.Double(0, 19), new Point2D.Double(22, 21)};
-        for (int i = 0; i < points.length; i++) {
-            Rectangle rectangle = new Rectangle((int) (X_BORDER + points[i].getX()*X_SIDE_LENGTH), (int) (Y_BORDER + points[i].getX()*Y_SIDE_LENGTH), WIDTH, WIDTH);
+        Rectangle[] rectangles = {new Rectangle(X_BORDER + 5*X_SIDE_LENGTH, Y_BORDER + 1*Y_SIDE_LENGTH, X_SIDE_LENGTH, Y_SIDE_LENGTH),
+                                    new Rectangle(X_BORDER + 22*X_SIDE_LENGTH, Y_BORDER + 5*Y_SIDE_LENGTH, X_SIDE_LENGTH, Y_SIDE_LENGTH),
+                                    new Rectangle(X_BORDER + 0*X_SIDE_LENGTH, Y_BORDER + 19*Y_SIDE_LENGTH, X_SIDE_LENGTH, Y_SIDE_LENGTH),
+                                    new Rectangle(X_BORDER + 23*X_SIDE_LENGTH, Y_BORDER + 21*Y_SIDE_LENGTH, X_SIDE_LENGTH, Y_SIDE_LENGTH)};
+        for (int i = 0; i < rectangles.length; i++) {
+            System.out.println("fasdf " + i);
             g2.setColor(Color.BLACK);
-            g2.draw(rectangle);
-            g2.setColor(Color.GRAY);
-            g2.draw(rectangle);
+            g2.fill(rectangles[i]);
         }
     }
 }
