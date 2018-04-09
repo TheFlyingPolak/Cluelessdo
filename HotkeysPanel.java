@@ -6,6 +6,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.RoundRectangle2D;
 
+/*
+ * The class HotkeysPanel draws a panel on the board which extends into view when moused over and is used to show all
+ * keyboard commands implemented in the game.
+ *
+ * 16310943 James Byrne
+ * 16314763 Jakub Gajewski
+ * 16305706 Mark Hartnett
+ */
+
 public class HotkeysPanel extends JComponent implements MouseListener{
     private JLabel textLabel;
     private JLabel label;
@@ -55,6 +64,7 @@ public class HotkeysPanel extends JComponent implements MouseListener{
 
     }
 
+    /** Action listener used to animate the extension of the panel */
     private class PanelShow implements ActionListener{
         int animationCounter = 0;
         @Override
@@ -66,6 +76,7 @@ public class HotkeysPanel extends JComponent implements MouseListener{
         }
     }
 
+    /** Action listener used to animate the hiding of the panel */
     private class PanelHide implements ActionListener{
         int animationCounter = 0;
         @Override

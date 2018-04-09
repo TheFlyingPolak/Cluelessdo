@@ -21,6 +21,7 @@ public class Log {
         private String cardShown;
         private Player playerShowingCard;
 
+        /** Constructor for LogElement where a card has been shown by a player */
         public LogElement(Player playerAsking, Question question, String card, Player playerShowing){
             this.playerAsking = playerAsking;
             questionAsked = question;
@@ -28,6 +29,7 @@ public class Log {
             playerShowingCard = playerShowing;
         }
 
+        /** Constructor for LogElement where no card has been shown by any player */
         public LogElement(Player playerAsking, Question question){
             this.playerAsking = playerAsking;
             questionAsked = question;

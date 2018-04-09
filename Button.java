@@ -8,11 +8,20 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/*
+ * The class Button implements a custom clickable JComponent used to create various buttons in the game
+ *
+ * 16310943 James Byrne
+ * 16314763 Jakub Gajewski
+ * 16305706 Mark Hartnett
+ */
+
 public class Button extends JComponent implements MouseListener {
     private Image image;
     private boolean mouseOver = false;
     private final ArrayList<ActionListener> listeners = new ArrayList<>();
 
+    /** Creates button with specified location and image path. The position is specified at the centre of the button */
     public Button(Point position, String imagePath){
         try {
             image = ImageIO.read(getClass().getResource(imagePath));
@@ -26,6 +35,7 @@ public class Button extends JComponent implements MouseListener {
         setVisible(true);
     }
 
+    /** Creates button with specified location and image object */
     public Button(Point position, Image image){
         this.image = image;
         setBounds(position.x - (image.getWidth(this) / 2) - 5, position.y - (image.getHeight(this) / 2) - 5, image.getWidth(this) + 10, image.getHeight(this) + 10);

@@ -21,13 +21,13 @@ public class Audio {
             String path = "audio/";
             /** Select audio file path based on specified enum */
             switch (sound) {
-                case INTRO:
+                case INTRO:     // Friends theme song
                     path += "Friends.wav";
                     break;
-                case FAIL:
+                case FAIL:      // Failure sounds
                     path += "removed.wav";
                     break;
-                case PARTY:
+                case PARTY:     // Party horn
                     path += "winner.wav";
                     break;
             }

@@ -1,7 +1,12 @@
 import java.awt.event.*;
 
 /*
- * The class KeyboardListener allows the user to issue game commands by pressing keys on the keyboard
+ * The class KeyboardListener allows the user to issue game commands by pressing keys on the keyboard. The functionality
+ * works by passing text commands into the command panel depending on which key has been pressed.
+ *
+ * 16310943 James Byrne
+ * 16314763 Jakub Gajewski
+ * 16305706 Mark Hartnett
  */
 
 public class KeyboardListener implements KeyListener{
@@ -11,6 +16,7 @@ public class KeyboardListener implements KeyListener{
         this.cmdPanel = cmdPanel;
     }
 
+    /** Checks which key has been pressed and passes the corresponding text command to the command panel */
     public void keyPressed(KeyEvent e){
         int key = e.getKeyCode();
         String command = null;

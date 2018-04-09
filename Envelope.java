@@ -1,10 +1,19 @@
 import java.util.Random;
 
+/*
+ * The class Envelope stores a random character, weapon and room card which are the solution of the game
+ *
+ * 16310943 James Byrne
+ * 16314763 Jakub Gajewski
+ * 16305706 Mark Hartnett
+ */
+
 public class Envelope{
     private Card weapon;
     private Card murderer;
     private Card location;
 
+    /** Generates random cards to be stored in the envelope */
     public Envelope(){
         weapon = new Card(getRandomWeapon().toString());
         murderer = new Card(getRandomCharacter().toString());

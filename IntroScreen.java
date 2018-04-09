@@ -8,6 +8,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+/*
+ * The class IntroScreen displays an animated, interactive screen at the start of the game which allows the players to
+ * enter their names and select their characters
+ *
+ * 16310943 James Byrne
+ * 16314763 Jakub Gajewski
+ * 16305706 Mark Hartnett
+ */
+
 public class IntroScreen extends JPanel {
     private ImageData logo, friends, gunther, whoKilledGunther;
     private Button playButton;
@@ -17,6 +26,7 @@ public class IntroScreen extends JPanel {
     private CircularlyLinkedList<Player> playerList;
     private TokenController tokenPanel;
 
+    /** Loads and adds all assets to the screen */
     public IntroScreen(Board board, TokenController tokenPanel, CircularlyLinkedList<Player> playerList){
         super();
         setOpaque(false);
@@ -59,6 +69,7 @@ public class IntroScreen extends JPanel {
         }
     }
 
+    /** Action preformed when the first play button is clicked */
     private void playButtonClick(){
         remove(playButton);
         repaint();
@@ -70,6 +81,7 @@ public class IntroScreen extends JPanel {
         timer.start();
     }
 
+    /** Action listener animates the chancging of shape of the screen and the display of the player selection window */
     private class AnimationTimerListener implements ActionListener{
         private int movementIncrement = 1;
 
@@ -90,6 +102,7 @@ public class IntroScreen extends JPanel {
         }
     }
 
+    /** Action listener animates the removal of the screen */
     private class ScreenRemovalListener implements ActionListener{
         private int movementIncrement = 1;
 
@@ -119,6 +132,9 @@ public class IntroScreen extends JPanel {
         }
     }
 
+    /*
+     * The class PlayerSelectionWindow implements the window which allows players to enter their names and select their characters
+     */
     private class PlayerSelectionWindow extends JComponent{
         private BufferedImage windowImage;
         private final HashMap<CharacterNames, BufferedImage> characterImages = new HashMap<>();
@@ -127,13 +143,14 @@ public class IntroScreen extends JPanel {
         private String playersString = "<html>Players added: </html>";
         private JLabel players = new JLabel(playersString);
         private JTextField playerNameField = new JTextField();
-        private CharacterNames cardDisplayingName = CharacterNames.CHANDLER;
+        private CharacterNames cardDisplayingName = CharacterNames.CHANDLER;    // Stores the name of the character currently displayed on the screen
         private BufferedImage cardDisplayingImage, cardBackImage;
         private Button playButton, addButton, leftButton, rightButton;
-        private ArrayList<CharacterNames> characterNames = new ArrayList<>();
+        private ArrayList<CharacterNames> characterNames = new ArrayList<>();   // Stores the names of characters which were not seleted yet
 
         public PlayerSelectionWindow(){
             try {
+                /* Load the window image, all character cards and the back of the card */
                 windowImage = ImageIO.read(getClass().getResource("images/intro/input_window.png"));
                 characterImages.put(CharacterNames.CHANDLER, ImageIO.read(getClass().getResource("images/cards/chandler_card.png")));
                 characterImages.put(CharacterNames.MONICA, ImageIO.read(getClass().getResource("images/cards/monica_card.png")));
@@ -148,6 +165,8 @@ public class IntroScreen extends JPanel {
             }
             characterNames.addAll(Arrays.asList(CharacterNames.values()));
             cardDisplayingImage = characterImages.get(cardDisplayingName);
+
+            /* Set up all components of the window */
 
             setBounds((592 / 2) - (windowImage.getWidth() / 2), 615, windowImage.getWidth(), windowImage.getHeight());
             title.setBounds((getWidth() / 3) - 90, 15, 180, 30);
@@ -221,6 +240,7 @@ public class IntroScreen extends JPanel {
             return new Dimension(windowImage.getWidth(), windowImage.getHeight());
         }
 
+        /* Changes currently displayed character to the previous one */
         private void leftButtonAction(){
             if (characterNames.indexOf(cardDisplayingName) == 0)
                 cardDisplayingName = characterNames.get(characterNames.size() - 1);
@@ -229,6 +249,7 @@ public class IntroScreen extends JPanel {
             cardDisplayingImage = characterImages.get(cardDisplayingName);
         }
 
+        /* Changes currently displayed character to the next one */
         private void rightButtonAction(){
             if (characterNames.indexOf(cardDisplayingName) == characterNames.size() - 1)
                 cardDisplayingName = characterNames.get(0);
@@ -237,6 +258,7 @@ public class IntroScreen extends JPanel {
             cardDisplayingImage = characterImages.get(cardDisplayingName);
         }
 
+        /* Takes information currently displayed on the screen and creates a player using this information */
         private void addButtonAction(){
             playerList.addLast(new Player(playerNameField.getText(), tokenPanel.getPlayerToken(cardDisplayingName)));
             playerNameField.setText("");
@@ -261,6 +283,7 @@ public class IntroScreen extends JPanel {
                 remove(playButton);
         }
 
+        /* Removes the screen and starts the game using the currently added players */
         private void playButtonAction(){
             cardDisplayingImage = cardBackImage;
 

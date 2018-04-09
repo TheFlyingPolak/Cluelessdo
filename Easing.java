@@ -1,3 +1,11 @@
+/*
+ * The class Easing implements easing functions used in various animations in the game
+ *
+ * 16310943 James Byrne
+ * 16314763 Jakub Gajewski
+ * 16305706 Mark Hartnett
+ */
+
 public final class Easing {
     public static double easeInQuad(double t, double b, double c, double d){
         t /= d;

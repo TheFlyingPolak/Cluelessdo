@@ -5,6 +5,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+/*
+ * The class EnvelopePanel displays an animation of the murder envelope being inspected. The panel draws the 3 cards which
+ * represent the player's guess and displays the murder envelope and removes the three cards. If the guess fails, the
+ * cards are placed back into the envelope
+ *
+ * 16310943 James Byrne
+ * 16314763 Jakub Gajewski
+ * 16305706 Mark Hartnett
+ */
+
 public class EnvelopePanel extends JComponent{
     private ImageData envelopeImage;
     private ImageData weaponImage;
@@ -15,6 +25,7 @@ public class EnvelopePanel extends JComponent{
     private ImageData locationGuess;
     private Timer timer;
 
+    /** Loads scaled instances of the cards representing the contents of the envelope and the player's guess */
     public EnvelopePanel(Board board, Envelope envelope, Accusation accusation){
         String weapon = envelope.getWeapon().getEnumName().toLowerCase();
         System.out.println(weapon);
@@ -49,6 +60,7 @@ public class EnvelopePanel extends JComponent{
         setVisible(true);
     }
 
+    /** Animates the display of the murder envelope */
     public void displayEnvelope(){
         envelopeImage.position.x = (getWidth() / 2) - (envelopeImage.image.getWidth(this) / 2);
         locationImage.position.x = (EnvelopePanel.this.getWidth() / 2) - (locationImage.image.getWidth(this) / 2);
@@ -63,6 +75,7 @@ public class EnvelopePanel extends JComponent{
         } while(timer.isRunning());
     }
 
+    /** Animates the removal of the murder envelope off the screen */
     public void removeEnvelope(){
         timer = new Timer(20, new EnvelopeRemovalListener());
         timer.start();

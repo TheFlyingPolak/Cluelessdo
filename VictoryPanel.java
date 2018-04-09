@@ -3,6 +3,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/*
+ * The class VictoryPanel displays confetti and plays music when a player wins the game
+ *
+ * 16310943 James Byrne
+ * 16314763 Jakub Gajewski
+ * 16305706 Mark Hartnett
+ */
 
 public class VictoryPanel extends JComponent {
     private ImageIcon confetti;
@@ -20,6 +27,7 @@ public class VictoryPanel extends JComponent {
                 (getWidth() / 2) - (confetti.getIconWidth() / 2), (getHeight() / 2) - (confetti.getIconHeight() / 2),
                 confetti.getIconWidth(), confetti.getIconHeight());
 
+        /* When exit button is pressed, it prompts the program to end */
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -27,6 +35,7 @@ public class VictoryPanel extends JComponent {
             }
         });
 
+        /* Set up text labels' text, colors and size */
         nameLabel = new JLabel("And the winner is");
         nameLabel.setBounds(0, 50, getWidth(), 60);
         nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -46,6 +55,7 @@ public class VictoryPanel extends JComponent {
         add(titleLabel);
         setVisible(true);
 
+        /* Play music */
         Audio party = new Audio(Sounds.PARTY);
         Audio win = new Audio((Sounds.INTRO));
     }
