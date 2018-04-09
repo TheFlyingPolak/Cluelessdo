@@ -1,20 +1,27 @@
+/*
+ * Class that represents the player accusation, where they select the murderer,the murder weapon and murder
+ * location.
+ */
 public class Accusation {
-
+    //strings to hold the name of the accused murder, weapon and room
     String suspect;
     String weapon;
     String room;
 
+    //constructor
     public Accusation(){
         suspect = "";
         weapon = "";
         room = "";
     }
 
+    //method that asks the player to make an accusation
     public void ask(UI ui, CharacterNames[] CHARACTER_NAMES, WeaponTypes[] WEAPON_NAMES, Player currentPlayer, Envelope envelope){
         CardPanel cardPanel = new CardPanel(ui.getBoard(), ui.getCmd(), "characters");
         ui.getLayers().add(cardPanel, Integer.valueOf(6));
         ui.getInfo().addText("Firstly enter the name of the character you believe to be the murderer, your options are:");
         cardPanel.showPanel();
+        //display the names of characters that an accusation can be made against
         for (int j = 0; j < 6; j++) {
             ui.getInfo().addText(CHARACTER_NAMES[j].toString().substring(0, 1) + CHARACTER_NAMES[j].toString().substring(1).toLowerCase());
         }
@@ -71,7 +78,8 @@ public class Accusation {
         ui.getLayers().add(cardPanel, Integer.valueOf(6));
         ui.getInfo().addText("Now please enter the weapon you believe " + suspect + " used, your options are:");
         cardPanel.showPanel();
-
+        
+        //display the names of the weapons that an accusation can be made on
         for (int j = 0; j < 6; j++){
             ui.getInfo().addText(WEAPON_NAMES[j].toString().substring(0,1) + WEAPON_NAMES[j].toString().substring(1).toLowerCase());
         }
@@ -120,7 +128,7 @@ public class Accusation {
         ui.getLayers().add(cardPanel, Integer.valueOf(6));
         ui.getInfo().addText("Enter the room you think the murder occurred in");
         cardPanel.showPanel();
-
+        //display the names of the weapons that an accusation can be made on
         final String[] rooms = {"Monica + Chandlers Kitchen", "Monica + Chandlers Living Room", "Rachels Office",
                 "Central Perk", "Geller Household", "Joeys Kitchen", "Joeys Living Room", "Phoebes Apartment", "Allesandros"};
         for (int j = 0; j < 9; j++){
@@ -221,6 +229,7 @@ public class Accusation {
         ui.getLayers().remove(cardPanel);
     }
 
+    //method to check if the players accusation is correct
     public boolean isCorrect(Envelope envelope){
         if((suspect.toLowerCase().equals(envelope.getMurderer().getName().toLowerCase())) && (weapon.toLowerCase().equals(envelope.getWeapon().getName().toLowerCase())) && (room.toLowerCase().equals(envelope.getLocation().getName().toLowerCase()))){
             return true;
